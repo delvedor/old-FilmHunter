@@ -1,0 +1,33 @@
+<template name="layout">
+    <div class="nav-bar">
+        <div class="dropdown">
+            <button class="dropdownButton" type="button" data-toggle="dropdown"><i class="fa fa-bars fa-3x"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu1">
+                <li role="presentation">
+                    <a role="menuitem" tabindex="-1" href="/">Home</a>
+                </li>
+                <li role="presentation">
+                    <a role="menuitem" tabindex="-1" href="{{pathFor 'info'}}">Info</a>
+                </li>
+                <li role="presentation" class="divider"></li>
+                <li role="presentation">
+                    <label style="padding-left:10px;">
+                        <input type="checkbox" id="incKey"> Include Keywords
+                    </label>
+                </li>
+                <li role="presentation">
+                    <label style="padding-left:10px;">
+                        <input type="checkbox" id="dispAll"> Display All Results
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="header">
+        <h1 class="titleSearch"><a href="/">Film Hunter</a></h1>
+    </div>
+    <div class="container">
+        {{ > search }} {{> yield}}
+    </div>
+</template>

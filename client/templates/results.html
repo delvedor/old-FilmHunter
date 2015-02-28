@@ -1,0 +1,41 @@
+<template name="resultsFilm">
+    {{ #if keyword }} {{ > resultsKeyword}}{{ /if }}
+    <div class="row space"></div>
+    {{ #each resultsPageFilm }}
+    <div class="filmResult {{ order }}">
+        <div class="filmResultContainer">
+            <div class="poster" style="background-image:url('{{image_path}}')"></div>
+            <div class="filmDescription">
+                <p>
+                    {{ title }}
+                </p>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</template>
+
+<template name="resultsKeyword">
+    <div class="row keywords">
+        {{ #each resultsPageKeyword }}
+        <div class="col-xs-5 col-sm-2 col-sm-offset-1 col-md-2 col-md-offset-1 keyword">{{ name }}</div>
+        {{ /each }}
+    </div>
+</template>
+
+<template name="loading">
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+    </div>
+</template>
+
+<template name="notfound">
+    <div class="row margin-top-50">
+        <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
+            <p class="notfound">Sorry, I've not found anything.
+                <br/>
+                <i class="fa fa-frown-o fa-3x"></i>
+            </p>
+        </div>
+    </div>
+</template>
