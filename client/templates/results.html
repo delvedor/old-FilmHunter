@@ -2,7 +2,7 @@
     {{ #if keyword }} {{ > resultsKeyword}}{{ /if }}
     <div class="row space"></div>
     {{ #each resultsPageFilm }}
-    <div class="filmResult {{ order }}">
+    <div id="{{ id }}" class="filmResult {{ order }}">
         <div class="filmResultContainer">
             <div class="poster" style="background-image:url('{{image_path}}')"></div>
             <div class="filmDescription">

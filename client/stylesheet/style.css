@@ -249,12 +249,11 @@ div[class="filmResult"] {
 .filmResultContainer {
     text-align: center;
     background-color: #FAFAFA;
-    border: 2px #0277BD solid;
     border-radius: 5px;
-    -webkit-transition: box-shadow 1s linear 0s;
-    -moz-transition: box-shadow 1s linear 0s;
-    transition: box-shadow 0.1s ease-in 0s;
-    box-shadow: 0px 0px 0px #9E9E9E;
+    -webkit-transition: box-shadow 0.2s linear 0s;
+    -moz-transition: box-shadow 0.2s linear 0s;
+    transition: box-shadow 0.2s ease-in 0s;
+    box-shadow: 0px 3px 5px #9E9E9E;
     width: 90%;
     min-height: 40vh;
     margin: 0 auto;
@@ -307,6 +306,57 @@ div[class="filmResult"] {
     margin: 5px;
     padding: 5px;
     cursor: pointer;
+}
+/****** Movie info ******/
+
+.filmInfo {
+    background-color: #FAFAFA;
+    border-radius: 5px;
+    margin: 30px 0;
+    box-shadow: 0px 3px 5px #9E9E9E;
+}
+
+.filmInfoTitle {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 300;
+    text-shadow: 2px 2px 2px #BDBDBD;
+}
+
+.filmInfoTagline {
+    text-align: center;
+}
+
+.filmInfoGenres {
+    text-align: center;
+    font-size: 1.3em;
+}
+
+.filmInfoReleaseDate {
+    text-align: center;
+    font-size: 1.3em;
+}
+
+.flex-video {
+    position: relative;
+    padding-top: 25px;
+    padding-bottom: 67.5%;
+    height: 0;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.flex-video.widescreen {
+    margin-top: 20px;
+    padding-bottom: 57.25%;
+}
+
+.flex-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 /****** Media queries ******/
 
@@ -471,6 +521,16 @@ div[class="filmResult"] {
     #loader {
         left: 50%;
         top: 50%;
+    }
+}
+
+@media only screen and (max-device-width: 800px),
+only screen and (device-width: 1024px) and (device-height: 600px),
+only screen and (width: 1280px) and (orientation: landscape),
+only screen and (device-width: 800px),
+only screen and (max-width: 767px) {
+    .flex-video {
+        padding-top: 0;
     }
 }
 /****** Page Loading ******/

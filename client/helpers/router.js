@@ -20,6 +20,11 @@ Router.route('/loading', function () {
 
 });
 
+Router.route('/movieInfo', function () {
+    this.layout('layout');
+    this.render('movieInfo');
+});
+
 Router.route('/info', function () {
     this.layout('layout');
     this.render('info');

@@ -1,0 +1,21 @@
+<template name="movieInfo">
+    <div class="row filmInfo">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <h2 class="filmInfoTitle">{{ movieInfo.title }}</h2>
+            <h3 class="filmInfoTagline">{{ movieInfo.tagline }}</h3>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <p class="filmInfoGenres">Genres: {{ movieInfo.genres }}</p>
+            <p class="filmInfoReleaseDate">Release date: {{ movieInfo.release_date }}</p>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12" style="height:auto;">
+            <div class="flex-video widescreen">
+                <iframe src="{{ movieInfo.trailer }}" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <p class="">Similar Movies: <i>Coming soon..</i>
+            </p>
+        </div>
+    </div>
+</template>
