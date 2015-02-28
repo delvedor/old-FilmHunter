@@ -1,21 +1,43 @@
-var linkYoutube;
+var linkYoutube,
+    movie,
+    pageSimilarFilm,
+    pageSimilarFilm;
+
 var arrayMovieInfo = {};
+var arrayResultSimilarFilm = [];
 
 Template.resultsFilm.events({
     'click .filmResult': function (e) {
         e.preventDefault();
-        searchMovie(e.currentTarget.id)
+        movie = e.currentTarget.id;
+        searchMovie(movie);
+    }
+});
+
+Template.similarFilm.events({
+    'click .filmResult': function (e) {
+        e.preventDefault();
+        //$('body,html').scrollTop(0);
+        $('body,html').animate({
+            scrollTop: 0
+        }, '800', 'swing')
+        movie = e.currentTarget.id;
+        searchMovie(movie);
     }
 });
 
 /* Starts the search of the movie info and the movie trailer*/
 function searchMovie(movie) {
+    pageSimilarFilm = 1;
     theMovieDb.movies.getById({
         "id": movie
     }, getMovieInfo, errorCB);
     theMovieDb.movies.getTrailers({
         "id": movie
     }, getTrailer, errorCB);
+    theMovieDb.movies.getSimilarMovies({
+        "id": movie
+    }, searchSimilarFilm, errorCB);
     Router.go('movieInfo');
 }
 
@@ -59,3 +81,49 @@ Template.movieInfo.helpers({
         return Session.get('arrayMovieInfo');
     }
 });
+
+Template.similarFilm.helpers({
+    similarFilmArr: function () {
+        return Session.get('arrayResultSimilarFilm');
+    }
+});
+
+function searchSimilarFilm(data) {
+    var ris = $.parseJSON(data);
+    console.log('searchSimilarFilm', ris);
+    pagesSimilarFilm = ris.total_pages;
+    if (ris.results.length == 0) {
+        return;
+    }
+    for (var i = 0; i < ris.results.length; i++) {
+        image = (ris.results[i].poster_path != null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'image_not_found.jpg');
+        image = image.replace(/\s/g, '');
+        arrayResultSimilarFilm.push({
+            popularity: ris.results[i].popularity,
+            title: ris.results[i].title,
+            original_title: ris.results[i].original_title,
+            id: ris.results[i].id,
+            image_path: image,
+            order: "col-xs-6 col-sm-4 col-md-4 standard"
+        });
+    }
+    if (pagesSimilarFilm > 1 && pageSimilarFilm < pagesSimilarFilm) {
+        pageSimilarFilm++;
+        theMovieDb.movies.getSimilarMovies({
+            "id": movie,
+            "page": pageSimilarFilm
+        }, searchSimilarFilm, errorCB);
+
+    } else if (pageSimilarFilm == pagesSimilarFilm) {
+        arrayResultSimilarFilm.sort(function (a, b) {
+            return b.popularity - a.popularity
+        });
+        for (var i = 0; i < arrayResultSimilarFilm.length - 1; i++) {
+            if (arrayResultSimilarFilm[i].title == arrayResultSimilarFilm[i + 1].title) {
+                delete arrayResultSimilarFilm[i];
+            }
+        }
+        arrayResultSimilarFilm = arrayResultSimilarFilm.slice(0, 18);
+        Session.set('arrayResultSimilarFilm', arrayResultSimilarFilm);
+    }
+}

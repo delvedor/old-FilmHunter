@@ -13,9 +13,24 @@
                 <iframe src="{{ movieInfo.trailer }}" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <p class="">Similar Movies: <i>Coming soon..</i>
-            </p>
+    </div>
+    {{ > similarFilm }}
+</template>
+
+<template name="similarFilm">
+    <div class="col-xs-12 col-sm-12 col-md-12" style="height:auto;">
+        <p class="similarFilm">Similar Movies</p>
+    </div>
+    {{ #each similarFilmArr }}
+    <div id="{{ id }}" class="filmResult {{ order }}">
+        <div class="filmResultContainer">
+            <div class="poster" style="background-image:url('{{image_path}}')"></div>
+            <div class="filmDescription">
+                <p>
+                    {{ title }}
+                </p>
+            </div>
         </div>
     </div>
+    {{/each}}
 </template>
