@@ -2,6 +2,7 @@
 var film,
     filmLen,
     filmCount,
+    notfoundCount,
     image;
 
 var arrayResultKeyword = [];
@@ -71,6 +72,7 @@ Template.search.events({
 
 function startSearch(filmSearch) {
     filmCount = 0;
+    notfoundCount = 0;
     arrayResultKeyword = [];
     arrayResultKeywordDef = [];
     Session.set('arrayResultFilm', []);
@@ -87,16 +89,18 @@ function startSearch(filmSearch) {
 
 function searchKeyword(data) {
     var ris = $.parseJSON(data);
+    console.log(ris);
     if (ris.total_results !== 0) {
+        console.log("ok");
         theMovieDb.keywords.getMovies({
             "id": ris.results[0].id
-        }, printRis, errorCB);
+        }, saveResults, errorCB);
     } else {
-        allFinish(1);
+        allFinish(1, 1);
     }
 }
 
-function printRis(data) {
+function saveResults(data) {
     var ris = $.parseJSON(data);
     console.log('searchKeyword', ris);
     for (var i = 0; i < ris.results.length; i++) {
@@ -111,12 +115,13 @@ function printRis(data) {
             order: "col-xs-6 col-sm-4 col-md-4 standard"
         });
     }
-    allFinish(0);
+    allFinish(1, 0);
 }
 
-function allFinish(notfound) {
-    filmCount++;
-    if (notfound == filmLen) {
+function allFinish(found, notfound) {
+    notfoundCount += notfound;
+    filmCount += found;
+    if (notfoundCount == filmLen) {
         Router.go('notfound');
         return;
     }
