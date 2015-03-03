@@ -12,7 +12,7 @@ Session.setDefault('searching', false);
 
 /* Home Template Events */
 Template.home.events({
-    'keyup #filmSearch': function (e) {
+    'keyup #filmSearch': function(e) {
         if (e.type == "keyup" && e.which == 13) {
             e.preventDefault();
             query = $('#filmSearch').val();
@@ -25,7 +25,7 @@ Template.home.events({
             Router.go('loading');
         }
     },
-    'click #goSearch': function (e) {
+    'click #goSearch': function(e) {
         e.preventDefault();
         query = $('#filmSearch').val();
         if (query.replace(/\s/g, '') == "") {
@@ -40,7 +40,7 @@ Template.home.events({
 
 /* Search Template Events */
 Template.search.events({
-    'keyup #film': function (e) {
+    'keyup #film': function(e) {
         if (e.type == "keyup" && e.which == 13) {
             e.preventDefault();
             query = $('#film').val();
@@ -55,7 +55,7 @@ Template.search.events({
         }
     },
 
-    'click #submitFilm': function (e) {
+    'click #submitFilm': function(e) {
         e.preventDefault();
         query = $('#film').val();
         if (query.replace(/\s/g, '') == "") {
@@ -116,7 +116,7 @@ function searchFilm(data) {
         }, searchFilm, errorCB);
 
     } else if (pageFilm == pagesFilm) {
-        arrayResultFilm.sort(function (a, b) {
+        arrayResultFilm.sort(function(a, b) {
             return b.popularity - a.popularity
         });
         for (var i = 0; i < arrayResultFilm.length - 1; i++) {
@@ -169,14 +169,14 @@ function errorCB(data) {
 
 /* Check if the 'Include Keyword' is true */
 Template.resultsFilm.helpers({
-    keyword: function () {
+    keyword: function() {
         return $('#incKey').is(":checked");
     }
 });
 
 /* Get the click event on a keyword and stars a new search */
 Template.resultsKeyword.events({
-    'click .keyword': function (e) {
+    'click .keyword': function(e) {
         query = $(e.target).text();
         filmDep.changed();
         startSearch(escape($(e.target).text()));
@@ -185,14 +185,14 @@ Template.resultsKeyword.events({
 
 /* Write the query into the input field */
 Template.search.helpers({
-    query: function () {
+    query: function() {
         filmDep.depend();
         return query;
     }
 });
 
 /* Color Generator */
-Template.layout.rendered = function () {
+Template.layout.rendered = function() {
     var random = Math.floor(Math.random() * 3) + 1;
     var background;
     var border;

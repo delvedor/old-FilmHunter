@@ -7,7 +7,7 @@ var arrayMovieInfo = {};
 var arrayResultSimilarFilm = [];
 
 Template.resultsFilm.events({
-    'click .filmResult': function (e) {
+    'click .filmResult': function(e) {
         e.preventDefault();
         movie = e.currentTarget.id;
         searchMovie(movie);
@@ -15,7 +15,7 @@ Template.resultsFilm.events({
 });
 
 Template.similarFilm.events({
-    'click .filmResult': function (e) {
+    'click .filmResult': function(e) {
         e.preventDefault();
         //$('body,html').scrollTop(0);
         $('body,html').animate({
@@ -75,7 +75,7 @@ function errorCB(data) {
 }
 
 Template.movieInfo.helpers({
-    movieInfo: function () {
+    movieInfo: function() {
         /*if (Object.keys(Session.get('arrayMovieInfo')).length === 0)
             Router.go('/');*/
         return Session.get('arrayMovieInfo');
@@ -83,7 +83,7 @@ Template.movieInfo.helpers({
 });
 
 Template.similarFilm.helpers({
-    similarFilmArr: function () {
+    similarFilmArr: function() {
         return Session.get('arrayResultSimilarFilm');
     }
 });
@@ -115,14 +115,14 @@ function searchSimilarFilm(data) {
         }, searchSimilarFilm, errorCB);
 
     } else if (pageSimilarFilm == pagesSimilarFilm) {
-        arrayResultSimilarFilm.sort(function (a, b) {
+        /*arrayResultSimilarFilm.sort(function (a, b) {
             return b.popularity - a.popularity
         });
         for (var i = 0; i < arrayResultSimilarFilm.length - 1; i++) {
             if (arrayResultSimilarFilm[i].title == arrayResultSimilarFilm[i + 1].title) {
                 delete arrayResultSimilarFilm[i];
             }
-        }
+        }*/
         arrayResultSimilarFilm = arrayResultSimilarFilm.slice(0, 18);
         Session.set('arrayResultSimilarFilm', arrayResultSimilarFilm);
     }
