@@ -86,6 +86,12 @@ body {
     padding-top: 15vh;
 }
 
+.infoVersion {
+    text-align: center;
+    color: #FAFAFA;
+    font-weight: 400;
+}
+
 .infoHome {
     position: absolute;
     bottom: 0;
@@ -309,19 +315,49 @@ div[class="filmResult"] {
     height: 30vh;
 }
 
+.spaceResultsTitle {
+    margin-top: 50px;
+}
+
+.spaceRelKeyTitle {
+    margin-top: 20px;
+}
+
 .keywords {
     margin: 20px 0;
+    height: 60px;
 }
 
 .keyword {
     text-align: center;
     background-color: #FAFAFA;
-    border: 2px #0277BD solid;
-    border-radius: 20px;
-    box-shadow: 0px 0px 0px #9E9E9E;
-    margin: 5px;
-    padding: 5px;
+    border-radius: 5px;
+    -webkit-transition: box-shadow 0.2s linear 0s;
+    -moz-transition: box-shadow 0.2s linear 0s;
+    transition: box-shadow 0.2s ease-in 0s;
+    box-shadow: 0px 2px 4px #9E9E9E;
+    margin: 10px 0;
+    width:90%;
+    height:50px;
+    font-size: 1.5em;
+    font-weight: 300;
     cursor: pointer;
+}
+
+.keyword:hover {
+    position: relative;
+    z-index: 1000;
+    box-shadow: 0px 5px 8px #616161;
+}
+
+.resultsTitle,
+.relKeyTitle {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 1.8em;
+    color: #9E9E9E;
+    padding: 5px;
 }
 /****** Movie info ******/
 
@@ -425,7 +461,9 @@ div[class="filmResult"] {
     color: #424242;
     padding: 5px;
     line-height: 35px;
+    text-align: center;
 }
+
 /****** Media queries ******/
 
 @media only screen and (min-width: 240px) {

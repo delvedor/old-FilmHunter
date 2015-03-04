@@ -1,6 +1,10 @@
 <template name="resultsFilm">
-    {{ #if keyword }} {{ > resultsKeyword}}{{ /if }}
-    <div class="row space"></div>
+    {{ > resultsKeyword}}
+    <div class="row spaceResultsTitle">
+        <div class="col-xs-12 col-sm-12 col-md-12 resultsTitle">
+            <p>Results</p>
+        </div>
+    </div>
     {{ #each resultsPageFilm }}
     <div id="{{ id }}" class="filmResult {{ order }}">
         <div class="filmResultContainer">
@@ -16,9 +20,14 @@
 </template>
 
 <template name="resultsKeyword">
-    <div class="row keywords">
+<div class="row spaceRelKeyTitle">
+        <div class="col-xs-12 col-sm-12 col-md-12 relKeyTitle">
+            <p>Related Keywords</p>
+        </div>
+    </div>
+    <div class="keywords owl-carousel">
         {{ #each resultsPageKeyword }}
-        <div class="col-xs-5 col-sm-2 col-sm-offset-1 col-md-2 col-md-offset-1 keyword">{{ name }}</div>
+        <div id="{{ id }}" class="keyword">{{ name }}</div>
         {{ /each }}
     </div>
 </template>
@@ -39,3 +48,5 @@
         </div>
     </div>
 </template>
+
+<!--col-xs-5 col-sm-2 col-sm-offset-1 col-md-2 col-md-offset-1 keyword-->

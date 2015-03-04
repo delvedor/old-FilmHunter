@@ -5,8 +5,9 @@ var film,
     notfoundCount,
     image;
 
+var arrayResultFilm = [];
 var arrayResultKeyword = [];
-var arrayResultKeywordDef = [];
+var arrayResultFilmDef = [];
 
 var filmDep = new Deps.Dependency();
 //Session.setDefault('searching', false);
@@ -17,6 +18,7 @@ Template.home.events({
         if (e.type == "keyup" && e.which == 13) {
             e.preventDefault();
             query = $('#filmSearch').val();
+            Session.set('query', query);
             if (query.replace(/\s/g, '') == "") {
                 $('#filmSearch').val("");
                 return;
@@ -29,6 +31,7 @@ Template.home.events({
     'click #goSearch': function(e) {
         e.preventDefault();
         query = $('#filmSearch').val();
+        Session.set('query', query);
         if (query.replace(/\s/g, '') == "") {
             $('#filmSearch').val("");
             return;
@@ -45,6 +48,7 @@ Template.search.events({
         if (e.type == "keyup" && e.which == 13) {
             e.preventDefault();
             query = $('#film').val();
+            Session.set('query', query);
             if (query.replace(/\s/g, '') == "") {
                 $('#film').val("");
                 Router.go('search');
@@ -59,6 +63,7 @@ Template.search.events({
     'click #submitFilm': function(e) {
         e.preventDefault();
         query = $('#film').val();
+        Session.set('query', query);
         if (query.replace(/\s/g, '') == "") {
             $('#film').val("");
             Router.go('search');
@@ -70,28 +75,85 @@ Template.search.events({
     }
 });
 
+Template.resultsKeyword.events({
+    'click .keyword': function(e) {
+        e.preventDefault();
+        query = $(e.currentTarget).text();
+        Session.set('query', query);
+        console.log(query, escape(query));
+        startSearchFromKeyword(escape(query));
+        Session.set("searching", true);
+        Router.go('loading');
+    }
+});
+
 function startSearch(filmSearch) {
     filmCount = 0;
     notfoundCount = 0;
+    arrayResultFilm = [];
     arrayResultKeyword = [];
-    arrayResultKeywordDef = [];
+    arrayResultFilmDef = [];
     Session.set('arrayResultFilm', []);
     Session.set('arrayResultKeyword', []);
     film = filmSearch.split(" ");
+    console.log(film);
     filmLen = film.length;
     for (var i = 0; i < film.length; i++) {
         theMovieDb.search.getKeyword({
             "query": film[i],
             "page": 1
-        }, searchKeyword, errorCB);
+        }, searchMovie, errorCB);
     }
 }
 
-function searchKeyword(data) {
+function startSearchFromKeyword(filmSearch) {
+    filmCount = 0;
+    notfoundCount = 0;
+    arrayResultFilm = [];
+    //arrayResultKeyword = [];
+    arrayResultFilmDef = [];
+    Session.set('arrayResultFilm', []);
+    //Session.set('arrayResultKeyword', []);
+    film = filmSearch.split(" ");
+    console.log(film);
+    filmLen = film.length;
+    for (var i = 0; i < film.length; i++) {
+        theMovieDb.search.getKeyword({
+            "query": film[i],
+            "page": 1
+        }, searchMovieFromKeyword, errorCB);
+    }
+}
+
+function searchMovie(data) {
     var ris = $.parseJSON(data);
     console.log(ris);
     if (ris.total_results !== 0) {
-        console.log("ok");
+        for (var i = 0; i < ris.results.length; i++) {
+            arrayResultKeyword.push({
+                id: ris.results[i].id,
+                name: ris.results[i].name
+            });
+        }
+        Session.set('arrayResultKeyword', arrayResultKeyword);
+        theMovieDb.keywords.getMovies({
+            "id": ris.results[0].id
+        }, saveResults, errorCB);
+    } else {
+        allFinish(1, 1);
+    }
+}
+
+function searchMovieFromKeyword(data) {
+    var ris = $.parseJSON(data);
+    console.log(ris);
+    if (ris.total_results !== 0) {
+        for (var i = 0; i < ris.results.length; i++) {
+            arrayResultKeyword.push({
+                id: ris.results[i].id,
+                name: ris.results[i].name
+            });
+        }
         theMovieDb.keywords.getMovies({
             "id": ris.results[0].id
         }, saveResults, errorCB);
@@ -102,11 +164,11 @@ function searchKeyword(data) {
 
 function saveResults(data) {
     var ris = $.parseJSON(data);
-    console.log('searchKeyword', ris);
+    console.log('saveResults', ris);
     for (var i = 0; i < ris.results.length; i++) {
         image = (ris.results[i].poster_path != null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'image_not_found.jpg');
         image = image.replace(/\s/g, '');
-        arrayResultKeyword.push({
+        arrayResultFilm.push({
             keyword: ris.id,
             title: ris.results[i].title,
             id: ris.results[i].id,
@@ -127,27 +189,27 @@ function allFinish(found, notfound) {
     }
 
     if (filmCount == filmLen) {
-        arrayResultKeyword.sort(function(a, b) {
+        arrayResultFilm.sort(function(a, b) {
             return b.popularity - a.popularity;
         });
-        for (var i = 0; i < arrayResultKeyword.length - 1; i++) {
-            if (arrayResultKeyword[i].title == arrayResultKeyword[i + 1].title) {
+        for (var i = 0; i < arrayResultFilm.length - 1; i++) {
+            if (arrayResultFilm[i].title == arrayResultFilm[i + 1].title) {
                 continue;
             } else {
-                arrayResultKeywordDef.push(arrayResultKeyword[i]);
+                arrayResultFilmDef.push(arrayResultFilm[i]);
             }
         }
-        arrayResultKeywordDef.push(arrayResultKeyword[arrayResultKeyword.length - 1]);
+        arrayResultFilmDef.push(arrayResultFilm[arrayResultFilm.length - 1]);
 
-        if (arrayResultKeywordDef[0])
-            arrayResultKeywordDef[0].order = "col-xs-12 col-sm-12 col-md-12 first";
-        if (arrayResultKeywordDef[1])
-            arrayResultKeywordDef[1].order = "col-xs-12 col-sm-12 col-md-6 second";
-        if (arrayResultKeywordDef[2])
-            arrayResultKeywordDef[2].order = "col-xs-12 col-sm-12 col-md-6 third";
-        arrayResultKeywordDef = arrayResultKeywordDef.slice(0, 99);
+        if (arrayResultFilmDef[0])
+            arrayResultFilmDef[0].order = "col-xs-12 col-sm-12 col-md-12 first";
+        if (arrayResultFilmDef[1])
+            arrayResultFilmDef[1].order = "col-xs-12 col-sm-12 col-md-6 second";
+        if (arrayResultFilmDef[2])
+            arrayResultFilmDef[2].order = "col-xs-12 col-sm-12 col-md-6 third";
+        arrayResultFilmDef = arrayResultFilmDef.slice(0, 99);
 
-        Session.set('arrayResultFilm', arrayResultKeywordDef);
+        Session.set('arrayResultFilm', arrayResultFilmDef);
         Session.set("searching", false);
         Router.go('search');
     }
@@ -161,8 +223,8 @@ function errorCB(data) {
 /* Write the query into the input field */
 Template.search.helpers({
     query: function() {
-        filmDep.depend();
-        return query;
+        //filmDep.depend();
+        return Session.get('query');
     }
 });
 

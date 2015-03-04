@@ -6,8 +6,13 @@ Template.resultsFilm.helpers({
 });
 
 /* Load keyword results*/
-/*Template.resultsKeyword.helpers({
-    resultsPageKeyword: function () {
-        return Session.get('arrayResultKeyboard');
+Template.resultsKeyword.helpers({
+    resultsPageKeyword: function() {
+        //$(".owl-carousel").owlCarousel();
+        return Session.get('arrayResultKeyword');
     }
-});*/
+});
+
+Template.resultsKeyword.rendered = function() {
+    $(".owl-carousel").owlCarousel();
+};
