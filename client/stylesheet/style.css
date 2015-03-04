@@ -252,8 +252,15 @@ button:focus {
 /****** Page NotFound ******/
 
 .notfound {
-    font-size: 2em;
+    /*font-size: 2em;
+    color: #9E9E9E;*/
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 1.8em;
+    line-height: 100px;
     color: #9E9E9E;
+    padding: 5px;
 }
 /****** Page Results ******/
 
@@ -640,6 +647,16 @@ only screen and (max-width: 767px) {
     }
 }
 /****** Page Loading ******/
+
+.loaderTotalResults {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 1.8em;
+    color: #9E9E9E;
+    padding: 5px;
+    margin-top: 35px;
+}
 
 #loader-wrapper {
     position: fixed;

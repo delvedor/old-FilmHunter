@@ -1,4 +1,6 @@
-/* Variable Declaration */
+/**
+ * Variables Declaration
+ */
 var film,
     filmLen,
     filmCount,
@@ -9,10 +11,9 @@ var arrayResultFilm = [];
 var arrayResultKeyword = [];
 var arrayResultFilmDef = [];
 
-var filmDep = new Deps.Dependency();
-//Session.setDefault('searching', false);
-
-/* Home Template Events */
+/**
+ * Home Template Events
+ */
 Template.home.events({
     'keyup #filmSearch': function(e) {
         if (e.type == "keyup" && e.which == 13) {
@@ -42,7 +43,9 @@ Template.home.events({
     }
 });
 
-/* Search Template Events */
+/**
+ * Search Template Events
+ */
 Template.search.events({
     'keyup #film': function(e) {
         if (e.type == "keyup" && e.which == 13) {
@@ -87,14 +90,11 @@ Template.resultsKeyword.events({
     }
 });
 
+/**
+ * Starts the search based on the keyword.
+ */
 function startSearch(filmSearch) {
-    filmCount = 0;
-    notfoundCount = 0;
-    arrayResultFilm = [];
-    arrayResultKeyword = [];
-    arrayResultFilmDef = [];
-    Session.set('arrayResultFilm', []);
-    Session.set('arrayResultKeyword', []);
+    resetVariables();
     film = filmSearch.split(" ");
     console.log(film);
     filmLen = film.length;
@@ -106,14 +106,11 @@ function startSearch(filmSearch) {
     }
 }
 
+/**
+ * Starts the search based on the new keyword.
+ */
 function startSearchFromKeyword(filmSearch) {
-    filmCount = 0;
-    notfoundCount = 0;
-    arrayResultFilm = [];
-    //arrayResultKeyword = [];
-    arrayResultFilmDef = [];
-    Session.set('arrayResultFilm', []);
-    //Session.set('arrayResultKeyword', []);
+    resetVariables();
     film = filmSearch.split(" ");
     console.log(film);
     filmLen = film.length;
@@ -125,9 +122,13 @@ function startSearchFromKeyword(filmSearch) {
     }
 }
 
+/**
+ * Get the results of the search.
+ */
 function searchMovie(data) {
     var ris = $.parseJSON(data);
     console.log(ris);
+    Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
     if (ris.total_results !== 0) {
         for (var i = 0; i < ris.results.length; i++) {
             arrayResultKeyword.push({
@@ -144,9 +145,13 @@ function searchMovie(data) {
     }
 }
 
+/**
+ * Get the results of the search.
+ */
 function searchMovieFromKeyword(data) {
     var ris = $.parseJSON(data);
     console.log(ris);
+    Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
     if (ris.total_results !== 0) {
         for (var i = 0; i < ris.results.length; i++) {
             arrayResultKeyword.push({
@@ -162,6 +167,9 @@ function searchMovieFromKeyword(data) {
     }
 }
 
+/**
+ * Save the results of the search.
+ */
 function saveResults(data) {
     var ris = $.parseJSON(data);
     console.log('saveResults', ris);
@@ -180,6 +188,9 @@ function saveResults(data) {
     allFinish(1, 0);
 }
 
+/**
+ * Finalizes the results of the search.
+ */
 function allFinish(found, notfound) {
     notfoundCount += notfound;
     filmCount += found;
@@ -215,25 +226,42 @@ function allFinish(found, notfound) {
     }
 }
 
-/* Api Error callback */
+/**
+ * Reset all the variables for a new search.
+ */
+function resetVariables() {
+    filmCount = 0;
+    notfoundCount = 0;
+    arrayResultFilm = [];
+    arrayResultKeyword = [];
+    arrayResultFilmDef = [];
+    Session.set('arrayResultFilm', []);
+    Session.set('arrayResultKeyword', []);
+    Session.set('numberOfResults', 0);
+}
+
+/**
+ * Api Error callback
+ */
 function errorCB(data) {
     console.log("Error callback: " + data);
 }
 
-/* Write the query into the input field */
+/**
+ * Write the query into the input field
+ */
 Template.search.helpers({
     query: function() {
-        //filmDep.depend();
         return Session.get('query');
     }
 });
 
-/* Color Generator */
+/**
+ * Color Generator
+ */
 Template.layout.rendered = function() {
     var random = Math.floor(Math.random() * 3) + 1;
-    var background;
-    var border;
-    var color;
+    var background, border, color;
     if (random == 1) {
         background = "background-red";
         border = "border-red";

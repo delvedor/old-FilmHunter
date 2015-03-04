@@ -1,16 +1,18 @@
-/* iron:router Config */
+/**
+ * iron:router Config
+ */
 
-Router.route('/', function () {
+Router.route('/', function() {
     this.layout('layoutHome');
     this.render('home');
 });
 
-Router.route('/search', function () {
+Router.route('/search', function() {
     this.layout('layout');
     this.render('resultsFilm');
 });
 
-Router.route('/loading', function () {
+Router.route('/loading', function() {
     this.layout('layout');
     if (Session.get("searching") == true) {
         this.render('loading');
@@ -20,17 +22,17 @@ Router.route('/loading', function () {
 
 });
 
-Router.route('/movieInfo', function () {
+Router.route('/movieInfo', function() {
     this.layout('layout');
     this.render('movieInfo');
 });
 
-Router.route('/info', function () {
+Router.route('/info', function() {
     this.layout('layout');
     this.render('info');
 });
 
-Router.route('/notfound', function () {
+Router.route('/notfound', function() {
     this.layout('layout');
     this.render('notfound');
 });

@@ -1,3 +1,6 @@
+/**
+ * Variables declaration.
+ */
 var linkYoutube,
     movie,
     pageSimilarFilm,
@@ -6,6 +9,9 @@ var linkYoutube,
 var arrayMovieInfo = {};
 var arrayResultSimilarFilm = [];
 
+/**
+ * Get the click event on a film result and starts a search about that film.
+ */
 Template.resultsFilm.events({
     'click .filmResult': function(e) {
         e.preventDefault();
@@ -14,10 +20,12 @@ Template.resultsFilm.events({
     }
 });
 
+/**
+ * Get the click event on a related film result, starts a search about that film and scroll up the page.
+ */
 Template.similarFilm.events({
     'click .filmResult': function(e) {
         e.preventDefault();
-        //$('body,html').scrollTop(0);
         $('body,html').animate({
             scrollTop: 0
         }, '800', 'swing')
@@ -26,7 +34,9 @@ Template.similarFilm.events({
     }
 });
 
-/* Starts the search of the movie info and the movie trailer*/
+/**
+ * Search the movie info, the movie trailer and the related results.
+ */
 function searchMovie(movie) {
     pageSimilarFilm = 1;
     theMovieDb.movies.getById({
@@ -41,6 +51,9 @@ function searchMovie(movie) {
     Router.go('movieInfo');
 }
 
+/**
+ * Organize the results of the movie info.
+ */
 function getMovieInfo(data) {
     var ris = $.parseJSON(data);
     console.log('getMovieInfo', ris);
@@ -58,36 +71,55 @@ function getMovieInfo(data) {
     Session.set('arrayMovieInfo', arrayMovieInfo);
 }
 
+/**
+ * Find the correct film trailer and organize the results.
+ */
 function getTrailer(data) {
     var ris = $.parseJSON(data);
     console.log('getTrailer', ris);
-    if (ris.youtube.length != 0)
-        linkYoutube = (ris.youtube[0].source != null ? "https://www.youtube.com/embed/" + ris.youtube[0].source + "?rel=0&amp;iv_load_policy=3&amp;theme=light" : "image_not_found.jpg");
-    else
+    if (ris.youtube.length != 0) {
+        for (var i = 0; i < ris.youtube.length; i++) {
+            if (ris.youtube[i].type == "Trailer") {
+                linkYoutube = (ris.youtube[i].source != null ? "https://www.youtube.com/embed/" + ris.youtube[i].source + "?rel=0&amp;iv_load_policy=3&amp;theme=light" : "image_not_found.jpg");
+                break;
+            }
+        }
+    } else {
         linkYoutube = "image_not_found.jpg"
+    }
     arrayMovieInfo.trailer = linkYoutube;
     Session.set('arrayMovieInfo', arrayMovieInfo);
 }
 
-/* Api Error callback */
+/**
+ * Api Error callback
+ */
 function errorCB(data) {
     console.log("Error callback: " + data);
 }
 
+/**
+ * Helper for rective data of the movie info.
+ */
 Template.movieInfo.helpers({
     movieInfo: function() {
-        /*if (Object.keys(Session.get('arrayMovieInfo')).length === 0)
-            Router.go('/');*/
         return Session.get('arrayMovieInfo');
     }
 });
 
+/**
+ * Helper for rective data of the related movie.
+ */
 Template.similarFilm.helpers({
     similarFilmArr: function() {
         return Session.get('arrayResultSimilarFilm');
     }
 });
 
+
+/**
+ * Organize the results of the related movie.
+ */
 function searchSimilarFilm(data) {
     var ris = $.parseJSON(data);
     console.log('searchSimilarFilm', ris);
@@ -115,14 +147,6 @@ function searchSimilarFilm(data) {
         }, searchSimilarFilm, errorCB);
 
     } else if (pageSimilarFilm == pagesSimilarFilm) {
-        /*arrayResultSimilarFilm.sort(function (a, b) {
-            return b.popularity - a.popularity
-        });
-        for (var i = 0; i < arrayResultSimilarFilm.length - 1; i++) {
-            if (arrayResultSimilarFilm[i].title == arrayResultSimilarFilm[i + 1].title) {
-                delete arrayResultSimilarFilm[i];
-            }
-        }*/
         arrayResultSimilarFilm = arrayResultSimilarFilm.slice(0, 18);
         Session.set('arrayResultSimilarFilm', arrayResultSimilarFilm);
     }
