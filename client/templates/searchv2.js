@@ -19,26 +19,26 @@ Template.home.events({
         if (e.type == "keyup" && e.which == 13) {
             e.preventDefault();
             query = $('#filmSearch').val();
-            Session.set('query', query);
             if (query.replace(/\s/g, '') == "") {
                 $('#filmSearch').val("");
                 return;
             }
-            startSearch($('#filmSearch').val());
+            Session.set('query', query);
             Session.set("searching", true);
+            startSearch(query);
             Router.go('loading');
         }
     },
     'click #goSearch': function(e) {
         e.preventDefault();
         query = $('#filmSearch').val();
-        Session.set('query', query);
         if (query.replace(/\s/g, '') == "") {
             $('#filmSearch').val("");
             return;
         }
-        startSearch($('#filmSearch').val());
+        Session.set('query', query);
         Session.set("searching", true);
+        startSearch(query);
         Router.go('loading');
     }
 });
@@ -51,14 +51,14 @@ Template.search.events({
         if (e.type == "keyup" && e.which == 13) {
             e.preventDefault();
             query = $('#film').val();
-            Session.set('query', query);
             if (query.replace(/\s/g, '') == "") {
                 $('#film').val("");
                 Router.go('search');
                 return;
             }
-            startSearch($('#film').val());
+            Session.set('query', query);
             Session.set("searching", true);
+            startSearch(query);
             Router.go('loading');
         }
     },
@@ -66,14 +66,14 @@ Template.search.events({
     'click #submitFilm': function(e) {
         e.preventDefault();
         query = $('#film').val();
-        Session.set('query', query);
         if (query.replace(/\s/g, '') == "") {
             $('#film').val("");
-            Router.go('search');
+            Router.go('search', false);
             return;
         }
-        startSearch($('#film').val());
+        Session.set('query', query);
         Session.set("searching", true);
+        startSearch(query);
         Router.go('loading');
     }
 });
@@ -83,9 +83,8 @@ Template.resultsKeyword.events({
         e.preventDefault();
         query = $(e.currentTarget).text();
         Session.set('query', query);
-        console.log(query, escape(query));
-        startSearchFromKeyword(escape(query));
         Session.set("searching", true);
+        startSearch(escape(query));
         Router.go('loading');
     }
 });
@@ -96,29 +95,12 @@ Template.resultsKeyword.events({
 function startSearch(filmSearch) {
     resetVariables();
     film = filmSearch.split(" ");
-    console.log(film);
     filmLen = film.length;
     for (var i = 0; i < film.length; i++) {
         theMovieDb.search.getKeyword({
             "query": film[i],
             "page": 1
         }, searchMovie, errorCB);
-    }
-}
-
-/**
- * Starts the search based on the new keyword.
- */
-function startSearchFromKeyword(filmSearch) {
-    resetVariables();
-    film = filmSearch.split(" ");
-    console.log(film);
-    filmLen = film.length;
-    for (var i = 0; i < film.length; i++) {
-        theMovieDb.search.getKeyword({
-            "query": film[i],
-            "page": 1
-        }, searchMovieFromKeyword, errorCB);
     }
 }
 
@@ -137,28 +119,6 @@ function searchMovie(data) {
             });
         }
         Session.set('arrayResultKeyword', arrayResultKeyword);
-        theMovieDb.keywords.getMovies({
-            "id": ris.results[0].id
-        }, saveResults, errorCB);
-    } else {
-        allFinish(1, 1);
-    }
-}
-
-/**
- * Get the results of the search.
- */
-function searchMovieFromKeyword(data) {
-    var ris = $.parseJSON(data);
-    console.log(ris);
-    Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
-    if (ris.total_results !== 0) {
-        for (var i = 0; i < ris.results.length; i++) {
-            arrayResultKeyword.push({
-                id: ris.results[i].id,
-                name: ris.results[i].name
-            });
-        }
         theMovieDb.keywords.getMovies({
             "id": ris.results[0].id
         }, saveResults, errorCB);
