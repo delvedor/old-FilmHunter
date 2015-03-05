@@ -12,6 +12,16 @@ Router.route('/search', function() {
     this.render('resultsFilm');
 });
 
+/*Router.route('/search', {
+    path: '/search/:key',
+    layout: 'resultsFilm',
+    layoutTemplate: 'layout',
+    action: function() {
+
+        this.render('resultsFilm');
+    }
+});*/
+
 Router.route('/loading', function() {
     this.layout('layout');
     if (Session.get("searching") == true) {

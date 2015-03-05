@@ -3,6 +3,7 @@
  */
 Template.resultsFilm.helpers({
     resultsPageFilm: function() {
+        Meteor.setTimeout(setHeight, 1000);
         return Session.get('arrayResultFilm');
     }
 });
@@ -31,3 +32,13 @@ Template.loading.helpers({
 Template.resultsKeyword.rendered = function() {
     $(".owl-carousel").owlCarousel();
 };
+
+/**
+ * Corrects the height of the div standard
+ */
+function setHeight() {
+    var maxHeight = Math.max.apply(null, $(".standard").map(function() {
+        return $(this).height();
+    }).get());
+    $(".standard").height(maxHeight);
+}
