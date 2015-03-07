@@ -1,8 +1,14 @@
 # Film Hunter
 *Movie Search WebApp*
 
+You know that moment when you are speaking about a film but you cannot remember its title?  
+Film Hunter can help you!  
 Film Hunter is a WebApp built for searching films by keywords.
-it's based on [Meteor](https://www.meteor.com/) and use [The Movie Database](https://www.themoviedb.org/) as Database and [themoviedb-javascript](https://github.com/cavestri/themoviedb-javascript-library) as library for use tmdb's api.
+
+It's based on [Meteor](https://www.meteor.com/) and use [The Movie Database](https://www.themoviedb.org/) as Movie Database.  
+You can find the stable version of the project on [filmhunter.delved.org](http://filmhunter.delved.org/).
+
+Suggestions and improvements are well accepted!
 
 ______________________________________________________________________________________________________________________
 
