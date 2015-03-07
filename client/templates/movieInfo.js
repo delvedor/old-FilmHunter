@@ -39,15 +39,33 @@ Template.similarFilm.events({
  */
 function searchMovie(movie) {
     pageSimilarFilm = 1;
-    theMovieDb.movies.getById({
-        "id": movie
-    }, getMovieInfo, errorCB);
-    theMovieDb.movies.getTrailers({
-        "id": movie
-    }, getTrailer, errorCB);
-    theMovieDb.movies.getSimilarMovies({
-        "id": movie
-    }, searchSimilarFilm, errorCB);
+    Meteor.call('getMovie', movie, function(err, result) {
+        if (result) {
+            //console.log(result.content);
+            getMovieInfo(result.content);
+        }
+        if (err) {
+            console.log(err);
+        }
+    });
+    Meteor.call('getTrailer', movie, function(err, result) {
+        if (result) {
+            //console.log(result.content);
+            getTrailer(result.content);
+        }
+        if (err) {
+            console.log(err);
+        }
+    });
+    Meteor.call('getSimilarMovies', movie, function(err, result) {
+        if (result) {
+            //console.log(result.content);
+            searchSimilarFilm(result.content);
+        }
+        if (err) {
+            console.log(err);
+        }
+    });
     Router.go('movieInfo');
 }
 
@@ -77,10 +95,10 @@ function getMovieInfo(data) {
 function getTrailer(data) {
     var ris = $.parseJSON(data);
     console.log('getTrailer', ris);
-    if (ris.youtube.length != 0) {
-        for (var i = 0; i < ris.youtube.length; i++) {
-            if (ris.youtube[i].type == "Trailer") {
-                linkYoutube = (ris.youtube[i].source != null ? "https://www.youtube.com/embed/" + ris.youtube[i].source + "?rel=0&amp;iv_load_policy=3&amp;theme=light" : "image_not_found.jpg");
+    if (ris.results.length != 0) {
+        for (var i = 0; i < ris.results.length; i++) {
+            if (ris.results[i].type == "Trailer" && ris.results[i].site == "YouTube") {
+                linkYoutube = (ris.results[i].key != null ? "https://www.youtube.com/embed/" + ris.results[i].key + "?rel=0&amp;iv_load_policy=3&amp;theme=light" : "image_not_found.jpg");
                 break;
             }
         }
@@ -139,15 +157,15 @@ function searchSimilarFilm(data) {
             order: "col-xs-6 col-sm-4 col-md-4 standard"
         });
     }
-    if (pagesSimilarFilm > 1 && pageSimilarFilm < pagesSimilarFilm) {
+    /*if (pagesSimilarFilm > 1 && pageSimilarFilm < pagesSimilarFilm) {
         pageSimilarFilm++;
         theMovieDb.movies.getSimilarMovies({
             "id": movie,
             "page": pageSimilarFilm
         }, searchSimilarFilm, errorCB);
 
-    } else if (pageSimilarFilm == pagesSimilarFilm) {
-        arrayResultSimilarFilm = arrayResultSimilarFilm.slice(0, 18);
-        Session.set('arrayResultSimilarFilm', arrayResultSimilarFilm);
-    }
+    } else if (pageSimilarFilm == pagesSimilarFilm) {*/
+    arrayResultSimilarFilm = arrayResultSimilarFilm.slice(0, 18);
+    Session.set('arrayResultSimilarFilm', arrayResultSimilarFilm);
+    //}
 }
