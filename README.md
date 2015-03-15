@@ -1,9 +1,9 @@
 # Film Hunter
 *Movie Search WebApp*
 
-You know that moment when you are speaking about a film but you cannot remember its title?  
-Film Hunter can help you!  
-Film Hunter is a WebApp built for searching films by keywords.
+You don't know what movie to watch? Film Hunter can help you! 
+Type into the search bar few words that describes the film you want to watch and Film Hunter will find for you a list of movies corresponding to your search. 
+When you select a film Film Hunter will give you some information about the movie, such as the trailer, release date and the genre, also will give you a list of related films. 
 
 It's based on [Meteor](https://www.meteor.com/) and use [The Movie Database](https://www.themoviedb.org/) as Movie Database.  
 You can find the stable version of the project on [filmhunter.delved.org](http://filmhunter.delved.org/).
