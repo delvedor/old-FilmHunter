@@ -3,12 +3,13 @@
  */
 var linkYoutube,
     movie,
+    title,
     pageSimilarFilm,
     pageSimilarFilm;
 
 var arrayMovieInfo = {};
 var arrayResultSimilarFilm = [];
-
+var arrayMovieInfoBoxes = [];
 /**
  * Get the click event on a film result and starts a search about that film.
  */
@@ -16,7 +17,9 @@ Template.resultsFilm.events({
     'click .filmResult': function(e) {
         e.preventDefault();
         movie = e.currentTarget.id;
-        searchMovie(movie);
+        title = $(e.currentTarget).text().replace(/\s+/g, '');
+        title = title.replace(/[^a-zA-Z0-9_]/g, '');
+        searchMovie(movie, title);
     }
 });
 
@@ -26,19 +29,25 @@ Template.resultsFilm.events({
 Template.similarFilm.events({
     'click .filmResult': function(e) {
         e.preventDefault();
+        movie = e.currentTarget.id;
+        title = $(e.currentTarget).text().replace(/\s+/g, '');
+        title = title.replace(/[^a-zA-Z0-9_]/g, '');
         $('body,html').animate({
             scrollTop: 0
         }, '800', 'swing')
         movie = e.currentTarget.id;
-        searchMovie(movie);
+        searchMovie(movie, title);
     }
 });
 
 /**
  * Search the movie info, the movie trailer and the related results.
  */
-function searchMovie(movie) {
+function searchMovie(movie, title) {
     pageSimilarFilm = 1;
+    arrayMovieInfo = {};
+    arrayResultSimilarFilm = [];
+    arrayMovieInfoBoxes = [];
     Meteor.call('getMovie', movie, function(err, result) {
         if (result) {
             //console.log(result.content);
@@ -48,6 +57,17 @@ function searchMovie(movie) {
             console.log(err);
         }
     });
+
+    Meteor.call('getMovieCredits', movie, function(err, result) {
+        if (result) {
+            //console.log(result.content);
+            getMovieInfoCredits(result.content);
+        }
+        if (err) {
+            console.log(err);
+        }
+    });
+
     Meteor.call('getTrailer', movie, function(err, result) {
         if (result) {
             //console.log(result.content);
@@ -66,6 +86,26 @@ function searchMovie(movie) {
             console.log(err);
         }
     });
+
+    Meteor.call('getMovieImages', movie, function(err, result) {
+        if (result) {
+            //console.log(result.content);
+            setArrayMovieInfoBoxes(result.content, 'image');
+        }
+        if (err) {
+            console.log(err);
+        }
+    });
+
+    Meteor.call('searchTweets', title, function(err, result) {
+        if (result) {
+            //console.log('searchTweets', result);
+            setArrayMovieInfoBoxes(result, 'tweet');
+        }
+        if (err) {
+            console.log(err);
+        }
+    });
     Router.go('movieInfo');
 }
 
@@ -78,12 +118,34 @@ function getMovieInfo(data) {
     arrayMovieInfo.title = ris.title;
     arrayMovieInfo.tagline = ris.tagline;
     arrayMovieInfo.release_date = ris.release_date;
+    arrayMovieInfo.plot = ris.overview;
     arrayMovieInfo.genres = "";
     for (var i = 0; i < ris.genres.length; i++) {
         if (i == 0)
             arrayMovieInfo.genres = arrayMovieInfo.genres + ris.genres[i].name;
         else
             arrayMovieInfo.genres = arrayMovieInfo.genres + ", " + ris.genres[i].name;
+    }
+
+    Session.set('arrayMovieInfo', arrayMovieInfo);
+}
+
+function getMovieInfoCredits(data) {
+    var ris = $.parseJSON(data);
+    console.log('getMovieInfoCredits', ris);
+    arrayMovieInfo.cast = "";
+    arrayMovieInfo.director = "";
+    for (var i = 0; i < ris.cast.length; i++) {
+        if (i < 5) {
+            if (i == 0)
+                arrayMovieInfo.cast = arrayMovieInfo.cast + ris.cast[i].name;
+            else
+                arrayMovieInfo.cast = arrayMovieInfo.cast + " - " + ris.cast[i].name;
+        }
+    }
+    for (var i = 0; i < ris.crew.length; i++) {
+        if (ris.crew[i].job == "Director")
+            arrayMovieInfo.director = ris.crew[i].name;
     }
 
     Session.set('arrayMovieInfo', arrayMovieInfo);
@@ -109,6 +171,48 @@ function getTrailer(data) {
     Session.set('arrayMovieInfo', arrayMovieInfo);
 }
 
+function setArrayMovieInfoBoxes(data, dataType) {
+    if (dataType == 'tweet') {
+        var ris = data;
+        console.log(ris);
+        if (ris.statuses.length == 0)
+            return;
+        for (var i = 0; i < ris.statuses.length; i++) {
+            arrayMovieInfoBoxes.push({
+                boxType: 'boxTweet',
+                background: 'background-color: #FAFAFA',
+                isUser: true,
+                user: ris.statuses[i].user.screen_name,
+                text: ris.statuses[i].text
+            });
+        }
+    }
+
+    if (dataType == 'image') {
+        var ris = $.parseJSON(data);
+        if (ris.backdrops.length == 0)
+            return;
+        for (var i = 0; i < ris.backdrops.length; i++) {
+            if (i > 20)
+                break;
+            arrayMovieInfoBoxes.push({
+                boxType: 'boxImage',
+                background: 'background-image: url("http://image.tmdb.org/t/p/w500' + ris.backdrops[i].file_path + '")',
+                isUser: false,
+                user: '',
+                text: ''
+            });
+        }
+    }
+
+    if (dataType == 'review') {
+        var ris = $.parseJSON(data);
+    }
+
+    shuffle(arrayMovieInfoBoxes);
+    Session.set('arrayMovieInfoBoxes', arrayMovieInfoBoxes);
+}
+
 /**
  * Api Error callback
  */
@@ -122,6 +226,10 @@ function errorCB(data) {
 Template.movieInfo.helpers({
     movieInfo: function() {
         return Session.get('arrayMovieInfo');
+    },
+
+    movieInfoBoxes: function() {
+        return Session.get('arrayMovieInfoBoxes');
     }
 });
 
@@ -168,4 +276,25 @@ function searchSimilarFilm(data) {
     arrayResultSimilarFilm = arrayResultSimilarFilm.slice(0, 18);
     Session.set('arrayResultSimilarFilm', arrayResultSimilarFilm);
     //}
+}
+
+function shuffle(array) {
+    console.log('suffle1');
+    var currentIndex = array.length,
+        temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+    console.log('suffle2');
+    return array;
 }

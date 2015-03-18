@@ -5,10 +5,13 @@ var film,
     filmLen,
     filmCount,
     notfoundCount,
-    image;
+    image,
+    pageCount;
 
 var arrayResultFilm = [];
+var arrayResultFilmFromKeyword = [];
 var arrayResultKeyword = [];
+var arrayResultFilmFromKeywordDef = [];
 var arrayResultFilmDef = [];
 
 /**
@@ -100,7 +103,7 @@ function startSearch(filmSearch) {
         Meteor.call('searchKeywords', film[i], function(err, result) {
             if (result) {
                 //console.log(result.content);
-                searchMovie(result.content);
+                searchMoviesFromKeyword(result.content);
             }
             if (err) {
                 console.log(err);
@@ -108,12 +111,22 @@ function startSearch(filmSearch) {
         });
     }
 
+    Meteor.call('searchMovies', filmSearch, pageCount, function(err, result) {
+        if (result) {
+            //console.log(result.content);
+            saveMovies(result.content, filmSearch);
+        }
+        if (err) {
+            console.log(err);
+        }
+    });
+
 }
 
 /**
- * Get the results of the search.
+ * Get the results of the search from keword.
  */
-function searchMovie(data) {
+function searchMoviesFromKeyword(data) {
     var ris = $.parseJSON(data);
     //console.log('searchMovie', ris);
     //Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
@@ -125,7 +138,7 @@ function searchMovie(data) {
             });
         }
         Session.set('arrayResultKeyword', arrayResultKeyword);
-        Meteor.call('searchMovies', ris.results[0].id, function(err, result) {
+        Meteor.call('searchMoviesFromKeyword', ris.results[0].id, function(err, result) {
             if (result) {
                 //console.log(result.content);
                 saveResults(result.content);
@@ -140,6 +153,48 @@ function searchMovie(data) {
 }
 
 /**
+ * Get the results of the search from moviesearch.
+ */
+function saveMovies(data, filmSearch) {
+    pageCount++;
+    var ris = $.parseJSON(data);
+    Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
+    if (ris.total_results == 0) {
+        allFinish(1, 1);
+        return;
+    }
+    for (var i = 0; i < ris.results.length; i++) {
+        image = (ris.results[i].poster_path != null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'image_not_found.jpg');
+        image = image.replace(/\s/g, '');
+        arrayResultFilm.push({
+            title: ris.results[i].title,
+            id: ris.results[i].id,
+            popularity: ris.results[i].popularity,
+            image_path: image,
+            order: "col-xs-6 col-sm-4 col-md-4 standard"
+        });
+    }
+
+    if (ris.total_pages > pageCount && pageCount < 21) {
+        Meteor.call('searchMovies', filmSearch, pageCount, function(err, result) {
+            if (result) {
+                saveMovies(result.content, filmSearch);
+            }
+            if (err) {
+                console.log(err);
+            }
+        });
+    } else {
+        arrayResultFilm.sort(function(a, b) {
+            return b.popularity - a.popularity;
+        });
+        arrayResultFilm = arrayResultFilm.slice(0, 99);
+        allFinish(1, 0);
+    }
+
+}
+
+/**
  * Save the results of the search.
  */
 function saveResults(data) {
@@ -149,7 +204,7 @@ function saveResults(data) {
     for (var i = 0; i < ris.results.length; i++) {
         image = (ris.results[i].poster_path != null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'image_not_found.jpg');
         image = image.replace(/\s/g, '');
-        arrayResultFilm.push({
+        arrayResultFilmFromKeyword.push({
             keyword: ris.id,
             title: ris.results[i].title,
             id: ris.results[i].id,
@@ -172,18 +227,26 @@ function allFinish(found, notfound) {
         return;
     }
 
-    if (filmCount == filmLen) {
-        arrayResultFilm.sort(function(a, b) {
+    if (filmCount == filmLen + 1) {
+        arrayResultFilmFromKeyword.sort(function(a, b) {
             return b.popularity - a.popularity;
         });
-        for (var i = 0; i < arrayResultFilm.length - 1; i++) {
-            if (arrayResultFilm[i].title == arrayResultFilm[i + 1].title) {
+
+        arrayResultFilmFromKeywordDef = arrayResultFilm.concat(arrayResultFilmFromKeyword);
+
+        arrayResultFilmFromKeywordDef.sort(function(a, b) {
+            return b.popularity - a.popularity;
+        });
+
+        for (var i = 0; i < arrayResultFilmFromKeywordDef.length - 1; i++) {
+            if (arrayResultFilmFromKeywordDef[i].title == arrayResultFilmFromKeywordDef[i + 1].title) {
+                arrayResultFilmFromKeywordDef[i + 1].popularity = arrayResultFilmFromKeywordDef[i + 1].popularity * 2;
                 continue;
             } else {
-                arrayResultFilmDef.push(arrayResultFilm[i]);
+                arrayResultFilmDef.push(arrayResultFilmFromKeywordDef[i]);
             }
         }
-        arrayResultFilmDef.push(arrayResultFilm[arrayResultFilm.length - 1]);
+        arrayResultFilmDef.push(arrayResultFilmFromKeywordDef[arrayResultFilmFromKeywordDef.length - 1]);
 
         if (arrayResultFilmDef[0])
             arrayResultFilmDef[0].order = "col-xs-12 col-sm-12 col-md-12 first";
@@ -199,14 +262,52 @@ function allFinish(found, notfound) {
     }
 }
 
+/*function allFinish(found, notfound) {
+    notfoundCount += notfound;
+    filmCount += found;
+    if (notfoundCount == filmLen) {
+        Router.go('notfound');
+        return;
+    }
+
+    if (filmCount == filmLen) {
+        arrayResultFilmFromKeyword.sort(function(a, b) {
+            return b.popularity - a.popularity;
+        });
+        for (var i = 0; i < arrayResultFilmFromKeyword.length - 1; i++) {
+            if (arrayResultFilmFromKeyword[i].title == arrayResultFilmFromKeyword[i + 1].title) {
+                continue;
+            } else {
+                arrayResultFilmFromKeywordDef.push(arrayResultFilmFromKeyword[i]);
+            }
+        }
+        arrayResultFilmFromKeywordDef.push(arrayResultFilmFromKeyword[arrayResultFilmFromKeyword.length - 1]);
+
+        if (arrayResultFilmFromKeywordDef[0])
+            arrayResultFilmFromKeywordDef[0].order = "col-xs-12 col-sm-12 col-md-12 first";
+        if (arrayResultFilmFromKeywordDef[1])
+            arrayResultFilmFromKeywordDef[1].order = "col-xs-12 col-sm-12 col-md-6 second";
+        if (arrayResultFilmFromKeywordDef[2])
+            arrayResultFilmFromKeywordDef[2].order = "col-xs-12 col-sm-12 col-md-6 third";
+        arrayResultFilmFromKeywordDef = arrayResultFilmFromKeywordDef.slice(0, 99);
+
+        Session.set('arrayResultFilm', arrayResultFilmFromKeywordDef);
+        Session.set("searching", false);
+        Router.go('search');
+    }
+}*/
+
 /**
  * Reset all the variables for a new search.
  */
 function resetVariables() {
     filmCount = 0;
     notfoundCount = 0;
+    pageCount = 1;
     arrayResultFilm = [];
+    arrayResultFilmFromKeyword = [];
     arrayResultKeyword = [];
+    arrayResultFilmFromKeywordDef = [];
     arrayResultFilmDef = [];
     Session.set('arrayResultFilm', []);
     Session.set('arrayResultKeyword', []);

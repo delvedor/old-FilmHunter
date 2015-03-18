@@ -323,7 +323,7 @@ div[class="filmResult"] {
 }
 
 .spaceResultsTitle {
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .spaceRelKeyTitle {
@@ -394,6 +394,39 @@ div[class="filmResult"] {
 .filmInfoReleaseDate {
     text-align: center;
     font-size: 1.3em;
+}
+
+.movieInfoBoxes {
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+    padding:10px;
+    box-shadow: 0px 3px 5px #9E9E9E;
+}
+
+.boxTweet {
+    height:auto;
+    font-size: 1.2em;
+    font-weight: 300;
+
+}
+
+.boxImage {
+    height:300px;
+}
+
+.boxReview {}
+
+.aboutMovieText {
+    font-size: 1.3em;
+}
+
+
+.colElement {
+    -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
+    page-break-inside: avoid; /* Firefox */
+    break-inside: avoid; /* IE 10+ */
+    margin:30px 10px;
 }
 
 .similarFilm {
@@ -506,6 +539,12 @@ div[class="filmResult"] {
         left: 50%;
         top: 65%;
     }
+
+    .columns {
+        -webkit-column-count: 1;
+        -moz-column-count: 1;
+        column-count: 1;
+    }
 }
 
 @media only screen and (min-width: 320px) {
@@ -540,6 +579,11 @@ div[class="filmResult"] {
     #loader {
         left: 50%;
         top: 65%;
+    }
+    .columns {
+        -webkit-column-count: 1;
+        -moz-column-count: 1;
+        column-count: 1;
     }
 }
 
@@ -576,6 +620,11 @@ div[class="filmResult"] {
         left: 50%;
         top: 60%;
     }
+    .columns {
+        -webkit-column-count: 1;
+        -moz-column-count: 1;
+        column-count: 1;
+    }
 }
 
 @media only screen and (min-width: 768px) {
@@ -608,6 +657,11 @@ div[class="filmResult"] {
         left: 50%;
         top: 55%;
     }
+    .columns {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
 }
 
 @media only screen and (min-width: 992px) {
@@ -634,6 +688,11 @@ div[class="filmResult"] {
     #loader {
         left: 50%;
         top: 50%;
+    }
+    .columns {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
     }
 }
 

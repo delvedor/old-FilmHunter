@@ -14,6 +14,24 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="columns">
+            <div class="colElement">
+                <div class="movieInfoBoxes" style="background-color: #FAFAFA;">
+                    <p class="aboutMovieText">Actors: {{ movieInfo.cast }}</p>
+                    <p class="aboutMovieText">Director: {{ movieInfo.director }}</p>
+                    <p class="aboutMovieText">Plot: {{ movieInfo.plot }}</p>
+                </div>
+            </div>
+            {{ #each movieInfoBoxes }}
+            <div class="colElement">
+                <div class="movieInfoBoxes" style="{{ background }}">
+                    <p class="{{ boxType }}">{{ #if isUser }}<i class="fa fa-twitter fa-2x" style="color:#616161; margin-bottom:10px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{ user }}<br/>{{ /if }}{{ text }}</p>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
     {{ > similarFilm }}
 </template>
 
