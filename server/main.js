@@ -1,3 +1,5 @@
+Future = Npm.require('fibers/future');
+
 Meteor.methods({
     searchKeywords: function(keyword) {
         return Meteor.http.call("GET", "http://api.themoviedb.org/3/search/keyword?api_key=" + tmdb_api_key + "&query=" + keyword + "&page=1", {
@@ -64,24 +66,40 @@ Meteor.methods({
         });
     },
 
+    searchRottenTomatoesId: function(search) {
+        var tom = new Future();
+        tomatoes.search(search, function(err, data) {
+            if (data.length !== 0)
+                tom.return(data[0].id);
+            else
+                tom.return('noResults');
+        });
+        return tom.wait();
+    },
+
+    searchRottenTomatoesReviews: function(id) {
+        return Meteor.http.call("GET", "http://api.rottentomatoes.com/api/public/v1.0/movies/" + id + "/reviews.json?apikey=" + rotten_tomatoes_api_key + "", {
+            headers: {
+                "Accept": "application/json"
+            }
+        });
+    },
+
     searchTweets: function(query) {
-        Future = Npm.require('fibers/future');
-        var myFuture = new Future();
-        console.log(query);
+        var tw = new Future();
         twit.get('search/tweets', {
             q: query,
             result_type: 'recent', // 'recent' or 'popular'
             count: 20,
             lang: 'en'
         }, function(err, data, response) {
-            if (err) {
-                myFuture.throw(err);
-            } else {
-                myFuture.return(data);
-            }
+            if (err)
+                tw.throw(err);
+            else
+                tw.return(data);
         });
 
-        return myFuture.wait();
+        return tw.wait();
     }
 
 

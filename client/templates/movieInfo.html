@@ -15,6 +15,11 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12" style="height:auto;">
+            <p class="similarFilm">About Movie</p>
+        </div>
+    </div>
+    <div class="row">
         <div class="columns">
             <div class="colElement">
                 <div class="movieInfoBoxes" style="background-color: #FAFAFA;">
@@ -26,7 +31,7 @@
             {{ #each movieInfoBoxes }}
             <div class="colElement">
                 <div class="movieInfoBoxes" style="{{ background }}">
-                    <p class="{{ boxType }}">{{ #if isUser }}<i class="fa fa-twitter fa-2x" style="color:#616161; margin-bottom:10px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{ user }}<br/>{{ /if }}{{ text }}</p>
+                    <p class="{{ boxType }}">{{ #if isUser }}{{ #if isTwitter }}<i class="fa fa-twitter fa-2x" style="color:#616161; margin-bottom:10px;"></i>{{else}}<i class="fa fa-star fa-2x" style="color:#616161; margin-bottom:10px;"></i>{{/if}}&nbsp;&nbsp;&nbsp;&nbsp;{{ user }}<br/>{{ /if }}{{ text }}</p>
                 </div>
             </div>
             {{/each}}

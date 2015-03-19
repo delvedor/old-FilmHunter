@@ -404,6 +404,10 @@ div[class="filmResult"] {
     box-shadow: 0px 3px 5px #9E9E9E;
 }
 
+.columns {
+    padding: 10px 0;
+}
+
 .boxTweet {
     height:auto;
     font-size: 1.2em;
@@ -415,7 +419,13 @@ div[class="filmResult"] {
     height:300px;
 }
 
-.boxReview {}
+.boxReview {
+    height:auto;
+    font-size: 1.3em;
+    line-height: 30px;
+    letter-spacing: 1px;
+    font-weight: 300;
+}
 
 .aboutMovieText {
     font-size: 1.3em;
@@ -479,6 +489,10 @@ div[class="filmResult"] {
 
 .infoContainer.bottomSpace {
     margin-bottom: 40px;
+}
+
+.infoContainer.upSpace {
+    text-align: justify;
 }
 
 .infoContainer img {
