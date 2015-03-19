@@ -1,11 +1,16 @@
 # Film Hunter
 *Movie Search WebApp*
 
-You don't know what movie to watch? Film Hunter can help you! 
-Type into the search bar few words that describes the film you want to watch and Film Hunter will find for you a list of movies corresponding to your search. 
-When you select a film Film Hunter will give you some information about the movie, such as the trailer, release date and the genre, also will give you a list of related films. 
+You don't know what movie to watch? Film Hunter can help you!  
+Type into the search bar a few words that describes the film you want to watch and Film Hunter will find for you a list of movies corresponding to your search.
+
+When you select a film Film Hunter will give you some information about the movie, such as the trailer, release date and the genre, in addition will give you a list reviews, tweets and images about the film for give you an overview of what it is and what you can expect from the film.
+Moreover, it will give you a list of related movies.
+
+The only language supported at the moment is English.
 
 It's based on [Meteor](https://www.meteor.com/) and use [The Movie Database](https://www.themoviedb.org/) as Movie Database.  
+The reviews come from [Rotten Tomatoes](http://www.rottentomatoes.com/) and the tweets from [Twitter](https://twitter.com/).  
 You can find the stable version of the project on [filmhunter.delved.org](http://filmhunter.delved.org/).
 
 Suggestions and improvements are well accepted!
