@@ -4,16 +4,13 @@
 Template.resultsFilm.helpers({
     resultsPageFilm: function() {
         Meteor.setTimeout(setHeight, 1000);
-        return Session.get('arrayResultFilm');
-    }
-});
-
-/**
- * Load keyword results
- */
-Template.resultsKeyword.helpers({
-    resultsPageKeyword: function() {
-        return Session.get('arrayResultKeyword');
+        if (!dbResults.findOne())
+            return [];
+        return dbResults.findOne({}, {
+            sort: {
+                ts: -1
+            }
+        }).results;
     }
 });
 
@@ -25,13 +22,6 @@ Template.loading.helpers({
         return Session.get('numberOfResults');
     }
 });
-
-/**
- * Load the carusel of keyword.
- */
-Template.resultsKeyword.rendered = function() {
-    $(".owl-carousel").owlCarousel();
-};
 
 /**
  * Corrects the height of the div standard

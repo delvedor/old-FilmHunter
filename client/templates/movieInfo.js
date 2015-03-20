@@ -39,18 +39,18 @@ Template.movieInfo.rendered = function() {
 };
 
 function clickEvent(e) {
+    resetVariables()
     movie = e.currentTarget.id;
-    title = $(e.currentTarget).text();
+    title = $(e.currentTarget).text().replace(/\s+/g, '');
     twitterTitle = $(e.currentTarget).text().replace(/\s+/g, '');
     twitterTitle = title.replace(/[^a-zA-Z0-9_]/g, '');
-    searchMovie(movie, title, twitterTitle);
+    searchMovie();
 }
 
 /**
  * Search the movie info, the movie trailer and the related results.
  */
-function searchMovie(movie, title, twitterTitle) {
-    resetVariables();
+function searchMovie() {
     Meteor.call('getMovie', movie, function(err, result) {
         if (result)
             getMovieInfo(result.content);
@@ -92,11 +92,13 @@ function searchMovie(movie, title, twitterTitle) {
             console.log(err);
     });
 
-    Meteor.call('searchRottenTomatoesId', title, function(err, result) {
+    /*Meteor.call('searchRottenTomatoesId', title, function(err, result) {
+        console.log(result);
         if (result) {
             if (result === "noResults")
                 return;
             Meteor.call('searchRottenTomatoesReviews', result, function(err2, result2) {
+                console.log(result2);
                 if (result2)
                     setArrayMovieInfoBoxes(result2, 'review');
                 if (err2)
@@ -105,29 +107,44 @@ function searchMovie(movie, title, twitterTitle) {
         }
         if (err)
             console.log(err);
+    });*/
+    dbMovieInfo.insert({
+        idMovie: movie,
+        title: title,
+        movieInfo: [],
+        movieBoxes: [],
+        similarFilm: [],
+        ts: new Date()
     });
-
     Router.go('movieInfo');
 }
-
 /**
  * Organize the results of the movie info.
  */
 function getMovieInfo(data) {
     var ris = $.parseJSON(data);
+    var genresLen = ris.genres.length;
     arrayMovieInfo.title = ris.title;
     arrayMovieInfo.tagline = ris.tagline;
     arrayMovieInfo.release_date = ris.release_date;
     arrayMovieInfo.plot = ris.overview;
     arrayMovieInfo.genres = "";
-    for (var i = 0; i < ris.genres.length; i++) {
+    for (var i = 0; i < genresLen; i++) {
         if (i === 0)
             arrayMovieInfo.genres = arrayMovieInfo.genres + ris.genres[i].name;
         else
             arrayMovieInfo.genres = arrayMovieInfo.genres + ", " + ris.genres[i].name;
     }
-
-    Session.set('arrayMovieInfo', arrayMovieInfo);
+    dbMovieInfo.update({
+        idMovie: movie
+    }, {
+        $unset: {
+            movieInfo: arrayMovieInfo
+        },
+        $set: {
+            movieInfo: arrayMovieInfo
+        }
+    });
 }
 
 /**
@@ -154,7 +171,16 @@ function getMovieInfoCredits(data) {
         }
     }
 
-    Session.set('arrayMovieInfo', arrayMovieInfo);
+    dbMovieInfo.update({
+        idMovie: movie
+    }, {
+        $unset: {
+            movieInfo: arrayMovieInfo
+        },
+        $set: {
+            movieInfo: arrayMovieInfo
+        }
+    });
 }
 
 /**
@@ -162,7 +188,6 @@ function getMovieInfoCredits(data) {
  */
 function getTrailer(data) {
     var ris = $.parseJSON(data);
-    console.log('getTrailer', ris);
     if (ris.results.length !== 0) {
         for (var i = 0; i < ris.results.length; i++) {
             if (ris.results[i].type === "Trailer" && ris.results[i].site === "YouTube") {
@@ -174,7 +199,16 @@ function getTrailer(data) {
         linkYoutube = "image_not_found.jpg";
     }
     arrayMovieInfo.trailer = linkYoutube;
-    Session.set('arrayMovieInfo', arrayMovieInfo);
+    dbMovieInfo.update({
+        idMovie: movie
+    }, {
+        $unset: {
+            movieInfo: arrayMovieInfo
+        },
+        $set: {
+            movieInfo: arrayMovieInfo
+        }
+    });
 }
 
 /**
@@ -183,10 +217,10 @@ function getTrailer(data) {
 function setArrayMovieInfoBoxes(data, dataType) {
     if (dataType === 'tweet') {
         var ris = data;
-        console.log(ris);
-        if (ris.statuses.length === 0)
+        var statusesLen = ris.statuses.length;
+        if (statusesLen === 0)
             return;
-        for (var i = 0; i < ris.statuses.length; i++) {
+        for (var i = 0; i < statusesLen; i++) {
             arrayMovieInfoBoxes.push({
                 boxType: 'boxTweet',
                 background: 'background-color: #FAFAFA',
@@ -200,9 +234,10 @@ function setArrayMovieInfoBoxes(data, dataType) {
 
     if (dataType === 'image') {
         var ris = $.parseJSON(data);
-        if (ris.backdrops.length === 0)
+        var backdropsLen = ris.backdrops.length;
+        if (backdropsLen === 0)
             return;
-        for (var i = 0; i < ris.backdrops.length; i++) {
+        for (var i = 0; i < backdropsLen; i++) {
             if (i > 20)
                 break;
             arrayMovieInfoBoxes.push({
@@ -218,10 +253,10 @@ function setArrayMovieInfoBoxes(data, dataType) {
 
     if (dataType === 'review') {
         var ris = data;
-        console.log(ris);
-        if (ris.data.reviews.length === 0)
+        var reviewsLen = ris.data.reviews.length;
+        if (reviewsLen === 0)
             return;
-        for (var i = 0; i < ris.data.reviews.length; i++) {
+        for (var i = 0; i < reviewsLen; i++) {
             arrayMovieInfoBoxes.push({
                 boxType: 'boxReview',
                 background: 'background-color: #FAFAFA',
@@ -234,7 +269,6 @@ function setArrayMovieInfoBoxes(data, dataType) {
     }
 
     shuffle(arrayMovieInfoBoxes);
-    Session.set('arrayMovieInfoBoxes', arrayMovieInfoBoxes);
 }
 
 /**
@@ -249,11 +283,24 @@ function errorCB(data) {
  */
 Template.movieInfo.helpers({
     movieInfo: function() {
-        return Session.get('arrayMovieInfo');
+        if (!dbMovieInfo.findOne())
+            return [];
+        return dbMovieInfo.findOne({}, {
+            sort: {
+                ts: -1
+            }
+        }).movieInfo;
+
     },
 
     movieInfoBoxes: function() {
-        return Session.get('arrayMovieInfoBoxes');
+        if (!dbMovieInfo.findOne())
+            return [];
+        return dbMovieInfo.findOne({}, {
+            sort: {
+                ts: -1
+            }
+        }).movieBoxes;
     }
 });
 
@@ -262,7 +309,13 @@ Template.movieInfo.helpers({
  */
 Template.similarFilm.helpers({
     similarFilmArr: function() {
-        return Session.get('arrayResultSimilarFilm');
+        if (!dbMovieInfo.findOne())
+            return [];
+        return dbMovieInfo.findOne({}, {
+            sort: {
+                ts: -1
+            }
+        }).similarFilm;
     }
 });
 
@@ -272,12 +325,12 @@ Template.similarFilm.helpers({
  */
 function searchSimilarFilm(data) {
     var ris = $.parseJSON(data);
-    console.log('searchSimilarFilm', ris);
+    var similarLen = ris.results.length;
     pagesSimilarFilm = ris.total_pages;
-    if (ris.results.length === 0) {
+    if (similarLen === 0) {
         return;
     }
-    for (var i = 0; i < ris.results.length; i++) {
+    for (var i = 0; i < similarLen; i++) {
         image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'image_not_found.jpg');
         image = image.replace(/\s/g, '');
         arrayResultSimilarFilm.push({
@@ -290,12 +343,20 @@ function searchSimilarFilm(data) {
         });
     }
     arrayResultSimilarFilm = arrayResultSimilarFilm.slice(0, 18);
-    Session.set('arrayResultSimilarFilm', arrayResultSimilarFilm);
+    dbMovieInfo.update({
+        idMovie: movie
+    }, {
+        $unset: {
+            similarFilm: arrayResultSimilarFilm
+        },
+        $set: {
+            similarFilm: arrayResultSimilarFilm
+        }
+    });
 }
 
 /**
  * Randomize the content of an array.
- * @return array shuffled.
  */
 function shuffle(array) {
     var currentIndex = array.length;
@@ -308,7 +369,16 @@ function shuffle(array) {
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
-    return array;
+    dbMovieInfo.update({
+        idMovie: movie
+    }, {
+        $unset: {
+            movieBoxes: arrayMovieInfoBoxes
+        },
+        $set: {
+            movieBoxes: arrayMovieInfoBoxes
+        }
+    });
 }
 
 /**
@@ -318,7 +388,4 @@ function resetVariables() {
     arrayMovieInfo = {};
     arrayResultSimilarFilm = [];
     arrayMovieInfoBoxes = [];
-    Session.set('arrayMovieInfo', {});
-    Session.set('arrayResultSimilarFilm', []);
-    Session.set('arrayMovieInfoBoxes', []);
 }

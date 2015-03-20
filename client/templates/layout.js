@@ -1,3 +1,7 @@
+/*function noBack() {
+    window.history.forward();
+}*/
+
 /**
  * Color Generator
  */
@@ -21,5 +25,15 @@ Template.layout.rendered = function() {
     $('.header').addClass(background);
     $('.border-search').addClass(border);
     $('#submitFilm').addClass(color);
-
 };
+/*
+Template.body.rendered = function() {
+    noBack();
+    window.onload = noBack;
+    window.onpageshow = function(evt) {
+        if (evt.persisted) noBack();
+    };
+    window.onunload = function() {
+        void(0);
+    };
+};*/

@@ -67,14 +67,22 @@ Meteor.methods({
     },
 
     searchRottenTomatoesId: function(search) {
-        var tom = new Future();
+        /*var tom = new Future();
+        console.log(search);
         tomatoes.search(search, function(err, data) {
+            console.log(data);
             if (data.length !== 0)
                 tom.return(data[0].id);
             else
                 tom.return('noResults');
         });
-        return tom.wait();
+        return tom.wait();*/
+        search = escape(search);
+        return Meteor.http.call("GET", "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=" + rotten_tomatoes_api_key + "&q=" + search + "&page_limit=1", {
+            headers: {
+                "Accept": "application/json"
+            }
+        });
     },
 
     searchRottenTomatoesReviews: function(id) {
@@ -88,7 +96,7 @@ Meteor.methods({
     searchTweets: function(query) {
         var tw = new Future();
         twit.get('search/tweets', {
-            q: query,
+            q: '#' + query,
             result_type: 'recent', // 'recent' or 'popular'
             count: 20,
             lang: 'en'

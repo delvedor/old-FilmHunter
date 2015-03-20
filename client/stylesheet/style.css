@@ -142,11 +142,22 @@ body {
 /****** Header ******/
 
 .nav-bar {
-    text-align: right;
+    /*text-align: right;*/
     /*background-color: #0277BD;*/
-    
-    padding-top: 10px;
-    padding-right: 20px;
+    padding: 10px 20px 0 20px;
+}
+
+.backButton {
+    text-align: left;
+    width:49%;
+    color:#ffffff;
+    display:inline-block;
+}
+
+.dropdown {
+    text-align: right;
+    width:49%;
+    display:inline-block;
 }
 
 .dropdown ul {
