@@ -473,7 +473,7 @@ div[class="filmResult"] {
     padding-bottom: 57.25%;
 }
 
-.flex-video iframe {
+.flex-video object {
     position: absolute;
     top: 0;
     left: 0;

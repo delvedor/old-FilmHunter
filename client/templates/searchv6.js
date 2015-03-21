@@ -16,6 +16,44 @@ var arrayResultKeyword = [];
 var arrayFullResults = [];
 var arrayFullResultsDef = [];
 
+Router.route('/search', {
+    path: '/search/:key',
+    layout: 'resultsFilm',
+    layoutTemplate: 'layout',
+    onBeforeAction: function() {
+        this.render('loading');
+        checkHistory(escape(this.params.key));
+        if (!Session.get('searching'))
+            this.next();
+    },
+    action: function() {
+        this.render('resultsFilm');
+    }
+});
+
+function checkHistory(params) {
+    for (var i = 0; i < searchHistory.length; i++) {
+        if (params === searchHistory[i]) {
+            loadHistory(params);
+            return;
+        }
+    }
+    clickEvent(unescape(params));
+}
+
+function loadHistory(params) {
+    dbResults.update({
+        search: params
+    }, {
+        $unset: {
+            ts: ""
+        },
+        $set: {
+            ts: new Date()
+        }
+    });
+}
+
 /**
  * Home Template Events
  */
@@ -28,7 +66,8 @@ Template.home.events({
                 $('#filmSearch').val("");
                 return;
             }
-            clickEvent(query);
+            //clickEvent(query);
+            Router.go('/search/' + escape(query));
         }
     },
     'click #goSearch': function(e) {
@@ -38,7 +77,8 @@ Template.home.events({
             $('#filmSearch').val("");
             return;
         }
-        clickEvent(query);
+        //clickEvent(query);
+        Router.go('/search/' + escape(query));
     }
 });
 
@@ -52,10 +92,11 @@ Template.search.events({
             query = $('#film').val();
             if (query.replace(/\s/g, '') === "") {
                 $('#film').val("");
-                Router.go('search');
+                Router.go('/search/' + escape(query));
                 return;
             }
-            clickEvent(query);
+            //clickEvent(query);
+            Router.go('/search/' + escape(query));
         }
     },
 
@@ -64,18 +105,20 @@ Template.search.events({
         query = $('#film').val();
         if (query.replace(/\s/g, '') === "") {
             $('#film').val("");
-            Router.go('search');
+            Router.go('/search/' + escape(query));
             return;
         }
-        clickEvent(query);
+        //clickEvent(query);
+        Router.go('/search/' + escape(query));
     }
 });
 
 function clickEvent(query) {
+    searchHistory.push(escape(query));
     Session.set('query', query);
     Session.set("searching", true);
     startSearch(query);
-    Router.go('loading');
+    //Router.go('loading');
 }
 
 /**
@@ -135,7 +178,7 @@ function saveMovies(data) {
     var risLen = ris.results.length;
     Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
     for (var i = 0; i < risLen; i++) {
-        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'image_not_found.jpg');
+        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif');
         image = image.replace(/\s/g, '');
         arrayResultFilm.push({
             title: ris.results[i].title,
@@ -173,7 +216,7 @@ function saveKeywords(data) {
     keywordCount++;
     Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
     for (var i = 0; i < risLen; i++) {
-        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'image_not_found.jpg');
+        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif');
         image = image.replace(/\s/g, '');
         arrayResultFilmFromKeyword.push({
             keyword: ris.id,
@@ -232,12 +275,12 @@ function allFinish(finish, notfound) {
         arrayFullResultsDef = arrayFullResultsDef.slice(0, 99);
 
         dbResults.insert({
-            search: query,
+            search: search,
             results: arrayFullResultsDef,
             ts: new Date()
         });
         Session.set("searching", false);
-        Router.go('search');
+        //Router.go('/search/' + escape(query));
     }
 }
 
@@ -255,13 +298,6 @@ function resetVariables() {
     arrayFullResults = [];
     arrayFullResultsDef = [];
     Session.set('numberOfResults', 0);
-}
-
-/**
- * Api Error callback
- */
-function errorCB(data) {
-    console.log("Error callback: " + data);
 }
 
 /**

@@ -1,7 +1,7 @@
 /**
  * Variables declaration.
  */
-var linkYoutube;
+
 var movie;
 var title;
 var twitterTitle;
@@ -11,52 +11,95 @@ var arrayMovieInfo = {};
 var arrayResultSimilarFilm = [];
 var arrayMovieInfoBoxes = [];
 
-/**
- * Get the click event on a film result and starts a search about that film.
- */
-Template.resultsFilm.events({
-    'click .filmResult': function(e) {
-        e.preventDefault();
-        clickEvent(e);
+Router.route('/movieInfo', {
+    path: '/movieInfo/:key',
+    layout: 'movieInfo',
+    layoutTemplate: 'layout',
+    action: function() {
+        this.render('movieInfo');
+        checkHistory(this.params.key);
     }
 });
 
 /**
- * Get the click event on a related film result, starts a search about that film and scroll up the page.
+ * Get the click event on a film result and redirect to the dynamic movieInfo page.
+ */
+Template.resultsFilm.events({
+    'click .filmResult': function(e) {
+        e.preventDefault();
+        Router.go('/movieInfo/' + e.currentTarget.id);
+    }
+});
+
+/**
+ * Get the click event on a related film result, redirect to the dynamic movieInfo page and scroll up the page.
  */
 Template.similarFilm.events({
     'click .filmResult': function(e) {
         e.preventDefault();
-        clickEvent(e);
+        Router.go('/movieInfo/' + e.currentTarget.id);
         $('body,html').animate({
             scrollTop: 0
         }, '800', 'swing');
     }
 });
 
-Template.movieInfo.rendered = function() {
-    $('body,html').scrollTop();
-};
 
-function clickEvent(e) {
-    resetVariables()
-    movie = e.currentTarget.id;
-    title = $(e.currentTarget).text().replace(/\s+/g, '');
-    twitterTitle = $(e.currentTarget).text().replace(/\s+/g, '');
-    twitterTitle = title.replace(/[^a-zA-Z0-9_]/g, '');
-    searchMovie();
+function checkHistory(id) {
+    for (var i = 0; i < movieHistory.length; i++) {
+        if (id === movieHistory[i]) {
+            loadHistory(id);
+            return;
+        }
+    }
+    getMovieById(id);
+}
+
+function loadHistory(id) {
+    dbMovieInfo.update({
+        idMovie: id
+    }, {
+        $unset: {
+            ts: ""
+        },
+        $set: {
+            ts: new Date()
+        }
+    });
+}
+
+/**
+ * Get the title of the movie by id and starts the search for the movieBoxes.
+ */
+function getMovieById(id) {
+    movieHistory.push(id);
+    resetVariables();
+    Meteor.call('getMovie', id, function(err, result) {
+        if (result) {
+            var ris = $.parseJSON(result.content);
+            movie = id;
+            title = ris.title.replace(/\s+/g, '');
+            twitterTitle = ris.title.replace(/\s+/g, '');
+            twitterTitle = title.replace(/[^a-zA-Z0-9_]/g, '');
+            searchMovie(ris);
+        }
+        if (err)
+            console.log(err);
+    });
+
 }
 
 /**
  * Search the movie info, the movie trailer and the related results.
  */
-function searchMovie() {
-    Meteor.call('getMovie', movie, function(err, result) {
+function searchMovie(ris) {
+    /*Meteor.call('getMovie', movie, function(err, result) {
         if (result)
             getMovieInfo(result.content);
         if (err)
             console.log(err);
-    });
+    });*/
+    getMovieInfo(ris);
 
     Meteor.call('getMovieCredits', movie, function(err, result) {
         if (result)
@@ -116,13 +159,12 @@ function searchMovie() {
         similarFilm: [],
         ts: new Date()
     });
-    Router.go('movieInfo');
 }
 /**
  * Organize the results of the movie info.
  */
-function getMovieInfo(data) {
-    var ris = $.parseJSON(data);
+function getMovieInfo(ris) {
+    //var ris = $.parseJSON(data);
     var genresLen = ris.genres.length;
     arrayMovieInfo.title = ris.title;
     arrayMovieInfo.tagline = ris.tagline;
@@ -191,14 +233,13 @@ function getTrailer(data) {
     if (ris.results.length !== 0) {
         for (var i = 0; i < ris.results.length; i++) {
             if (ris.results[i].type === "Trailer" && ris.results[i].site === "YouTube") {
-                linkYoutube = (ris.results[i].key !== null ? "https://www.youtube.com/embed/" + ris.results[i].key + "?rel=0&amp;iv_load_policy=3&amp;theme=light" : "image_not_found.jpg");
+                arrayMovieInfo.trailer = (ris.results[i].key !== null ? "https://www.youtube.com/embed/" + ris.results[i].key + "?rel=0&amp;iv_load_policy=3&amp;theme=light" : "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif");
                 break;
             }
         }
     } else {
-        linkYoutube = "image_not_found.jpg";
+        arrayMovieInfo.trailer = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif";
     }
-    arrayMovieInfo.trailer = linkYoutube;
     dbMovieInfo.update({
         idMovie: movie
     }, {
@@ -272,55 +313,6 @@ function setArrayMovieInfoBoxes(data, dataType) {
 }
 
 /**
- * Api Error callback
- */
-function errorCB(data) {
-    console.log("Error callback: " + data);
-}
-
-/**
- * Helper for rective data of the movie info.
- */
-Template.movieInfo.helpers({
-    movieInfo: function() {
-        if (!dbMovieInfo.findOne())
-            return [];
-        return dbMovieInfo.findOne({}, {
-            sort: {
-                ts: -1
-            }
-        }).movieInfo;
-
-    },
-
-    movieInfoBoxes: function() {
-        if (!dbMovieInfo.findOne())
-            return [];
-        return dbMovieInfo.findOne({}, {
-            sort: {
-                ts: -1
-            }
-        }).movieBoxes;
-    }
-});
-
-/**
- * Helper for rective data of the related movie.
- */
-Template.similarFilm.helpers({
-    similarFilmArr: function() {
-        if (!dbMovieInfo.findOne())
-            return [];
-        return dbMovieInfo.findOne({}, {
-            sort: {
-                ts: -1
-            }
-        }).similarFilm;
-    }
-});
-
-
-/**
  * Organize the results of the related movie.
  */
 function searchSimilarFilm(data) {
@@ -389,3 +381,48 @@ function resetVariables() {
     arrayResultSimilarFilm = [];
     arrayMovieInfoBoxes = [];
 }
+
+/**
+ * Helper for rective data of the movie info.
+ */
+Template.movieInfo.helpers({
+    movieInfo: function() {
+        if (!dbMovieInfo.findOne())
+            return [];
+        return dbMovieInfo.findOne({}, {
+            sort: {
+                ts: -1
+            }
+        }).movieInfo;
+
+    },
+
+    movieInfoBoxes: function() {
+        if (!dbMovieInfo.findOne())
+            return [];
+        return dbMovieInfo.findOne({}, {
+            sort: {
+                ts: -1
+            }
+        }).movieBoxes;
+    }
+});
+
+/**
+ * Helper for rective data of the related movie.
+ */
+Template.similarFilm.helpers({
+    similarFilmArr: function() {
+        if (!dbMovieInfo.findOne())
+            return [];
+        return dbMovieInfo.findOne({}, {
+            sort: {
+                ts: -1
+            }
+        }).similarFilm;
+    }
+});
+
+Template.movieInfo.rendered = function() {
+    $('body,html').scrollTop();
+};
