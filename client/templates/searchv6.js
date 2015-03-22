@@ -27,6 +27,8 @@ Router.route('/search', {
             this.next();
     },
     action: function() {
+        if (pageHistory[pageHistory.length - 1] !== '/search/' + escape(this.params.key))
+            pageHistory.push('/search/' + escape(this.params.key));
         this.render('resultsFilm');
     }
 });
@@ -61,7 +63,7 @@ Template.home.events({
     'keyup #filmSearch': function(e) {
         if (e.type === "keyup" && e.which === 13) {
             e.preventDefault();
-            query = $('#filmSearch').val();
+            query = $('#filmSearch').val().trim();
             if (query.replace(/\s/g, '') === "") {
                 $('#filmSearch').val("");
                 return;
@@ -72,7 +74,7 @@ Template.home.events({
     },
     'click #goSearch': function(e) {
         e.preventDefault();
-        query = $('#filmSearch').val();
+        query = $('#filmSearch').val().trim();
         if (query.replace(/\s/g, '') === "") {
             $('#filmSearch').val("");
             return;
@@ -89,7 +91,7 @@ Template.search.events({
     'keyup #film': function(e) {
         if (e.type === "keyup" && e.which === 13) {
             e.preventDefault();
-            query = $('#film').val();
+            query = $('#film').val().trim();
             if (query.replace(/\s/g, '') === "") {
                 $('#film').val("");
                 Router.go('/search/' + escape(query));
@@ -102,7 +104,7 @@ Template.search.events({
 
     'click #submitFilm': function(e) {
         e.preventDefault();
-        query = $('#film').val();
+        query = $('#film').val().trim();
         if (query.replace(/\s/g, '') === "") {
             $('#film').val("");
             Router.go('/search/' + escape(query));

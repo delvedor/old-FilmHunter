@@ -1,6 +1,10 @@
-/*function noBack() {
-    window.history.forward();
-}*/
+Template.layout.events({
+    'click #backFaButton': function(e) {
+        e.preventDefault();
+        pageHistory.pop();
+        Router.go(pageHistory[pageHistory.length - 1]);
+    }
+});
 
 /**
  * Color Generator
@@ -26,14 +30,3 @@ Template.layout.rendered = function() {
     $('.border-search').addClass(border);
     $('#submitFilm').addClass(color);
 };
-/*
-Template.body.rendered = function() {
-    noBack();
-    window.onload = noBack;
-    window.onpageshow = function(evt) {
-        if (evt.persisted) noBack();
-    };
-    window.onunload = function() {
-        void(0);
-    };
-};*/

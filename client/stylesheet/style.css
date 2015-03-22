@@ -490,7 +490,8 @@ div[class="filmResult"] {
     padding: 5px;
 }
 
-.infoContainer {
+.infoContainer,
+.bugreportContainer {
     background-color: #FAFAFA;
     border-radius: 5px;
     margin: 10px 0;
@@ -506,18 +507,26 @@ div[class="filmResult"] {
     text-align: justify;
 }
 
-.infoContainer img {
+.infoContainer img,
+.bugreportContainer img {
     width: 100%;
     border-radius: 5px;
     margin-bottom: 20px;
 }
 
-.howToUse {
+.howToUse,
+.sendBugReport {
     font-weight: 300;
     font-size: 1.4em;
     color: #424242;
     padding: 5px;
     line-height: 35px;
+}
+
+.sendBugReportList {
+    font-weight: 300;
+    font-size: 1.3em;
+    color: #424242;
 }
 
 .infoFH {
@@ -527,6 +536,22 @@ div[class="filmResult"] {
     padding: 5px;
     line-height: 35px;
     text-align: center;
+}
+
+.sendBugButton {
+    width:50%;
+    margin-top: 15px;
+    margin-left:25%;
+    height:50px;
+    font-weight: 300;
+    font-size: 1.2em;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #42A5F5;
+    color: #FAFAFA;
+    text-transform: uppercase;
 }
 
 /****** Media queries ******/

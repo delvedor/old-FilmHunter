@@ -1,6 +1,15 @@
 Future = Npm.require('fibers/future');
 
 Meteor.methods({
+    saveBugReport: function(br) {
+        bugreport.insert({
+            ip: this.connection.clientAddress,
+            ts: new Date(),
+            bugReportText: br
+        });
+        return true;
+    },
+
     searchKeywords: function(keyword) {
         return Meteor.http.call("GET", "http://api.themoviedb.org/3/search/keyword?api_key=" + tmdb_api_key + "&query=" + keyword + "&page=1", {
             headers: {

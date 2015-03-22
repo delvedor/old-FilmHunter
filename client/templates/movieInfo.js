@@ -16,6 +16,8 @@ Router.route('/movieInfo', {
     layout: 'movieInfo',
     layoutTemplate: 'layout',
     action: function() {
+        if (pageHistory[pageHistory.length - 1] !== '/movieInfo/' + escape(this.params.key))
+            pageHistory.push('/movieInfo/' + escape(this.params.key));
         this.render('movieInfo');
         checkHistory(this.params.key);
     }

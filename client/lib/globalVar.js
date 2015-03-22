@@ -4,6 +4,7 @@
 
 movieHistory = [];
 searchHistory = [];
+pageHistory = ['/'];
 Session.setDefault('searching', false);
 Session.setDefault('numberOfResults', 0);
 Session.setDefault('query', '');
