@@ -12,14 +12,33 @@
     </div>
     {{/each}}
 </template>
-
-<template name="loading">
+<!--<template name="loading">
     <div class="col-xs-12 col-sm-12 col-md-12 loaderTotalResults">I'm analyzing {{totalResults}} films..</div>
     <div id="loader-wrapper">
         <div id="loader"></div>
     </div>
+</template>-->
+<template name="loading">
+    <div class="col-xs-12 col-sm-12 col-md-12 loaderTotalResults">I'm analyzing {{totalResults}} films..</div>
+    <div class="preloader loading">
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+    </div>
 </template>
-
+<template name="loadingNoRis">
+    <div class="preloader loading">
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+    </div>
+</template>
 <template name="notfound">
     <div class="row margin-top-50">
         <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">

@@ -2,6 +2,7 @@
  * Variables declaration.
  */
 
+var finished = 0;
 var movie;
 var title;
 var twitterTitle;
@@ -11,7 +12,7 @@ var arrayMovieInfo = {};
 var arrayResultSimilarFilm = [];
 var arrayMovieInfoBoxes = [];
 
-Router.route('/movieInfo', {
+/*Router.route('/movieInfo', {
     path: '/movieInfo/:key',
     layout: 'movieInfo',
     layoutTemplate: 'layout',
@@ -20,6 +21,23 @@ Router.route('/movieInfo', {
             pageHistory.push('/movieInfo/' + escape(this.params.key));
         this.render('movieInfo');
         checkHistory(this.params.key);
+    }
+});*/
+
+Router.route('/movieInfo', {
+    path: '/movieInfo/:key',
+    layout: 'movieInfo',
+    layoutTemplate: 'layout',
+    onBeforeAction: function() {
+        this.render('loadingNoRis');
+        checkHistory(escape(this.params.key));
+        if (!Session.get('searching'))
+            this.next();
+    },
+    action: function() {
+        if (pageHistory[pageHistory.length - 1] !== '/movieInfo/' + escape(this.params.key))
+            pageHistory.push('/movieInfo/' + escape(this.params.key));
+        this.render('movieInfo');
     }
 });
 
@@ -48,6 +66,7 @@ Template.similarFilm.events({
 
 
 function checkHistory(id) {
+    Session.set("searching", true);
     for (var i = 0; i < movieHistory.length; i++) {
         if (id === movieHistory[i]) {
             loadHistory(id);
@@ -68,6 +87,7 @@ function loadHistory(id) {
             ts: new Date()
         }
     });
+    allFinish(0, 1);
 }
 
 /**
@@ -88,6 +108,7 @@ function getMovieById(id) {
         if (err)
             console.log(err);
     });
+    allFinish(1, 0);
 
 }
 
@@ -95,76 +116,70 @@ function getMovieById(id) {
  * Search the movie info, the movie trailer and the related results.
  */
 function searchMovie(ris) {
-    /*Meteor.call('getMovie', movie, function(err, result) {
-        if (result)
-            getMovieInfo(result.content);
-        if (err)
-            console.log(err);
-    });*/
-    getMovieInfo(ris);
+        getMovieInfo(ris);
 
-    Meteor.call('getMovieCredits', movie, function(err, result) {
-        if (result)
-            getMovieInfoCredits(result.content);
-        if (err)
-            console.log(err);
-    });
+        Meteor.call('getMovieCredits', movie, function(err, result) {
+            if (result)
+                getMovieInfoCredits(result.content);
+            if (err)
+                console.log(err);
+        });
 
-    Meteor.call('getTrailer', movie, function(err, result) {
-        if (result)
-            getTrailer(result.content);
-        if (err)
-            console.log(err);
-    });
-    Meteor.call('getSimilarMovies', movie, function(err, result) {
-        if (result)
-            searchSimilarFilm(result.content);
-        if (err)
-            console.log(err);
-    });
+        Meteor.call('getTrailer', movie, function(err, result) {
+            if (result)
+                getTrailer(result.content);
+            if (err)
+                console.log(err);
+        });
+        Meteor.call('getSimilarMovies', movie, function(err, result) {
+            if (result)
+                searchSimilarFilm(result.content);
+            if (err)
+                console.log(err);
+        });
 
-    Meteor.call('getMovieImages', movie, function(err, result) {
-        if (result)
-            setArrayMovieInfoBoxes(result.content, 'image');
-        if (err)
-            console.log(err);
-    });
+        Meteor.call('getMovieImages', movie, function(err, result) {
+            if (result)
+                setArrayMovieInfoBoxes(result.content, 'image');
+            if (err)
+                console.log(err);
+        });
 
-    Meteor.call('searchTweets', twitterTitle, function(err, result) {
-        if (result)
-            setArrayMovieInfoBoxes(result, 'tweet');
-        if (err)
-            console.log(err);
-    });
+        Meteor.call('searchTweets', twitterTitle, function(err, result) {
+            if (result)
+                setArrayMovieInfoBoxes(result, 'tweet');
+            if (err)
+                console.log(err);
+        });
 
-    /*Meteor.call('searchRottenTomatoesId', title, function(err, result) {
-        console.log(result);
-        if (result) {
-            if (result === "noResults")
-                return;
-            Meteor.call('searchRottenTomatoesReviews', result, function(err2, result2) {
-                console.log(result2);
-                if (result2)
-                    setArrayMovieInfoBoxes(result2, 'review');
-                if (err2)
-                    console.log(err2);
-            });
-        }
-        if (err)
-            console.log(err);
-    });*/
-    dbMovieInfo.insert({
-        idMovie: movie,
-        title: title,
-        movieInfo: [],
-        movieBoxes: [],
-        similarFilm: [],
-        ts: new Date()
-    });
-}
-/**
- * Organize the results of the movie info.
- */
+        /*Meteor.call('searchRottenTomatoesId', title, function(err, result) {
+            console.log(result);
+            if (result) {
+                if (result === "noResults")
+                    return;
+                Meteor.call('searchRottenTomatoesReviews', result, function(err2, result2) {
+                    console.log(result2);
+                    if (result2)
+                        setArrayMovieInfoBoxes(result2, 'review');
+                    if (err2)
+                        console.log(err2);
+                });
+            }
+            if (err)
+                console.log(err);
+        });*/
+        dbMovieInfo.insert({
+            idMovie: movie,
+            title: title,
+            movieInfo: [],
+            movieBoxes: [],
+            similarFilm: [],
+            ts: new Date()
+        });
+    }
+    /**
+     * Organize the results of the movie info.
+     */
 function getMovieInfo(ris) {
     //var ris = $.parseJSON(data);
     var genresLen = ris.genres.length;
@@ -189,6 +204,7 @@ function getMovieInfo(ris) {
             movieInfo: arrayMovieInfo
         }
     });
+    allFinish(1, 0);
 }
 
 /**
@@ -225,6 +241,7 @@ function getMovieInfoCredits(data) {
             movieInfo: arrayMovieInfo
         }
     });
+    allFinish(1, 0);
 }
 
 /**
@@ -347,6 +364,15 @@ function searchSimilarFilm(data) {
             similarFilm: arrayResultSimilarFilm
         }
     });
+    allFinish(1, 0);
+}
+
+function allFinish(finish, cache) {
+    if (cache === 1)
+        Session.set("searching", false);
+    finished += finish;
+    if (finished === 4)
+        Session.set("searching", false);
 }
 
 /**
@@ -373,6 +399,7 @@ function shuffle(array) {
             movieBoxes: arrayMovieInfoBoxes
         }
     });
+    allFinish(1, 0);
 }
 
 /**
@@ -382,6 +409,7 @@ function resetVariables() {
     arrayMovieInfo = {};
     arrayResultSimilarFilm = [];
     arrayMovieInfoBoxes = [];
+    finished = 0;
 }
 
 /**

@@ -16,6 +16,8 @@ Router.route('/info', function() {
 });
 
 Router.route('/notfound', function() {
+    if (pageHistory[pageHistory.length - 1] !== 'notfound')
+        pageHistory.push('notfound');
     this.layout('layout');
     this.render('notfound');
 });

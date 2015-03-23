@@ -40,7 +40,7 @@ function checkHistory(params) {
             return;
         }
     }
-    clickEvent(unescape(params));
+    setSearch(unescape(params));
 }
 
 function loadHistory(params) {
@@ -68,7 +68,6 @@ Template.home.events({
                 $('#filmSearch').val("");
                 return;
             }
-            //clickEvent(query);
             Router.go('/search/' + escape(query));
         }
     },
@@ -79,7 +78,6 @@ Template.home.events({
             $('#filmSearch').val("");
             return;
         }
-        //clickEvent(query);
         Router.go('/search/' + escape(query));
     }
 });
@@ -97,7 +95,6 @@ Template.search.events({
                 Router.go('/search/' + escape(query));
                 return;
             }
-            //clickEvent(query);
             Router.go('/search/' + escape(query));
         }
     },
@@ -110,17 +107,15 @@ Template.search.events({
             Router.go('/search/' + escape(query));
             return;
         }
-        //clickEvent(query);
         Router.go('/search/' + escape(query));
     }
 });
 
-function clickEvent(query) {
+function setSearch(query) {
     searchHistory.push(escape(query));
     Session.set('query', query);
     Session.set("searching", true);
     startSearch(query);
-    //Router.go('loading');
 }
 
 /**
@@ -282,7 +277,6 @@ function allFinish(finish, notfound) {
             ts: new Date()
         });
         Session.set("searching", false);
-        //Router.go('/search/' + escape(query));
     }
 }
 
