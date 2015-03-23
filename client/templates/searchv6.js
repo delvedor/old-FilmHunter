@@ -34,7 +34,7 @@ Router.route('/search', {
 });
 
 function checkHistory(params) {
-    for (var i = 0; i < searchHistory.length; i++) {
+    for (var i = 0, sHlen = searchHistory.length; i < sHlen; ++i) {
         if (params === searchHistory[i]) {
             loadHistory(params);
             return;
@@ -44,6 +44,7 @@ function checkHistory(params) {
 }
 
 function loadHistory(params) {
+    Session.set('query', unescape(params));
     dbResults.update({
         search: params
     }, {
@@ -126,7 +127,7 @@ function startSearch(filmSearch) {
     search = escape(filmSearch);
     film = filmSearch.split(" ");
     filmLen = film.length;
-    for (var i = 0; i < film.length; i++) {
+    for (var i = 0; i < filmLen; ++i) {
         Meteor.call('searchKeywords', film[i], function(err, result) {
             if (result)
                 searchMoviesFromKeyword(result.content);
@@ -172,9 +173,8 @@ function saveMovies(data) {
         allFinish(1, 1);
         return;
     }
-    var risLen = ris.results.length;
     Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
-    for (var i = 0; i < risLen; i++) {
+    for (var i = 0, risLen = ris.results.length; i < risLen; ++i) {
         image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif');
         image = image.replace(/\s/g, '');
         arrayResultFilm.push({
@@ -209,10 +209,9 @@ function saveMovies(data) {
  */
 function saveKeywords(data) {
     var ris = $.parseJSON(data);
-    var risLen = ris.results.length;
     keywordCount++;
     Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
-    for (var i = 0; i < risLen; i++) {
+    for (var i = 0, risLen = ris.results.length; i < risLen; ++i) {
         image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif');
         image = image.replace(/\s/g, '');
         arrayResultFilmFromKeyword.push({
@@ -252,8 +251,7 @@ function allFinish(finish, notfound) {
             return b.popularity - a.popularity;
         });
 
-        var arrLen = arrayFullResults.length;
-        for (var i = 0; i < arrLen - 1; i++) {
+        for (var i = 0, arrLen = arrayFullResults.length; i < arrLen - 1; ++i) {
             if (arrayFullResults[i].title === arrayFullResults[i + 1].title && arrayFullResults[i].release_date === arrayFullResults[i + 1].release_date) {
                 arrayFullResults[i + 1].popularity = arrayFullResults[i + 1].popularity * 2;
                 continue;
