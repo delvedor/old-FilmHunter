@@ -31,15 +31,15 @@
             {{ #each movieInfoBoxes }}
             <div class="colElement">
                 <div class="movieInfoBoxes" style="{{ background }}">
-                    <p class="{{ boxType }}">{{ #if isUser }}{{ #if isTwitter }}<i class="fa fa-twitter fa-2x" style="color:#616161; margin-bottom:10px;"></i>{{else}}<i class="fa fa-star fa-2x" style="color:#616161; margin-bottom:10px;"></i>{{/if}}&nbsp;&nbsp;&nbsp;&nbsp;{{ user }}<br/>{{ /if }}{{ text }}</p>
+                    <p class="{{ boxType }}">{{ #if isUser }}{{ #if isTwitter }}<i class="fa fa-twitter fa-2x" style="color:#616161; margin-bottom:10px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;<a class="userBox" href="{{ link }}" target="_blank">@{{ user }}</a>{{else}}<i class="fa fa-star fa-2x" style="color:#616161; margin-bottom:10px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;<a class="userBox" href="{{ link }}" target="_blank">{{ user }}</a>{{/if}}
+                        <br/>{{ /if }}<span class="textBox {{ boxType }}">{{ text }}</span></p>
                 </div>
             </div>
             {{/each}}
         </div>
     </div>
-    {{ > similarFilm }}
+    {{ > similarFilm }} {{ > footer }}
 </template>
-
 <template name="similarFilm">
     <div class="col-xs-12 col-sm-12 col-md-12" style="height:auto;">
         <p class="similarFilm">Similar Movies</p>

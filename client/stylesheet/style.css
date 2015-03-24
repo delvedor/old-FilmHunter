@@ -66,6 +66,13 @@ body {
 .border-green {
     border-color: #4CAF50;
 }
+
+a:link,
+a:visited,
+a:active,
+a:hover {
+    text-decoration: none;
+}
 /****** Home ******/
 
 #goSearch {
@@ -291,11 +298,11 @@ div[class="filmResult"] {
 .filmResultContainer {
     text-align: center;
     background-color: #FAFAFA;
-    border-radius: 5px;
+    border-radius: 2px;
     -webkit-transition: box-shadow 0.2s linear 0s;
     -moz-transition: box-shadow 0.2s linear 0s;
     transition: box-shadow 0.2s ease-in 0s;
-    box-shadow: 0px 3px 5px #9E9E9E;
+    box-shadow: 0 4px 8px #9E9E9E;
     width: 90%;
     /*min-height: 40vh;*/
     
@@ -305,7 +312,7 @@ div[class="filmResult"] {
 .filmResultContainer:hover {
     position: relative;
     z-index: 1000;
-    box-shadow: 0px 15px 20px #616161;
+    box-shadow: 0px 10px 15px #616161;
 }
 
 .filmDescription {
@@ -316,10 +323,6 @@ div[class="filmResult"] {
     height: 20vh;
     background-repeat: no-repeat;
     background-size: cover;
-}
-
-.filmResult.first {
-    /*min-height: 50vh;*/
 }
 
 .first .poster {
@@ -340,37 +343,6 @@ div[class="filmResult"] {
     margin-top: 20px;
 }
 
-.spaceRelKeyTitle {
-    margin-top: 20px;
-}
-
-.keywords {
-    margin: 20px 0;
-    height: 60px;
-}
-
-.keyword {
-    text-align: center;
-    background-color: #FAFAFA;
-    border-radius: 5px;
-    -webkit-transition: box-shadow 0.2s linear 0s;
-    -moz-transition: box-shadow 0.2s linear 0s;
-    transition: box-shadow 0.2s ease-in 0s;
-    box-shadow: 0px 2px 4px #9E9E9E;
-    margin: 10px 0;
-    width: 90%;
-    height: 50px;
-    font-size: 1.5em;
-    font-weight: 300;
-    cursor: pointer;
-}
-
-.keyword:hover {
-    position: relative;
-    z-index: 1000;
-    box-shadow: 0px 5px 8px #616161;
-}
-
 .resultsTitle,
 .relKeyTitle {
     text-align: center;
@@ -384,9 +356,9 @@ div[class="filmResult"] {
 
 .filmInfo {
     background-color: #FAFAFA;
-    border-radius: 5px;
+    border-radius: 2px;
     margin: 30px 0;
-    box-shadow: 0px 3px 5px #9E9E9E;
+    box-shadow: 0px 4px 8px #9E9E9E;
 }
 
 .filmInfoTitle {
@@ -413,9 +385,9 @@ div[class="filmResult"] {
 .movieInfoBoxes {
     background-repeat: no-repeat;
     background-size: cover;
-    border-radius: 5px;
-    padding: 10px;
-    box-shadow: 0px 3px 5px #9E9E9E;
+    border-radius: 2px;
+    padding: 15px;
+    box-shadow: 0 4px 8px #9E9E9E;
 }
 
 .columns {
@@ -424,8 +396,9 @@ div[class="filmResult"] {
 
 .boxTweet {
     height: auto;
-    font-size: 1.2em;
+    font-size: 1.15em;
     font-weight: 300;
+    text-align: justify;
 }
 
 .boxImage {
@@ -434,10 +407,22 @@ div[class="filmResult"] {
 
 .boxReview {
     height: auto;
-    font-size: 1.3em;
-    line-height: 30px;
+    text-align: justify;
+    font-size: 1.1em;
     letter-spacing: 1px;
     font-weight: 300;
+}
+
+.textBox {
+    display: block;
+}
+
+.textBox.boxReview::first-letter {
+    font-size: 1.8em;
+}
+
+.userBox {
+    font-size: 1.2em;
 }
 
 .aboutMovieText {
@@ -454,7 +439,7 @@ div[class="filmResult"] {
     break-inside: avoid;
     /* IE 10+ */
     
-    margin: 30px 10px;
+    margin: 25px 8px;
 }
 
 .similarFilm {
@@ -500,10 +485,10 @@ div[class="filmResult"] {
 .infoContainer,
 .bugreportContainer {
     background-color: #FAFAFA;
-    border-radius: 5px;
+    border-radius: 2px;
     margin: 10px 0;
     padding: 20px;
-    box-shadow: 0px 3px 5px #9E9E9E;
+    box-shadow: 0 4px 8px #9E9E9E;
 }
 
 .infoContainer.bottomSpace {
@@ -640,6 +625,9 @@ div[class="filmResult"] {
         -moz-column-count: 1;
         column-count: 1;
     }
+    .boxReview {
+        line-height: 25px;
+    }
 }
 
 @media only screen and (min-width: 480px) {
@@ -680,6 +668,9 @@ div[class="filmResult"] {
         -moz-column-count: 1;
         column-count: 1;
     }
+    .boxReview {
+        line-height: 25px;
+    }
 }
 
 @media only screen and (min-width: 768px) {
@@ -717,6 +708,9 @@ div[class="filmResult"] {
         -moz-column-count: 2;
         column-count: 2;
     }
+    .boxReview {
+        line-height: 28px;
+    }
 }
 
 @media only screen and (min-width: 992px) {
@@ -748,6 +742,9 @@ div[class="filmResult"] {
         -webkit-column-count: 2;
         -moz-column-count: 2;
         column-count: 2;
+    }
+    .boxReview {
+        line-height: 30px;
     }
 }
 

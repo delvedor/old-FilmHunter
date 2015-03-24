@@ -75,39 +75,30 @@ Meteor.methods({
         });
     },
 
-    searchRottenTomatoesId: function(search) {
-        /*var tom = new Future();
-        console.log(search);
-        tomatoes.search(search, function(err, data) {
-            console.log(data);
-            if (data.length !== 0)
-                tom.return(data[0].id);
-            else
-                tom.return('noResults');
-        });
-        return tom.wait();*/
-        search = escape(search);
-        return Meteor.http.call("GET", "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=" + rotten_tomatoes_api_key + "&q=" + search + "&page_limit=1", {
+    getMovieReviewsFromTmdb: function(id) {
+        return Meteor.http.call("GET", "http://api.themoviedb.org/3/movie/" + id + "/reviews?api_key=" + tmdb_api_key + "", {
             headers: {
                 "Accept": "application/json"
             }
         });
     },
 
-    searchRottenTomatoesReviews: function(id) {
-        return Meteor.http.call("GET", "http://api.rottentomatoes.com/api/public/v1.0/movies/" + id + "/reviews.json?apikey=" + rotten_tomatoes_api_key + "", {
+    getMovieReviewsFromMetacritic: function(title) {
+        return Meteor.http.call("GET", "https://byroredux-metacritic.p.mashape.com/reviews?url=http%3A%2F%2Fwww.metacritic.com%2Fmovie%2F" + title + "", {
             headers: {
+                "X-Mashape-Key": mashape_api_key,
                 "Accept": "application/json"
             }
         });
     },
+
 
     searchTweets: function(query) {
         var tw = new Future();
         twit.get('search/tweets', {
             q: '#' + query,
             result_type: 'recent', // 'recent' or 'popular'
-            count: 20,
+            count: 15,
             lang: 'en'
         }, function(err, data, response) {
             if (err)
