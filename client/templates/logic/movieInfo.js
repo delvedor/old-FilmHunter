@@ -141,21 +141,21 @@ function searchMovie(ris) {
         if (result)
             setArrayMovieInfoBoxes(result.content, 'image');
         if (err)
-            console.log(err);
+            shuffle(arrayMovieInfoBoxes, 1);
     });
 
     Meteor.call('searchTweets', twitterTitle, function(err, result) {
         if (result)
             setArrayMovieInfoBoxes(result, 'tweet');
         if (err)
-            console.log(err);
+            shuffle(arrayMovieInfoBoxes, 1);
     });
 
     Meteor.call('getMovieReviewsFromTmdb', movie, function(err, result) {
         if (result)
             setArrayMovieInfoBoxes(result.content, 'reviewtmdb');
         if (err)
-            console.log(err);
+            shuffle(arrayMovieInfoBoxes, 1);
     });
 
     Meteor.call('getMovieReviewsFromMetacritic', metacriticTitle, function(err, result) {
@@ -246,12 +246,12 @@ function getTrailer(data) {
     if (ris.results.length !== 0) {
         for (var i = 0, trailerLen = ris.results.length; i < trailerLen; ++i) {
             if (ris.results[i].type === "Trailer" && ris.results[i].site === "YouTube") {
-                arrayMovieInfo.trailer = (ris.results[i].key !== null ? "https://www.youtube.com/embed/" + ris.results[i].key + "?rel=0&amp;iv_load_policy=3&amp;theme=light" : "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif");
+                arrayMovieInfo.trailer = (ris.results[i].key !== null ? "https://www.youtube.com/embed/" + ris.results[i].key + "?rel=0&amp;iv_load_policy=3&amp;theme=light" : "http://rocketdock.com/images/screenshots/Blank.png");
                 break;
             }
         }
     } else {
-        arrayMovieInfo.trailer = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif";
+        arrayMovieInfo.trailer = "http://rocketdock.com/images/screenshots/Blank.png";
     }
     dbMovieInfo.update({
         idMovie: movie
@@ -374,7 +374,7 @@ function searchSimilarFilm(data) {
         return;
     }
     for (var i = 0; i < similarLen; ++i) {
-        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'image_not_found.jpg');
+        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'http://rocketdock.com/images/screenshots/Blank.png');
         image = image.replace(/\s/g, '');
         arrayResultSimilarFilm.push({
             popularity: ris.results[i].popularity,
