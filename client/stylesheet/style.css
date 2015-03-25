@@ -270,7 +270,8 @@ button:focus {
 }
 /****** Page NotFound ******/
 
-.notfound {
+.notfound,
+.notfoundHead {
     /*font-size: 2em;
     color: #9E9E9E;*/
     
@@ -281,6 +282,13 @@ button:focus {
     line-height: 100px;
     color: #9E9E9E;
     padding: 5px;
+}
+
+.notfoundHead {
+    font-size: 3.5em;
+    font-weight: 100;
+    margin-bottom: -50px;
+    padding: 0;
 }
 /****** Page Results ******/
 
@@ -471,6 +479,21 @@ div[class="filmResult"] {
     left: 0;
     width: 100%;
     height: 100%;
+}
+
+.facebookShare,
+.twitterShare,
+.googleplusShare,
+.mailShare {
+    cursor: pointer;
+    color: #616161;
+}
+
+.mailShareLink:link,
+.mailShareLink:visited,
+.mailShareLink:active,
+.mailShareLink:hover {
+    color: #616161;
 }
 /****** Info page ******/
 

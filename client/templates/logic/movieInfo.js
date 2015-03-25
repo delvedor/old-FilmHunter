@@ -2,13 +2,14 @@
  * Variables declaration.
  */
 
-var finished = 0;
+var finCount = 0;
 var movie = "";
 var title = "";
 var metacriticTitle = "";
 var twitterTitle = "";
 
 var arrayMovieInfo = {
+    id: "",
     title: "",
     tagline: "",
     release_date: "",
@@ -21,19 +22,19 @@ var arrayMovieInfo = {
 var arrayResultSimilarFilm = [];
 var arrayMovieInfoBoxes = [];
 
-Router.route('/movieInfo', {
-    path: '/movieInfo/:key',
+Router.route('/movie', {
+    path: '/movie/:key',
     layout: 'movieInfo',
     layoutTemplate: 'layout',
     onBeforeAction: function() {
-        this.render('loadingNoRis');
+        this.render('loading');
         checkHistory(escape(this.params.key));
         if (!Session.get('searching'))
             this.next();
     },
     action: function() {
-        if (pageHistory[pageHistory.length - 1] !== '/movieInfo/' + escape(this.params.key))
-            pageHistory.push('/movieInfo/' + escape(this.params.key));
+        if (pageHistory[pageHistory.length - 1] !== '/movie/' + escape(this.params.key))
+            pageHistory.push('/movie/' + escape(this.params.key));
         this.render('movieInfo');
     }
 });
@@ -44,7 +45,7 @@ Router.route('/movieInfo', {
 Template.resultsFilm.events({
     'click .filmResult': function(e) {
         e.preventDefault();
-        Router.go('/movieInfo/' + e.currentTarget.id);
+        Router.go('/movie/' + e.currentTarget.id);
     }
 });
 
@@ -54,7 +55,7 @@ Template.resultsFilm.events({
 Template.similarFilm.events({
     'click .filmResult': function(e) {
         e.preventDefault();
-        Router.go('/movieInfo/' + e.currentTarget.id);
+        Router.go('/movie/' + e.currentTarget.id);
         $('body,html').animate({
             scrollTop: 0
         }, '800', 'swing');
@@ -96,6 +97,7 @@ function getMovieById(id) {
     Meteor.call('getMovie', id, function(err, result) {
         if (result) {
             var ris = $.parseJSON(result.content);
+            arrayMovieInfo.id = id;
             movie = id;
             title = ris.title.replace(/\s+/g, '');
             metacriticTitle = ris.title.replace(/[^a-zA-Z0-9 ]/g, "").replace(/\s+/g, '-').toLowerCase();
@@ -160,7 +162,7 @@ function searchMovie(ris) {
         if (result)
             setArrayMovieInfoBoxes(result.content, 'reviewmetacritic');
         if (err)
-            allFinish(1, 0);
+            shuffle(arrayMovieInfoBoxes, 1);
     });
 
     dbMovieInfo.insert({
@@ -271,7 +273,8 @@ function setArrayMovieInfoBoxes(data, dataType) {
         var ris = data;
         var statusesLen = ris.statuses.length;
         if (statusesLen === 0) {
-            allFinish(1, 0);
+            shuffle(arrayMovieInfoBoxes, 1);
+            //allFinish(1, 0);
             return;
         }
         for (var i = 0; i < statusesLen; ++i) {
@@ -291,7 +294,8 @@ function setArrayMovieInfoBoxes(data, dataType) {
         var ris = $.parseJSON(data);
         var backdropsLen = ris.backdrops.length;
         if (backdropsLen === 0) {
-            allFinish(1, 0);
+            shuffle(arrayMovieInfoBoxes, 1);
+            //allFinish(1, 0);
             return;
         }
         for (var i = 0; i < backdropsLen; ++i) {
@@ -313,7 +317,8 @@ function setArrayMovieInfoBoxes(data, dataType) {
         var ris = $.parseJSON(data);
         var reviewsLen = ris.total_results;
         if (reviewsLen === 0) {
-            allFinish(1, 0);
+            shuffle(arrayMovieInfoBoxes, 1);
+            //allFinish(1, 0);
             return;
         }
         for (var i = 0; i < reviewsLen; ++i) {
@@ -335,7 +340,8 @@ function setArrayMovieInfoBoxes(data, dataType) {
         var ris = $.parseJSON(data);
         var reviewsLen = ris.count;
         if (reviewsLen === 0) {
-            allFinish(1, 0);
+            shuffle(arrayMovieInfoBoxes, 1);
+            //allFinish(1, 0);
             return;
         }
         for (var i = 0; i < reviewsLen; ++i) {
@@ -354,7 +360,7 @@ function setArrayMovieInfoBoxes(data, dataType) {
 
     }
 
-    shuffle(arrayMovieInfoBoxes);
+    shuffle(arrayMovieInfoBoxes, 1);
 }
 
 /**
@@ -396,36 +402,38 @@ function searchSimilarFilm(data) {
 function allFinish(finish, cache) {
     if (cache === 1)
         Session.set("searching", false);
-    finished += finish;
-    if (finished === 4)
+    if (finish === 1)
         Session.set("searching", false);
 }
 
 /**
  * Randomize the content of an array.
  */
-function shuffle(array) {
-    var currentIndex = array.length;
-    var temporaryValue;
-    var randomIndex;
-    while (0 !== currentIndex) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-    dbMovieInfo.update({
-        idMovie: movie
-    }, {
-        $unset: {
-            movieBoxes: arrayMovieInfoBoxes
-        },
-        $set: {
-            movieBoxes: arrayMovieInfoBoxes
+function shuffle(array, count) {
+    finCount += count;
+    if (finCount >= 4) {
+        var currentIndex = array.length;
+        var temporaryValue;
+        var randomIndex;
+        while (0 !== currentIndex) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
         }
-    });
-    allFinish(1, 0);
+        dbMovieInfo.update({
+            idMovie: movie
+        }, {
+            $unset: {
+                movieBoxes: arrayMovieInfoBoxes
+            },
+            $set: {
+                movieBoxes: arrayMovieInfoBoxes
+            }
+        });
+        allFinish(1, 0);
+    }
 }
 
 /**
@@ -444,7 +452,7 @@ function resetVariables() {
     };
     arrayResultSimilarFilm = [];
     arrayMovieInfoBoxes = [];
-    finished = 0;
+    finCount = 0;
 }
 
 /**

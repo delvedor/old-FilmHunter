@@ -2,6 +2,10 @@
  * iron:router Config
  */
 
+Router.configure({
+    notFoundTemplate: "404"
+});
+
 Router.route('/', function() {
     pageHistory = ['/'];
     this.layout('layoutHome');

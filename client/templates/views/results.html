@@ -18,8 +18,11 @@
         <div id="loader"></div>
     </div>
 </template>-->
-<template name="loading">
+<template name="loadingRes">
     <div class="col-xs-12 col-sm-12 col-md-12 loaderTotalResults">I'm analyzing {{totalResults}} films..</div>
+    {{ > loading }}
+</template>
+<template name="loading">
     <div class="preloader loading">
         <span class="slice"></span>
         <span class="slice"></span>
@@ -27,25 +30,5 @@
         <span class="slice"></span>
         <span class="slice"></span>
         <span class="slice"></span>
-    </div>
-</template>
-<template name="loadingNoRis">
-    <div class="preloader loading">
-        <span class="slice"></span>
-        <span class="slice"></span>
-        <span class="slice"></span>
-        <span class="slice"></span>
-        <span class="slice"></span>
-        <span class="slice"></span>
-    </div>
-</template>
-<template name="notfound">
-    <div class="row margin-top-50">
-        <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
-            <p class="notfound">Sorry, I've not found anything.
-                <br/>
-                <i class="fa fa-frown-o fa-3x"></i>
-            </p>
-        </div>
     </div>
 </template>

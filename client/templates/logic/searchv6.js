@@ -21,7 +21,7 @@ Router.route('/search', {
     layout: 'resultsFilm',
     layoutTemplate: 'layout',
     onBeforeAction: function() {
-        this.render('loading');
+        this.render('loadingRes');
         checkHistory(escape(this.params.key));
         if (!Session.get('searching'))
             this.next();
@@ -93,7 +93,6 @@ Template.search.events({
             query = $('#film').val().trim();
             if (query.replace(/\s/g, '') === "") {
                 $('#film').val("");
-                Router.go('/search/' + escape(query));
                 return;
             }
             Router.go('/search/' + escape(query));
@@ -105,7 +104,6 @@ Template.search.events({
         query = $('#film').val().trim();
         if (query.replace(/\s/g, '') === "") {
             $('#film').val("");
-            Router.go('/search/' + escape(query));
             return;
         }
         Router.go('/search/' + escape(query));

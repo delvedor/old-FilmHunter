@@ -17,7 +17,7 @@ Template.resultsFilm.helpers({
 /**
  * Return the number of he analized results.
  */
-Template.loading.helpers({
+Template.loadingRes.helpers({
     totalResults: function() {
         return Session.get('numberOfResults');
     }
