@@ -10,13 +10,9 @@ var notfoundCount;
 var image;
 var releaseDate;
 var pageCount;
-var typeSearch;
 
 var arrayResultFilm = [];
-var arrayResultFilmFromKeyword = [];
 var arrayResultKeyword = [];
-var arrayFullResults = [];
-var arrayFullResultsDef = [];
 
 Router.route('/search', {
     path: '/search/:key',
@@ -132,7 +128,6 @@ function startSearch(filmSearch) {
     filmLen = film.length;
 
     if (filmSearch.substring(0, 2) === "d:" || filmSearch.substring(0, 2) === "a:") {
-        typeSearch = filmSearch.substring(0, 2);
         Meteor.call('searchPerson', searchPeople, function(err, result) {
             if (result) {
                 var ris = $.parseJSON(result.content);
@@ -142,7 +137,7 @@ function startSearch(filmSearch) {
                 }
                 Meteor.call('searchPersonMovie', ris.results[0].id, function(err, result2) {
                     if (result2)
-                        savePerson(result2.content);
+                        savePerson(result2.content, filmSearch.substring(0, 2));
                     if (err)
                         console.log(err);
                 });
@@ -239,7 +234,7 @@ function saveKeywords(data) {
     for (var i = 0, risLen = ris.results.length; i < risLen; ++i) {
         image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'http://rocketdock.com/images/screenshots/Blank.png');
         image = image.replace(/\s/g, '');
-        arrayResultFilmFromKeyword.push({
+        arrayResultKeyword.push({
             keyword: ris.id,
             title: ris.results[i].title,
             id: ris.results[i].id,
@@ -250,7 +245,7 @@ function saveKeywords(data) {
         });
     }
     if (keywordCount === filmLen) {
-        arrayResultFilmFromKeyword.sort(function(a, b) {
+        arrayResultKeyword.sort(function(a, b) {
             return b.popularity - a.popularity;
         });
     }
@@ -264,60 +259,71 @@ function saveKeywords(data) {
 function allFinish(finish, notfound) {
     notfoundCount += notfound;
     finishSearch += finish;
+    var arrSwap = [];
     if (notfoundCount === filmLen + 1) {
         Router.go('notfound');
         return;
     }
 
     if (finishSearch === filmLen + 1) {
-        arrayFullResults = arrayResultFilm.concat(arrayResultFilmFromKeyword);
+        arrayResultFilm.push.apply(arrayResultFilm, arrayResultKeyword);
 
-        arrayFullResults.sort(function(a, b) {
+        arrayResultFilm.sort(function(a, b) {
             return b.popularity - a.popularity;
         });
 
-        for (var i = 0, arrLen = arrayFullResults.length; i < arrLen - 1; ++i) {
-            if (arrayFullResults[i].title === arrayFullResults[i + 1].title && arrayFullResults[i].release_date === arrayFullResults[i + 1].release_date) {
-                arrayFullResults[i + 1].popularity = arrayFullResults[i + 1].popularity * 2;
+        for (var i = 0, arrLen = arrayResultFilm.length; i < arrLen - 1; ++i) {
+            if (arrayResultFilm[i].title === arrayResultFilm[i + 1].title && arrayResultFilm[i].release_date === arrayResultFilm[i + 1].release_date) {
+                arrayResultFilm[i + 1].popularity = arrayResultFilm[i + 1].popularity * 2;
                 continue;
             } else {
-                arrayFullResultsDef.push(arrayFullResults[i]);
+                arrSwap.push(arrayResultFilm[i]);
             }
         }
-        arrayFullResultsDef.push(arrayFullResults[arrayFullResults.length - 1]);
+        arrSwap.push(arrayResultFilm[arrayResultFilm.length - 1]);
 
-        if (arrayFullResultsDef[0])
-            arrayFullResultsDef[0].order = "col-xs-12 col-sm-12 col-md-12 first";
-        if (arrayFullResultsDef[1])
-            arrayFullResultsDef[1].order = "col-xs-12 col-sm-12 col-md-6 second";
-        if (arrayFullResultsDef[2])
-            arrayFullResultsDef[2].order = "col-xs-12 col-sm-12 col-md-6 third";
-        arrayFullResultsDef = arrayFullResultsDef.slice(0, 99);
+        arrayResultFilm = arrSwap;
+        if (arrayResultFilm[0])
+            arrayResultFilm[0].order = "col-xs-12 col-sm-12 col-md-12 first";
+        if (arrayResultFilm[1])
+            arrayResultFilm[1].order = "col-xs-12 col-sm-12 col-md-6 second";
+        if (arrayResultFilm[2])
+            arrayResultFilm[2].order = "col-xs-12 col-sm-12 col-md-6 third";
+        arrayResultFilm = arrayResultFilm.slice(0, 99);
 
         dbResults.insert({
             search: search,
-            results: arrayFullResultsDef,
+            results: arrayResultFilm,
             ts: new Date()
         });
         Session.set("searching", false);
     }
 }
 
-function savePerson(data) {
+/**
+ * Saves and finalizes the results of the person search.
+ */
+function savePerson(data, typeSearch) {
     var ris = $.parseJSON(data);
+    var arr = [];
     if (ris.cast.length + ris.crew.length === 0) {
         Router.go('notfound');
         return;
     }
     Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
-    if (typeSearch === "a:") {
-        for (var i = 0, risLen = ris.cast.length; i < risLen; ++i) {
-            image = (ris.cast[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.cast[i].poster_path : 'http://rocketdock.com/images/screenshots/Blank.png');
+    if (typeSearch === "a:")
+        arr = ris.cast;
+    if (typeSearch === "d:")
+        arr = ris.crew;
+
+    for (var i = 0, risLen = arr.length; i < risLen; ++i) {
+        if (arr[i].job === "Director" || arr[i].character) {
+            image = (arr[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + arr[i].poster_path : 'http://rocketdock.com/images/screenshots/Blank.png');
             image = image.replace(/\s/g, '');
-            releaseDate = (ris.cast[i].release_date !== null ? ris.cast[i].release_date : '0');
+            releaseDate = (arr[i].release_date !== null ? arr[i].release_date : '0');
             arrayResultFilm.push({
-                title: ris.cast[i].title,
-                id: ris.cast[i].id,
+                title: arr[i].title,
+                id: arr[i].id,
                 image_path: image,
                 release_date: releaseDate,
                 rdOrder: parseInt(releaseDate.replace(/[^0-9_]/g, ''), 10),
@@ -325,38 +331,12 @@ function savePerson(data) {
             });
         }
     }
-    if (typeSearch === "d:") {
-        for (var i = 0, risLen = ris.crew.length; i < risLen; ++i) {
-            if (ris.crew[i].job === "Director") {
-                image = (ris.crew[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.crew[i].poster_path : 'http://rocketdock.com/images/screenshots/Blank.png');
-
-                image = image.replace(/\s/g, '');
-                releaseDate = (ris.crew[i].release_date !== null ? ris.crew[i].release_date : '0');
-                arrayResultFilm.push({
-                    title: ris.crew[i].title,
-                    id: ris.crew[i].id,
-                    image_path: image,
-                    release_date: releaseDate,
-                    rdOrder: parseInt(releaseDate.replace(/[^0-9_]/g, ''), 10),
-                    order: "col-xs-6 col-sm-4 col-md-4 standard"
-                });
-            }
-        }
-    }
-    for (var i = 0, arrLen = arrayResultFilm.length; i < arrLen - 1; ++i) {
-        if (arrayResultFilm[i].title === arrayResultFilm[i + 1].title && arrayResultFilm[i].release_date === arrayResultFilm[i + 1].release_date) {
-            continue;
-        } else {
-            arrayFullResultsDef.push(arrayResultFilm[i]);
-        }
-    }
-    arrayFullResultsDef.push(arrayResultFilm[arrayResultFilm.length - 1]);
-    arrayFullResultsDef.sort(function(a, b) {
+    arrayResultFilm.sort(function(a, b) {
         return b.rdOrder - a.rdOrder;
     });
     dbResults.insert({
         search: search,
-        results: arrayFullResultsDef,
+        results: arrayResultFilm,
         ts: new Date()
     });
     Session.set("searching", false);
@@ -371,10 +351,7 @@ function resetVariables() {
     notfoundCount = 0;
     pageCount = 1;
     arrayResultFilm = [];
-    arrayResultFilmFromKeyword = [];
     arrayResultKeyword = [];
-    arrayFullResults = [];
-    arrayFullResultsDef = [];
     Session.set('numberOfResults', 0);
 }
 

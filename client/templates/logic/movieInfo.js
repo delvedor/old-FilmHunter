@@ -200,7 +200,6 @@ function getMovieInfo(ris) {
             movieInfo: arrayMovieInfo
         }
     });
-    //allFinish(1, 0);
 }
 
 /**
@@ -235,7 +234,6 @@ function getMovieInfoCredits(data) {
             movieInfo: arrayMovieInfo
         }
     });
-    //allFinish(1, 0);
 }
 
 /**
@@ -274,7 +272,6 @@ function setArrayMovieInfoBoxes(data, dataType) {
         var statusesLen = ris.statuses.length;
         if (statusesLen === 0) {
             shuffle(arrayMovieInfoBoxes, 1);
-            //allFinish(1, 0);
             return;
         }
         for (var i = 0; i < statusesLen; ++i) {
@@ -295,7 +292,6 @@ function setArrayMovieInfoBoxes(data, dataType) {
         var backdropsLen = ris.backdrops.length;
         if (backdropsLen === 0) {
             shuffle(arrayMovieInfoBoxes, 1);
-            //allFinish(1, 0);
             return;
         }
         for (var i = 0; i < backdropsLen; ++i) {
@@ -318,7 +314,6 @@ function setArrayMovieInfoBoxes(data, dataType) {
         var reviewsLen = ris.total_results;
         if (reviewsLen === 0) {
             shuffle(arrayMovieInfoBoxes, 1);
-            //allFinish(1, 0);
             return;
         }
         for (var i = 0; i < reviewsLen; ++i) {
@@ -341,7 +336,6 @@ function setArrayMovieInfoBoxes(data, dataType) {
         var reviewsLen = ris.count;
         if (reviewsLen === 0) {
             shuffle(arrayMovieInfoBoxes, 1);
-            //allFinish(1, 0);
             return;
         }
         for (var i = 0; i < reviewsLen; ++i) {
@@ -396,7 +390,6 @@ function searchSimilarFilm(data) {
             similarFilm: arrayResultSimilarFilm
         }
     });
-    //allFinish(1, 0);
 }
 
 function allFinish(finish, cache) {

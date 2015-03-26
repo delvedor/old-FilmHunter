@@ -12,11 +12,11 @@ Router.route('/', function() {
     this.render('home');
 });
 
-Router.route('/info', function() {
-    if (pageHistory[pageHistory.length - 1] !== 'info')
-        pageHistory.push('info');
+Router.route('/help', function() {
+    if (pageHistory[pageHistory.length - 1] !== 'help')
+        pageHistory.push('help');
     this.layout('layout');
-    this.render('info');
+    this.render('help');
 });
 
 Router.route('/notfound', function() {
