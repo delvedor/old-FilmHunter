@@ -20,13 +20,13 @@ Router.route('/search', {
     layoutTemplate: 'layout',
     onBeforeAction: function() {
         this.render('loadingRes');
-        checkHistory(escape(this.params.key));
+        checkHistory((this.params.key).replace(/[^a-zA-Z0-9_:]/g, '-'));
         if (!Session.get('searching'))
             this.next();
     },
     action: function() {
-        if (pageHistory[pageHistory.length - 1] !== '/search/' + escape(this.params.key))
-            pageHistory.push('/search/' + escape(this.params.key));
+        if (pageHistory[pageHistory.length - 1] !== '/search/' + (this.params.key).replace(/[^a-zA-Z0-9_:]/g, '-'))
+            pageHistory.push('/search/' + (this.params.key).replace(/[^a-zA-Z0-9_:]/g, '-'));
         this.render('resultsFilm');
     }
 });
@@ -38,11 +38,10 @@ function checkHistory(params) {
             return;
         }
     }
-    setSearch(unescape(params));
+    setSearch(params);
 }
 
 function loadHistory(params) {
-    Session.set('query', unescape(params));
     dbResults.update({
         search: params
     }, {
@@ -58,7 +57,7 @@ function loadHistory(params) {
 /**
  * Home Template Events
  */
-Template.home.events({
+Template.layout.events({
     'keyup #filmSearch': function(e) {
         if (e.type === "keyup" && e.which === 13) {
             e.preventDefault();
@@ -67,7 +66,7 @@ Template.home.events({
                 $('#filmSearch').val("");
                 return;
             }
-            Router.go('/search/' + escape(query));
+            Router.go('/search/' + query.replace(/[^a-zA-Z0-9_:]/g, '-'));
         }
     },
     'click #goSearch': function(e) {
@@ -77,42 +76,14 @@ Template.home.events({
             $('#filmSearch').val("");
             return;
         }
-        Router.go('/search/' + escape(query));
-    }
-});
-
-/**
- * Search Template Events
- */
-Template.search.events({
-    'keyup #film': function(e) {
-        if (e.type === "keyup" && e.which === 13) {
-            e.preventDefault();
-            query = $('#film').val().trim();
-            if (query.replace(/\s/g, '') === "") {
-                $('#film').val("");
-                return;
-            }
-            Router.go('/search/' + escape(query));
-        }
-    },
-
-    'click #submitFilm': function(e) {
-        e.preventDefault();
-        query = $('#film').val().trim();
-        if (query.replace(/\s/g, '') === "") {
-            $('#film').val("");
-            return;
-        }
-        Router.go('/search/' + escape(query));
+        Router.go('/search/' + query.replace(/[^a-zA-Z0-9_:]/g, '-'));
     }
 });
 
 function setSearch(query) {
-    searchHistory.push(escape(query));
-    Session.set('query', query);
+    searchHistory.push(query);
     Session.set("searching", true);
-    startSearch(query);
+    startSearch(query.replace(/[-]/g, ' '));
 }
 
 /**
@@ -120,7 +91,7 @@ function setSearch(query) {
  */
 function startSearch(filmSearch) {
     resetVariables();
-    search = escape(filmSearch);
+    search = filmSearch.replace(/[^a-zA-Z0-9_:]/g, '-');
     searchPeople = filmSearch.substring(2).trim();
     searchPeople = searchPeople.trim();
     searchPeople = escape(searchPeople);
@@ -155,7 +126,7 @@ function startSearch(filmSearch) {
                     console.log(err);
             });
         }
-        Meteor.call('searchMovies', search, pageCount, function(err, result) {
+        Meteor.call('searchMovies', escape(filmSearch), pageCount, function(err, result) {
             if (result)
                 saveMovies(result.content);
             if (err)
@@ -354,12 +325,3 @@ function resetVariables() {
     arrayResultKeyword = [];
     Session.set('numberOfResults', 0);
 }
-
-/**
- * Write the query into the input field
- */
-Template.search.helpers({
-    query: function() {
-        return Session.get('query');
-    }
-});

@@ -18,65 +18,19 @@
     font-weight: 400;
 }
 
+@font-face {
+    font-family: 'Oswald';
+    src: url('Oswald-Light.ttf');
+    font-weight: 300;
+}
+
 html,
 body {
     height: 100%;
     width: 100%;
-    background-color: #EEEEEE;
+    background-color: #F7F7F7;
     font-size: 14px;
     font-family: 'Lato', sans-serif;
-}
-
-.margin-top-50 {
-    margin-top: 50px;
-}
-
-.color-blue {
-    color: #0277BD;
-}
-
-.color-red {
-    color: #F44336;
-}
-
-.color-green {
-    color: #4CAF50;
-}
-
-.background-blue {
-    background-color: #0277BD;
-}
-
-.background-red {
-    background-color: #F44336;
-}
-
-.background-green {
-    background-color: #4CAF50;
-}
-
-.border-blue {
-    border-color: #0277BD;
-}
-
-.border-red {
-    border-color: #F44336;
-}
-
-.border-green {
-    border-color: #4CAF50;
-}
-
-.traspBackground-blue {
-    background-color: rgba(30, 136, 229, 0.9);
-}
-
-.traspBackground-red {
-    background-color: rgba(229, 57, 53, 0.9);
-}
-
-.traspBackground-green {
-    background-color: rgba(67, 160, 71, 0.9);
 }
 
 a:link,
@@ -87,76 +41,49 @@ a:hover {
 }
 /****** Home ******/
 
-#goSearch {
-    background-color: rgba(255, 255, 255, 0);
-    color: #ffffff;
-    height: 50px;
-    line-height: 50px;
-    width: 20%;
-    border-style: none;
-}
-
-#filmSearch {
-    font-weight: 400;
+.titleBackground {
+    text-align: center;
 }
 
 .title {
-    letter-spacing: 3px;
-    padding-top: 15vh;
-}
-
-.infoVersion {
+    font-family: 'Oswald', sans-serif;
     text-align: center;
-    color: #FAFAFA;
-    font-weight: 400;
+    font-weight: 300;
+    text-transform: uppercase;
+    color: #616161;
+    margin-top: 50px;
 }
 
-.infoHome {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    text-align: right;
-    padding: 15px 20px;
-    color: #ffffff;
-}
-
-.infoHome a,
-.infoHome a:hover,
-.infoHome a:visited {
-    color: #ffffff;
-    text-decoration: none;
-}
-
-.traspBack {
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 3px;
+.searchBar {
+    background-color: #FAFAFA;
+    border-radius: 20px;
+    margin-top: 20px;
 }
 
 #filmSearch {
-    background-color: rgba(255, 255, 255, 0);
-    color: #ffffff;
-    width: 79%;
-    border-style: none;
+    height: 50px;
+    font-size: 1.4em;
+    font-weight: 300;
+    color: #616161;
+    background-color: #FAFAFA;
     text-align: center;
-    height: 70px;
-    line-height: 70px;
-    font-size: 1.5em;
+    border: none;
 }
 
-#filmSearch::-webkit-input-placeholder {
-    color: #ffffff;
+#goSearch {
+    color: #9E9E9E;
+    background-color: rgba(255, 255, 255, 0);
+    height: 50px;
+    line-height: 50px;
+    border-style: none;
 }
 
-#filmSearch:-moz-placeholder {
-    color: #ffffff;
-}
-
-#filmSearch::-moz-placeholder {
-    color: #ffffff;
-}
-
-#filmSearch:-ms-input-placeholder {
-    color: #ffffff;
+.infoHome {
+    padding: 50px 0;
+    margin: 0 auto;
+    font-weight: 300;
+    color: #616161;
+    text-align: justify;
 }
 /****** Header ******/
 
@@ -167,7 +94,7 @@ a:hover {
 .backButton {
     text-align: left;
     width: 49%;
-    color: #ffffff;
+    color: #616161;
     display: inline-block;
 }
 
@@ -185,7 +112,7 @@ a:hover {
     width: 30px !important;
     height: 30px !important;
     line-height: 30px;
-    color: #ffffff;
+    color: #616161;
     background-color: rgba(0, 0, 0, 0);
     border-style: none;
 }
@@ -193,11 +120,12 @@ a:hover {
 .slide-panel {
     border-style: none;
     box-shadow: -1px 0 20px #757575;
+    background-color: rgba(238, 238, 238, 0.9);
 }
 
 .slide-panel .close-panel {
     font-size: 5em;
-    color: #FAFAFA;
+    color: #616161;
 }
 
 .sidePanelEle {
@@ -208,7 +136,7 @@ a:hover {
 .sidePanelEle a {
     margin: 0 15px;
     font-weight: 300;
-    color: #FAFAFA;
+    color: #616161;
     text-transform: uppercase;
 }
 
@@ -216,69 +144,6 @@ a:hover {
     display: none;
 }
 
-.header {
-    height: 130px;
-    margin-top: -40px;
-    box-shadow: 0px 3px 1px #616161;
-}
-
-.titleBackground {
-    background-image: url('background1.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 100vh;
-    margin: 0;
-    margin-top: -20px;
-    padding: 0;
-    width: 100%;
-}
-
-.title,
-.titleSearch {
-    text-align: center;
-    font-weight: 100;
-    text-transform: uppercase;
-    color: #ffffff;
-}
-
-.titleSearch {
-    text-shadow: 1px 1px 1px #01579B;
-    padding: 2vh 0;
-    font-weight: 300;
-}
-
-.titleSearch a {
-    text-decoration: none;
-    color: inherit;
-}
-
-.border-search {
-    border-width: 5px;
-    border-style: solid;
-    border-radius: 50px;
-    background-color: #FAFAFA;
-}
-
-#film,
-#submitFilm {
-    width: 100%;
-    border-style: none;
-    text-align: center;
-    height: 70px;
-    line-height: 70px;
-    font-size: 1.5em;
-}
-
-#film,
-#submitFilm {
-    background-color: inherit;
-}
-
-#submitFilm {
-    font-size: 1.2em;
-}
-
-#film:focus,
 #filmSearch,
 button:focus {
     outline: none;
@@ -370,12 +235,16 @@ div[class="filmResult"] {
     color: #9E9E9E;
     padding: 5px;
 }
+
+.resultsGrid {
+    margin: 100px 0;
+}
 /****** Movie info ******/
 
 .filmInfo {
     background-color: #FAFAFA;
     border-radius: 2px;
-    margin: 30px 0;
+    margin: 120px 0;
     box-shadow: 0px 4px 8px #9E9E9E;
 }
 
@@ -513,6 +382,7 @@ div[class="filmResult"] {
     font-weight: 300;
     color: #9E9E9E;
     padding: 5px;
+    font-size: 2em;
 }
 
 .infoContainer,
@@ -541,6 +411,7 @@ div[class="filmResult"] {
 
 .howToUse,
 .sendBugReport {
+    text-align: left;
     font-weight: 300;
     font-size: 1.4em;
     color: #424242;
@@ -549,6 +420,7 @@ div[class="filmResult"] {
 }
 
 .sendBugReportList {
+    text-align: left;
     font-weight: 300;
     font-size: 1.3em;
     color: #424242;
@@ -564,9 +436,8 @@ div[class="filmResult"] {
 }
 
 .sendBugButton {
-    width: 50%;
+    width: 40%;
     margin-top: 15px;
-    margin-left: 25%;
     height: 50px;
     font-weight: 300;
     font-size: 1.2em;
@@ -585,11 +456,22 @@ div[class="filmResult"] {
     body {
         font-size: 10px;
     }
-    .title {
-        font-size: 4em;
+    #logo {
+        width: 150px;
+        height: 150px;
     }
-    .titleSearch {
-        letter-spacing: 15px;
+    .title {
+        font-size: 1.8em;
+        letter-spacing: 10px;
+        padding-left: 15px;
+        margin-top: 30px;
+    }
+    .infoHome {
+        width: 100%;
+        font-size: 1.2em;
+    }
+    .searchBar {
+        border: 1px #9E9E9E solid;
     }
     .first {
         font-size: 1.3em;
@@ -600,18 +482,6 @@ div[class="filmResult"] {
     }
     .standard {
         font-size: 1.1em;
-    }
-    #film,
-    #submitFilm {
-        height: 40px;
-        line-height: 40px;
-    }
-    .border-search {
-        margin-top: -20px;
-    }
-    .preloader {
-        left: 50%;
-        top: 65%;
     }
     .columns {
         -webkit-column-count: 1;
@@ -629,10 +499,14 @@ div[class="filmResult"] {
         font-size: 11px;
     }
     .title {
-        font-size: 4.5em;
+        font-size: 2em;
+        letter-spacing: 15px;
+        padding-left: 15px;
+        margin-top: 30px;
     }
-    .titleSearch {
-        letter-spacing: 30px;
+    .infoHome {
+        width: 100%;
+        font-size: 1.3em;
     }
     .first {
         font-size: 1.7em;
@@ -643,18 +517,6 @@ div[class="filmResult"] {
     }
     .standard {
         font-size: 1.2em;
-    }
-    #film,
-    #submitFilm {
-        height: 40px;
-        line-height: 40px;
-    }
-    .border-search {
-        margin-top: -20px;
-    }
-    .preloader {
-        left: 50%;
-        top: 65%;
     }
     .columns {
         -webkit-column-count: 1;
@@ -675,10 +537,13 @@ div[class="filmResult"] {
         font-size: 12px;
     }
     .title {
-        font-size: 5em;
+        font-size: 2em;
+        letter-spacing: 22px;
+        padding-left: 25px;
+        margin-top: 50px;
     }
-    .titleSearch {
-        letter-spacing: 50px;
+    .searchBar {
+        border: 2px #9E9E9E solid;
     }
     .first {
         font-size: 1.7em;
@@ -689,18 +554,6 @@ div[class="filmResult"] {
     }
     .standard {
         font-size: 1.2em;
-    }
-    #film,
-    #submitFilm {
-        height: 50px;
-        line-height: 50px;
-    }
-    .border-search {
-        margin-top: -25px;
-    }
-    .preloader {
-        left: 50%;
-        top: 60%;
     }
     .columns {
         -webkit-column-count: 1;
@@ -720,8 +573,19 @@ div[class="filmResult"] {
     body {
         font-size: 14px;
     }
+    #logo {
+        width: 220px;
+        height: 220px;
+    }
     .title {
-        font-size: 5em;
+        font-size: 2em;
+        letter-spacing: 35px;
+        padding-left: 30px;
+        margin-top: 50px;
+    }
+    .infoHome {
+        width: 100%;
+        font-size: 1.4em;
     }
     .first {
         font-size: 1.8em;
@@ -732,18 +596,6 @@ div[class="filmResult"] {
     }
     .standard {
         font-size: 1.3em;
-    }
-    #film,
-    #submitFilm {
-        height: 70px;
-        line-height: 70px;
-    }
-    .border-search {
-        margin-top: -40px;
-    }
-    .preloader {
-        left: 50%;
-        top: 55%;
     }
     .columns {
         -webkit-column-count: 2;
@@ -764,7 +616,14 @@ div[class="filmResult"] {
         font-size: 14px;
     }
     .title {
-        font-size: 7em;
+        font-size: 3em;
+        letter-spacing: 50px;
+        padding-left: 50px;
+        margin-top: 50px;
+    }
+    .infoHome {
+        width: 100%;
+        font-size: 1.4em;
     }
     .traspBack {
         margin-top: 100px;
@@ -778,10 +637,6 @@ div[class="filmResult"] {
     }
     .standard {
         font-size: 1.4em;
-    }
-    .preloader {
-        left: 50%;
-        top: 50%;
     }
     .columns {
         -webkit-column-count: 2;
@@ -816,81 +671,6 @@ only screen and (max-width: 767px) {
     padding: 5px;
     margin-top: 35px;
 }
-/*#loader-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
-}
-
-#loader {
-    display: block;
-    position: relative;
-    width: 150px;
-    height: 150px;
-    margin: -75px 0 0 -75px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #0277BD;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-}
-
-#loader:before {
-    content: "";
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #F44336;
-    -webkit-animation: spin 3s linear infinite;
-    animation: spin 3s linear infinite;
-}
-
-#loader:after {
-    content: "";
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    right: 15px;
-    bottom: 15px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #4CAF50;
-    -webkit-animation: spin 1.5s linear infinite;
-    animation: spin 1.5s linear infinite;
-}
-
-@-webkit-keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}*/
 
 @-webkit-keyframes preload-show-1 {
     from {
@@ -1346,11 +1126,12 @@ only screen and (max-width: 767px) {
     }
 }
 
+.loader {
+    margin-top: 100px;
+    margin-left: 48%;
+}
+
 .preloader {
-    position: absolute;
-    /*top: 70%;
-  left: 50%;*/
-    
     font-size: 20px;
     display: block;
     width: 3.75em;

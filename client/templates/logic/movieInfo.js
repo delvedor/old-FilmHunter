@@ -324,7 +324,7 @@ function setArrayMovieInfoBoxes(data, dataType) {
                 background: 'background-color: #FAFAFA',
                 isUser: true,
                 isTwitter: false,
-                user: ris.results[i].author,
+                user: ris.results[i].author + ' - TMDb',
                 text: ris.results[i].content,
                 link: ris.results[i].url
             });

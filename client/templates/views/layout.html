@@ -8,13 +8,35 @@
             </button>
         </div>
     </div>
-    <div class="header">
-        <h1 class="titleSearch"><a href="/">Film Hunter</a></h1>
-    </div>
-    <div class="container">
-        {{ > search }} {{> yield}}
+    <div class="titleBackground">
+        <a href="/"><img id="logo" src="/logo.png"></a>
+        <h1 class="title">Film Hunter</h1>
+        <div class="container">
+            <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 searchBar">
+                <div class="col-xs-10 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-2">
+                    <input id="filmSearch" type="text" placeholder="Search for a film..">
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-4">
+                    <button id="goSearch" type="button">
+                        <i class="fa fa-search fa-2x"></i>
+                    </button>
+                </div>
+            </div>
+            {{> yield}}
+        </div>
     </div>
     {{> slidePanel}}
+</template>
+<template name="home">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+            <p class="infoHome">You don’t know what to see this evening?
+                <br/>Type few keywords into the search bar and let me help you.
+                <br/>
+                <br/>If you are looking for a movie from a specific director, type <em>d:</em> before the name,
+                <br/>if you want a specific actor, type <em>a:</em> before the name.</p>
+        </div>
+    </div>
 </template>
 <template name="sidePanel">
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="/">Home</a></p>

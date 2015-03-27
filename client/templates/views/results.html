@@ -1,34 +1,35 @@
 <template name="resultsFilm">
-    {{ #each resultsPageFilm }}
-    <div id="{{ id }}" class="filmResult {{ order }}">
-        <div class="filmResultContainer">
-            <div class="poster" style="background-image:url('{{image_path}}')"></div>
-            <div class="filmDescription">
-                <p>
-                    {{ title }}
-                </p>
+    <div class="row resultsGrid">
+        {{ #each resultsPageFilm }}
+        <div id="{{ id }}" class="filmResult {{ order }}">
+            <div class="filmResultContainer">
+                <div class="poster" style="background-image:url('{{image_path}}')"></div>
+                <div class="filmDescription">
+                    <p>
+                        {{ title }}
+                    </p>
+                </div>
             </div>
         </div>
+        {{/each}}
     </div>
-    {{/each}} {{ > footer }}
+    {{ > footer }}
 </template>
-<!--<template name="loading">
-    <div class="col-xs-12 col-sm-12 col-md-12 loaderTotalResults">I'm analyzing {{totalResults}} films..</div>
-    <div id="loader-wrapper">
-        <div id="loader"></div>
-    </div>
-</template>-->
 <template name="loadingRes">
     <div class="col-xs-12 col-sm-12 col-md-12 loaderTotalResults">I'm analyzing {{totalResults}} films..</div>
     {{ > loading }}
 </template>
 <template name="loading">
-    <div class="preloader loading">
-        <span class="slice"></span>
-        <span class="slice"></span>
-        <span class="slice"></span>
-        <span class="slice"></span>
-        <span class="slice"></span>
-        <span class="slice"></span>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 loader">
+            <div class="preloader loading">
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+            </div>
+        </div>
     </div>
 </template>

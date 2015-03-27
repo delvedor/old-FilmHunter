@@ -8,7 +8,7 @@ Router.configure({
 
 Router.route('/', function() {
     pageHistory = ['/'];
-    this.layout('layoutHome');
+    this.layout('layout');
     this.render('home');
 });
 
