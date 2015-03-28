@@ -45,6 +45,11 @@ a:hover {
     text-align: center;
 }
 
+#logo {
+    position: relative;
+    z-index: 2000;
+}
+
 .title {
     font-family: 'Oswald', sans-serif;
     text-align: center;
@@ -61,6 +66,7 @@ a:hover {
 }
 
 #filmSearch {
+    width: 100%;
     height: 50px;
     font-size: 1.4em;
     font-weight: 300;
@@ -87,13 +93,22 @@ a:hover {
 }
 /****** Header ******/
 
+.nav-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    z-index: 2000;
+    background-color: #f7f7f7;
+}
+
 .nav-bar {
-    padding: 10px 20px 0 20px;
+    padding: 10px 0;
 }
 
 .backButton {
     text-align: left;
-    width: 49%;
     color: #616161;
     display: inline-block;
 }
@@ -110,7 +125,6 @@ a:hover {
 
 .sidePanel {
     text-align: right;
-    width: 49%;
     display: inline-block;
 }
 
@@ -126,7 +140,7 @@ a:hover {
 .slide-panel {
     border-style: none;
     box-shadow: -1px 0 20px #757575;
-    background-color: rgba(238, 238, 238, 0.9);
+    background-color: rgba(250, 250, 250, 0.95);
 }
 
 .slide-panel .close-panel {
@@ -212,7 +226,7 @@ div[class="filmResult"] {
 
 .filmResultContainer:hover {
     position: relative;
-    z-index: 1000;
+    z-index: 999;
     box-shadow: 0px 10px 15px #616161;
 }
 
@@ -474,6 +488,9 @@ div[class="filmResult"] {
     body {
         font-size: 10px;
     }
+    .titleBackground {
+        margin-top: 20px;
+    }
     #logo {
         width: 150px;
         height: 150px;
@@ -554,6 +571,9 @@ div[class="filmResult"] {
     body {
         font-size: 12px;
     }
+    .titleBackground {
+        margin-top: 30px;
+    }
     .title {
         font-size: 2em;
         letter-spacing: 22px;
@@ -590,6 +610,9 @@ div[class="filmResult"] {
     html,
     body {
         font-size: 14px;
+    }
+    .titleBackground {
+        margin-top: 60px;
     }
     #logo {
         width: 220px;

@@ -1,7 +1,6 @@
 /**
  * Global Variables
  */
-
 movieHistory = [];
 searchHistory = [];
 pageHistory = ['/'];
