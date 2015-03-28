@@ -14,7 +14,8 @@
         <div class="container">
             <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 searchBar">
                 <div class="col-xs-10 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-2">
-                    <input id="filmSearch" type="text" placeholder="Search for a film..">
+                    <!--<input id="filmSearch" type="text" placeholder="Search for a movie..">-->
+                    {{> inputAutocomplete settings=settings id="filmSearch" placeholder="Search for a movie.."}}
                 </div>
                 <div class="col-xs-2 col-sm-2 col-md-4">
                     <button id="goSearch" type="button">
@@ -34,7 +35,8 @@
                 <br/>Type few keywords into the search bar and let me help you.
                 <br/>
                 <br/>If you are looking for a movie from a specific director, type <em>d:</em> before the name,
-                <br/>if you want a specific actor, type <em>a:</em> before the name.</p>
+                <br/>if you want a specific actor, type <em>a:</em> before the name.
+                <br/>You want a specific genre? Type <em>g: genre</em>.</p>
         </div>
     </div>
 </template>
@@ -42,4 +44,7 @@
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="/">Home</a></p>
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'help'}}">Help</a></p>
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'bugReport'}}">Bug Report</a></p>
+</template>
+<template name="dropdown">
+    <p id="{{id}}" class="dropdownLabel">{{name}}</p>
 </template>

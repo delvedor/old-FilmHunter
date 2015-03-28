@@ -102,6 +102,12 @@ a:hover {
     cursor: pointer;
 }
 
+#backFaButton:hover,
+.sidePanelButton:hover,
+.slide-panel .close-panel:hover {
+    color: #424242;
+}
+
 .sidePanel {
     text-align: right;
     width: 49%;
@@ -168,6 +174,18 @@ button:focus {
     padding: 0;
 }
 /****** Page Results ******/
+
+.dropdownLabel {
+    font-weight: 300;
+    font-size: 1.2em;
+    padding: 5px;
+    margin: 0;
+    width: 200px;
+}
+
+.-autocmplete-container {
+    border: 1px red solid;
+}
 
 .filmResult {
     margin: 0;
