@@ -1,25 +1,27 @@
 <template name="bugReport">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
-            <h1 class="infoTitle">Bug Report</h1>
-        </div>
-        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
-            <div class="bugreportContainer upSpace">
-                <img src="bugreport.jpg">
-                <p class="sendBugReport">You can report bug here.
-                    <br/>Please provide a brief description of the bug and a brief description of what you were doing.
-                </p>
-                <ul class="sendBugReportList">
-                    <li><i>Good:</i> I wrote "evolution" in the search bar after pressing twice back with the back button of the browser and the page is blocked.</li>
-                    <li><i>Bad:</i> The page is blocked.</li>
-                </ul>
-                <p class="sendBugReport">
-                    <br/>Bug Report:
-                </p>
-                <textarea id="textBugReport" class="form-control" rows="5" placeholder="Bug Report"></textarea>
-                <button id="sendBugReport" type="button" class="sendBugButton">Send</button>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
+                <h1 class="infoTitle">Bug Report</h1>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                <div class="bugreportContainer upSpace">
+                    <img src="bugreport.jpg">
+                    <p class="sendBugReport">You can report bug here.
+                        <br/>Please provide a brief description of the bug and a brief description of what you were doing.
+                    </p>
+                    <ul class="sendBugReportList">
+                        <li><i>Good:</i> I wrote "evolution" in the search bar after pressing twice back with the back button of the browser and the page is blocked.</li>
+                        <li><i>Bad:</i> The page is blocked.</li>
+                    </ul>
+                    <p class="sendBugReport">
+                        <br/>Bug Report:
+                    </p>
+                    <textarea id="textBugReport" class="form-control" rows="5" placeholder="Bug Report"></textarea>
+                    <button id="sendBugReport" type="button" class="sendBugButton">Send</button>
+                </div>
             </div>
         </div>
-        {{ > footer }}
     </div>
+    {{ > footer }}
 </template>

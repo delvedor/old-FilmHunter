@@ -1,39 +1,41 @@
 <template name="movieInfo">
-    <div class="row filmInfo">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <h2 class="filmInfoTitle">{{ movieInfo.title }}</h2>
-            <h3 class="filmInfoTagline">{{ movieInfo.tagline }}</h3>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <p class="filmInfoGenres">Genres: {{ movieInfo.genres }}</p>
-            <p class="filmInfoReleaseDate">Release date: {{ movieInfo.release_date }}</p>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12" style="height:auto;">
-            <div class="flex-video widescreen">
-                <object data="{{ movieInfo.trailer }}"></object>
+    <div class="container">
+        <div class="row filmInfo">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <h2 class="filmInfoTitle">{{ movieInfo.title }}</h2>
+                <h3 class="filmInfoTagline">{{ movieInfo.tagline }}</h3>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <p class="filmInfoGenres">Genres: {{ movieInfo.genres }}</p>
+                <p class="filmInfoReleaseDate">Release date: {{ movieInfo.release_date }}</p>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12" style="height:auto;">
+                <div class="flex-video widescreen">
+                    <object data="{{ movieInfo.trailer }}"></object>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 facebookShare" style="text-align: center; margin-bottom: 20px;">
+                <i class="fa fa-facebook-square fa-3x"></i>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 twitterShare" style="text-align: center; margin-bottom: 20px;">
+                <i class="fa fa-twitter-square fa-3x"></i>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 googleplusShare" style="text-align: center; margin-bottom: 20px;">
+                <i class="fa fa-google-plus-square fa-3x"></i>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 mailShare" style="text-align: center; margin-bottom: 20px;">
+                <a class="mailShareLink" href="mailto:?Subject={{ movieInfo.title }} on FilmHunter&Body=http://filmhunter.org/movie/{{ movieInfo.id }}"><i class="fa fa-envelope-square fa-3x"></i></a>
             </div>
         </div>
-        <div class="col-xs-3 col-sm-3 col-md-3 facebookShare" style="text-align: center; margin-bottom: 20px;">
-            <i class="fa fa-facebook-square fa-3x"></i>
-        </div>
-        <div class="col-xs-3 col-sm-3 col-md-3 twitterShare" style="text-align: center; margin-bottom: 20px;">
-            <i class="fa fa-twitter-square fa-3x"></i>
-        </div>
-        <div class="col-xs-3 col-sm-3 col-md-3 googleplusShare" style="text-align: center; margin-bottom: 20px;">
-            <i class="fa fa-google-plus-square fa-3x"></i>
-        </div>
-        <div class="col-xs-3 col-sm-3 col-md-3 mailShare" style="text-align: center; margin-bottom: 20px;">
-            <a class="mailShareLink" href="mailto:?Subject={{ movieInfo.title }} on FilmHunter&Body=http://filmhunter.org/movie/{{ movieInfo.id }}"><i class="fa fa-envelope-square fa-3x"></i></a>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12" style="height:auto;">
+                <p class="similarFilm">About Movie</p>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12" style="height:auto;">
-            <p class="similarFilm">About Movie</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="columns">
-            <div class="colElement">
+    <div class="container-fluid">
+        <div class="row gridInfo">
+            <div class="colElement-movieInfo">
                 <div class="movieInfoBoxes" style="background-color: #FAFAFA;">
                     <p class="aboutMovieText">Actors: {{ movieInfo.cast }}</p>
                     <p class="aboutMovieText">Director: {{ movieInfo.director }}</p>
@@ -41,7 +43,7 @@
                 </div>
             </div>
             {{ #each movieInfoBoxes }}
-            <div class="colElement">
+            <div class="colElement-movieInfo">
                 <div class="movieInfoBoxes" style="{{ background }}">
                     <p class="{{ boxType }}">{{ #if isUser }}{{ #if isTwitter }}<i class="fa fa-twitter fa-2x" style="color:#616161; margin-bottom:10px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;<a class="userBox" href="{{ link }}" target="_blank">@{{ user }}</a>{{else}}<i class="fa fa-star fa-2x" style="color:#616161; margin-bottom:10px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;<a class="userBox" href="{{ link }}" target="_blank">{{ user }}</a>{{/if}}
                         <br/>{{ /if }}<span class="textBox {{ boxType }}">{{ text }}</span></p>
@@ -53,19 +55,23 @@
     {{ > similarFilm }} {{ > footer }}
 </template>
 <template name="similarFilm">
-    <div class="col-xs-12 col-sm-12 col-md-12" style="height:auto;">
-        <p class="similarFilm">Similar Movies</p>
-    </div>
-    {{ #each similarFilmArr }}
-    <div id="{{ id }}" class="filmResult {{ order }}">
-        <div class="filmResultContainer">
-            <div class="poster" style="background-image:url('{{image_path}}')"></div>
-            <div class="filmDescription">
-                <p>
-                    {{ title }}
-                </p>
-            </div>
+    <div class="container">
+        <div class="col-xs-12 col-sm-12 col-md-12" style="height:auto;">
+            <p class="similarFilm">Similar Movies</p>
         </div>
     </div>
-    {{/each}}
+    <div class="container-fluid">
+        <div class="row resultsGrid">
+            {{ #each similarFilmArr }}
+            <div id="{{ id }}" class="colElement-results filmResult-col {{ order }}">
+                <div class="poster-col" style="background-image:url('{{image_path}}')"></div>
+                <div class="filmDescription-col">
+                    <p>
+                        {{ title }}
+                    </p>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
 </template>

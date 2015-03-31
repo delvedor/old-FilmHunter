@@ -1,46 +1,50 @@
 <template name="help">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
-            <h1 class="infoTitle">Help</h1>
-        </div>
-        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
-            <div class="infoContainer upSpace">
-                <img src="info.jpg">
-                <p class="howToUse">You don't know what movie to watch? <strong>Film Hunter</strong> can help you!
-                    <br/>Type into the search bar a few words that describes the film you want to watch and Film Hunter will find for you a list of movies corresponding to your search.
-                    <br/>
-                    <br/>When you select a film <strong>Film Hunter</strong> will give you some information about the movie, such as the trailer, release date and the genre, in addition will give you a list of reviews, tweets and images about the film for give you an overview of what it is and what you can expect from the film.
-                    <br/>Moreover, it will give you a list of related movies.
-                    <br/>
-                    <br/>Do you want an example?
-                    <br/>Try to type <em>"Evolution"</em> in the search bar.
-                    <br/>
-                    <br/>In addition, <strong>Film Hunter</strong> can search movies by <strong>Director</strong>, <strong>Actor</strong> or <strong>Genre</strong>, it's very easy:
-                    <br/>- if you want to search movies by Director, type <em>"d:Name"</em>,
-                    <br/>- if you want to search movies by Actor, type <em>"a:Name"</em>,
-                    <br/>- if you want to search movies by Genre, type <em>"g:Name"</em>.
-                    <br/>
-                    <br/>Do you want an example?
-                    <br/>Try to type <em>"d:Stanley Kubrick"</em> or <em>"a:Brad Pitt"</em> or <em>"g:Action"</em> into the search bar.
-                    <br/>
-                    <br/>The only language supported at the moment is English.
-                </p>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
+                <h1 class="infoTitle">Help</h1>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                <div class="infoContainer upSpace">
+                    <img src="info.jpg">
+                    <p class="howToUse">You don't know what movie to watch? <strong>Film Hunter</strong> can help you!
+                        <br/>Type into the search bar a few words that describes the film you want to watch and Film Hunter will find for you a list of movies corresponding to your search.
+                        <br/>
+                        <br/>When you select a film <strong>Film Hunter</strong> will give you some information about the movie, such as the trailer, release date and the genre, in addition will give you a list of reviews, tweets and images about the film for give you an overview of what it is and what you can expect from the film.
+                        <br/>Moreover, it will give you a list of related movies.
+                        <br/>
+                        <br/>Do you want an example?
+                        <br/>Try to type <em>"Evolution"</em> in the search bar.
+                        <br/>
+                        <br/>In addition, <strong>Film Hunter</strong> can search movies by <strong>Director</strong>, <strong>Actor</strong> or <strong>Genre</strong>, it's very easy:
+                        <br/>- if you want to search movies by Director, type <em>"d:Name"</em>,
+                        <br/>- if you want to search movies by Actor, type <em>"a:Name"</em>,
+                        <br/>- if you want to search movies by Genre, type <em>"g:Name"</em>.
+                        <br/>
+                        <br/>Do you want an example?
+                        <br/>Try to type <em>"d:Stanley Kubrick"</em> or <em>"a:Brad Pitt"</em> or <em>"g:Action"</em> into the search bar.
+                        <br/>
+                        <br/>The only language supported at the moment is English.
+                    </p>
+                </div>
             </div>
         </div>
-        {{ > footer }}
     </div>
+    {{ > footer }}
 </template>
 <template name="footer">
-    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
-        <div class="infoContainer bottomSpace">
-            <p class="infoFH">Film Hunter is still in beta and is improved weekly, all the movies data and images come from the
-                <a href="https://www.themoviedb.org/" target="_blank">TMDb</a> database, the reviews come from <a href="http://www.metacritic.com/" target="_blank">Metacritic</a> and the tweets from <a href="https://twitter.com/" target="_blank">Twitter</a>.
-                <br/>
-                <br/>Made with &nbsp;<i class="fa fa-heart"></i>&nbsp; by <a href="https://twitter.com/delvedor" target="_blank">@delvedor</a>.
-                <br/>The project is OpenSource and you can find the code on <a href="https://github.com/delvedor/FilmHunter" target="_blank">GitHub</a>!
-                <br/>
-                <br/>FilmHunter v0.4.9
-            </p>
+    <div class="container">
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+            <div class="infoContainer bottomSpace">
+                <p class="infoFH">Film Hunter is still in beta and is improved weekly, all the movies data and images come from the
+                    <a href="https://www.themoviedb.org/" target="_blank">TMDb</a> database, the reviews come from <a href="http://www.metacritic.com/" target="_blank">Metacritic</a> and the tweets from <a href="https://twitter.com/" target="_blank">Twitter</a>.
+                    <br/>
+                    <br/>Made with &nbsp;<i class="fa fa-heart"></i>&nbsp; by <a href="https://twitter.com/delvedor" target="_blank">@delvedor</a>.
+                    <br/>The project is OpenSource and you can find the code on <a href="https://github.com/delvedor/FilmHunter" target="_blank">GitHub</a>!
+                    <br/>
+                    <br/>FilmHunter v0.5.0
+                </p>
+            </div>
         </div>
     </div>
 </template>

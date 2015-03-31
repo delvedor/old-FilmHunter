@@ -29,12 +29,6 @@ saveGenre = function(data, page) {
         Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
     }
     if (page > 6) {
-        if (arrayResultGenre[0])
-            arrayResultGenre[0].order = "col-xs-12 col-sm-12 col-md-12 first";
-        if (arrayResultGenre[1])
-            arrayResultGenre[1].order = "col-xs-12 col-sm-12 col-md-6 second";
-        if (arrayResultGenre[2])
-            arrayResultGenre[2].order = "col-xs-12 col-sm-12 col-md-6 third";
         dbResults.insert({
             search: search,
             results: arrayResultGenre,
@@ -43,17 +37,23 @@ saveGenre = function(data, page) {
         Session.set("searching", false);
         return;
     }
-
+    var d = new Date();
+    var date = d.getFullYear() + '' + ((d.getMonth() + '').length === 1 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)) + '' + ((d.getDate() + '').length === 1 ? '0' + d.getDate() : d.getDate());
+    var order;
+    var release_date;
     for (var i = 0, risLen = ris.results.length; i < risLen; ++i) {
-        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'http://rocketdock.com/images/screenshots/Blank.png');
+        release_date = parseInt(ris.results[i].release_date.replace(/[-]/g, ''), 10);
+        if (parseInt(date, 10) < release_date)
+            continue;
+        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : '/blank.jpg');
         image = image.replace(/\s/g, '');
+        order = (release_date % 2 === 0 ? 'big' : 'small');
         arrayResultGenre.push({
             genreId: ris.id,
             title: ris.results[i].title,
             id: ris.results[i].id,
             image_path: image,
-            release_date: ris.results[i].release_date,
-            order: "col-xs-6 col-sm-4 col-md-4 standard"
+            order: order
         });
     }
 

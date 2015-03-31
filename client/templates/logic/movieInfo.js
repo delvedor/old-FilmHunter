@@ -43,7 +43,7 @@ Router.route('/movie', {
  * Get the click event on a film result and redirect to the dynamic movieInfo page.
  */
 Template.resultsFilm.events({
-    'click .filmResult': function(e) {
+    'click .filmResult-col': function(e) {
         e.preventDefault();
         Router.go('/movie/' + e.currentTarget.id);
     }
@@ -53,7 +53,7 @@ Template.resultsFilm.events({
  * Get the click event on a related film result, redirect to the dynamic movieInfo page and scroll up the page.
  */
 Template.similarFilm.events({
-    'click .filmResult': function(e) {
+    'click .filmResult-col': function(e) {
         e.preventDefault();
         Router.go('/movie/' + e.currentTarget.id);
         $('body,html').animate({
@@ -244,12 +244,12 @@ function getTrailer(data) {
     if (ris.results.length !== 0) {
         for (var i = 0, trailerLen = ris.results.length; i < trailerLen; ++i) {
             if (ris.results[i].type === "Trailer" && ris.results[i].site === "YouTube") {
-                arrayMovieInfo.trailer = (ris.results[i].key !== null ? "https://www.youtube.com/embed/" + ris.results[i].key + "?rel=0&amp;iv_load_policy=3&amp;theme=light" : "http://rocketdock.com/images/screenshots/Blank.png");
+                arrayMovieInfo.trailer = (ris.results[i].key !== null ? "https://www.youtube.com/embed/" + ris.results[i].key + "?rel=0&amp;iv_load_policy=3&amp;theme=light" : "/blank.jpg");
                 break;
             }
         }
     } else {
-        arrayMovieInfo.trailer = "http://rocketdock.com/images/screenshots/Blank.png";
+        arrayMovieInfo.trailer = "/blank.png";
     }
     dbMovieInfo.update({
         idMovie: movie
@@ -367,19 +367,27 @@ function searchSimilarFilm(data) {
     if (similarLen === 0) {
         return;
     }
+    var d = new Date();
+    var date = d.getFullYear() + '' + d.getMonth() + 1 + '' + d.getDate();
+    var release_date;
+    var order;
     for (var i = 0; i < similarLen; ++i) {
-        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'http://rocketdock.com/images/screenshots/Blank.png');
+        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : '/blank.jpg');
         image = image.replace(/\s/g, '');
+        release_date = parseInt(ris.results[i].release_date.replace(/[-]/g, ''), 10);
+        if (parseInt(date, 10) < release_date)
+            continue;
+        order = (i % 3 === 0 ? 'big' : 'small');
         arrayResultSimilarFilm.push({
             popularity: ris.results[i].popularity,
             title: ris.results[i].title,
             original_title: ris.results[i].original_title,
             id: ris.results[i].id,
             image_path: image,
-            order: "col-xs-6 col-sm-4 col-md-4 standard"
+            order: order
         });
     }
-    arrayResultSimilarFilm = arrayResultSimilarFilm.slice(0, 18);
+
     dbMovieInfo.update({
         idMovie: movie
     }, {
@@ -479,6 +487,7 @@ Template.movieInfo.helpers({
  */
 Template.similarFilm.helpers({
     similarFilmArr: function() {
+        Meteor.setTimeout(setGrid, 300);
         if (!dbMovieInfo.findOne())
             return [];
         return dbMovieInfo.findOne({}, {
@@ -488,6 +497,27 @@ Template.similarFilm.helpers({
         }).similarFilm;
     }
 });
+
+/**
+ * Corrects the height of the div standard
+ */
+function setGrid() {
+    var container = document.querySelector('.gridInfo');
+    var iso = new Isotope(container, {
+        itemSelector: '.colElement-movieInfo',
+        masonry: {
+            isFitWidth: true
+        }
+    });
+    var container = document.querySelector('.resultsGrid');
+    var iso = new Isotope(container, {
+        itemSelector: '.colElement-results',
+        masonry: {
+            isFitWidth: true
+        }
+    });
+}
+
 
 Template.movieInfo.rendered = function() {
     $('body,html').scrollTop();

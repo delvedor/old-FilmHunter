@@ -3,7 +3,7 @@
  */
 Template.resultsFilm.helpers({
     resultsPageFilm: function() {
-        Meteor.setTimeout(setHeight, 1000);
+        Meteor.setTimeout(setGrid, 300);
         if (!dbResults.findOne())
             return [];
         return dbResults.findOne({}, {
@@ -26,9 +26,14 @@ Template.loadingRes.helpers({
 /**
  * Corrects the height of the div standard
  */
-function setHeight() {
-    var maxHeight = Math.max.apply(null, $(".standard").map(function() {
-        return $(this).height();
-    }).get());
-    $(".standard").height(maxHeight);
+function setGrid() {
+    var container = document.querySelector('.resultsGrid');
+    var iso = new Isotope(container, {
+        // options...
+        itemSelector: '.colElement-results',
+        masonry: {
+            isFitWidth: true
+        }
+    });
+
 }

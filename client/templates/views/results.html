@@ -1,17 +1,17 @@
 <template name="resultsFilm">
-    <div class="row resultsGrid">
-        {{ #each resultsPageFilm }}
-        <div id="{{ id }}" class="filmResult {{ order }}">
-            <div class="filmResultContainer">
-                <div class="poster" style="background-image:url('{{image_path}}')"></div>
-                <div class="filmDescription">
+    <div class="container-fluid">
+        <div class="row resultsGrid">
+            {{ #each resultsPageFilm }}
+            <div id="{{ id }}" class="colElement-results filmResult-col {{ order }}">
+                <div class="poster-col" style="background-image:url('{{image_path}}')"></div>
+                <div class="filmDescription-col">
                     <p>
                         {{ title }}
                     </p>
                 </div>
             </div>
+            {{/each}}
         </div>
-        {{/each}}
     </div>
     {{ > footer }}
 </template>
@@ -20,15 +20,17 @@
     {{ > loading }}
 </template>
 <template name="loading">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 loader">
-            <div class="preloader loading">
-                <span class="slice"></span>
-                <span class="slice"></span>
-                <span class="slice"></span>
-                <span class="slice"></span>
-                <span class="slice"></span>
-                <span class="slice"></span>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 loader">
+                <div class="preloader loading">
+                    <span class="slice"></span>
+                    <span class="slice"></span>
+                    <span class="slice"></span>
+                    <span class="slice"></span>
+                    <span class="slice"></span>
+                    <span class="slice"></span>
+                </div>
             </div>
         </div>
     </div>

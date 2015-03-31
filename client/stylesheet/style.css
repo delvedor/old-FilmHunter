@@ -2,12 +2,6 @@
 
 @font-face {
     font-family: 'Lato';
-    src: url('Lato-Hairline.ttf');
-    font-weight: 100;
-}
-
-@font-face {
-    font-family: 'Lato';
     src: url('Lato-Light.ttf');
     font-weight: 300;
 }
@@ -46,8 +40,7 @@ a:hover {
 }
 
 #logo {
-    position: relative;
-    z-index: 2000;
+    margin-top: 40px;
 }
 
 .title {
@@ -98,13 +91,10 @@ a:hover {
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px;
+    height: 40px;
     z-index: 2000;
-    background-color: #f7f7f7;
-}
-
-.nav-bar {
-    padding: 10px 0;
+    background-color: #FAFAFA;
+    box-shadow: 0 4px 8px #9E9E9E;
 }
 
 .backButton {
@@ -182,8 +172,9 @@ button:focus {
 }
 
 .notfoundHead {
-    font-size: 3.5em;
-    font-weight: 100;
+    font-size: 2.5em;
+    letter-spacing: 10px;
+    font-weight: 300;
     margin-bottom: -50px;
     padding: 0;
 }
@@ -197,61 +188,55 @@ button:focus {
     width: 200px;
 }
 
-.-autocmplete-container {
-    border: 1px red solid;
+.-autocomplete-container {
+    margin-top: 20px;
+    margin-left: -20%;
 }
 
-.filmResult {
-    margin: 0;
-    padding: 0;
-    margin: 20px 0;
-    min-height: 40vh;
+.filmResult-col {
+    text-align: center;
+    background-color: #FAFAFA;
+    border-radius: 2px;
+    box-shadow: 0 4px 8px #9E9E9E;
+    -webkit-transition: box-shadow 0.2s linear 0s;
+    -moz-transition: box-shadow 0.2s linear 0s;
+    transition: box-shadow 0.2s linear 0s;
+}
+
+.filmResult-col:hover {
+    position: relative;
+    z-index: 999;
+    box-shadow: 0px 10px 15px #616161;
+}
+
+.poster-col {
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.filmResult-col.small .poster-col {
+    height: 28vh;
+}
+
+.filmResult-col.big .poster-col {
+    height: 42vh;
+}
+
+.filmDescription-col {
+    padding: 10px;
+    font-size: 1.3em
 }
 
 div[class="filmResult"] {
     display: none;
 }
 
-.filmResultContainer {
-    text-align: center;
-    background-color: #FAFAFA;
-    border-radius: 2px;
-    -webkit-transition: box-shadow 0.2s linear 0s;
-    -moz-transition: box-shadow 0.2s linear 0s;
-    transition: box-shadow 0.2s ease-in 0s;
-    box-shadow: 0 4px 8px #9E9E9E;
-    width: 90%;
-    margin: 0 auto;
-}
-
-.filmResultContainer:hover {
-    position: relative;
-    z-index: 999;
-    box-shadow: 0px 10px 15px #616161;
-}
-
 .filmDescription {
     padding: 10px;
 }
 
-.poster {
-    height: 20vh;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.first .poster {
-    height: 50vh;
-    background-position: center;
-}
-
-.second .poster,
-.third .poster {
-    height: 35vh;
-}
-
-.standard .poster {
-    height: 30vh;
+.filmDescription-col {
+    padding: 10px;
 }
 
 .spaceResultsTitle {
@@ -268,15 +253,20 @@ div[class="filmResult"] {
     padding: 5px;
 }
 
+.gridInfo,
 .resultsGrid {
-    margin: 100px 0;
+    margin: 0 auto;
+}
+
+.resultsGrid {
+    padding: 40px 0;
 }
 /****** Movie info ******/
 
 .filmInfo {
     background-color: #FAFAFA;
     border-radius: 2px;
-    margin: 120px 0;
+    margin: 40px 0;
     box-shadow: 0px 4px 8px #9E9E9E;
 }
 
@@ -309,15 +299,12 @@ div[class="filmResult"] {
     box-shadow: 0 4px 8px #9E9E9E;
 }
 
-.columns {
-    padding: 10px 0;
-}
-
 .boxTweet {
     height: auto;
     font-size: 1.15em;
     font-weight: 300;
     text-align: justify;
+    word-break: break-all;
 }
 
 .boxImage {
@@ -346,13 +333,7 @@ div[class="filmResult"] {
 
 .aboutMovieText {
     font-size: 1.3em;
-}
-
-.colElement {
-    -webkit-column-break-inside: avoid;
-    page-break-inside: avoid;
-    break-inside: avoid;
-    margin: 25px 8px;
+    text-align: justify;
 }
 
 .similarFilm {
@@ -495,6 +476,13 @@ div[class="filmResult"] {
         width: 150px;
         height: 150px;
     }
+    .nav-bar {
+        padding: 10px 0;
+    }
+    .colElement-movieInfo,
+    .colElement-results {
+        margin: 0 5px 10px 5px;
+    }
     .title {
         font-size: 1.8em;
         letter-spacing: 10px;
@@ -508,23 +496,14 @@ div[class="filmResult"] {
     .searchBar {
         border: 1px #9E9E9E solid;
     }
-    .first {
-        font-size: 1.3em;
-    }
-    .second,
-    .third {
-        font-size: 1.2em;
-    }
-    .standard {
-        font-size: 1.1em;
-    }
-    .columns {
-        -webkit-column-count: 1;
-        -moz-column-count: 1;
-        column-count: 1;
-    }
     .sidePanelEle a {
         font-size: 2.5em;
+    }
+    .colElement-results {
+        width: 38vw;
+    }
+    .colElement-movieInfo {
+        width: 90vw;
     }
 }
 
@@ -543,26 +522,17 @@ div[class="filmResult"] {
         width: 100%;
         font-size: 1.3em;
     }
-    .first {
-        font-size: 1.7em;
-    }
-    .second,
-    .third {
-        font-size: 1.4em;
-    }
-    .standard {
-        font-size: 1.2em;
-    }
-    .columns {
-        -webkit-column-count: 1;
-        -moz-column-count: 1;
-        column-count: 1;
-    }
     .boxReview {
         line-height: 25px;
     }
     .sidePanelEle a {
         font-size: 2.5em;
+    }
+    .colElement-results {
+        width: 42vw;
+    }
+    .colElement-movieInfo {
+        width: 90vw;
     }
 }
 
@@ -583,26 +553,17 @@ div[class="filmResult"] {
     .searchBar {
         border: 2px #9E9E9E solid;
     }
-    .first {
-        font-size: 1.7em;
-    }
-    .second,
-    .third {
-        font-size: 1.3em;
-    }
-    .standard {
-        font-size: 1.2em;
-    }
-    .columns {
-        -webkit-column-count: 1;
-        -moz-column-count: 1;
-        column-count: 1;
-    }
     .boxReview {
         line-height: 25px;
     }
     .sidePanelEle a {
         font-size: 2.5em;
+    }
+    .colElement-results {
+        width: 45vw;
+    }
+    .colElement-movieInfo {
+        width: 40vw;
     }
 }
 
@@ -618,6 +579,13 @@ div[class="filmResult"] {
         width: 220px;
         height: 220px;
     }
+    .nav-bar {
+        padding: 5px 0;
+    }
+    .colElement-movieInfo,
+    .colElement-results {
+        margin: 0 10px 20px 10px;
+    }
     .title {
         font-size: 2em;
         letter-spacing: 35px;
@@ -628,26 +596,17 @@ div[class="filmResult"] {
         width: 100%;
         font-size: 1.4em;
     }
-    .first {
-        font-size: 1.8em;
-    }
-    .second,
-    .third {
-        font-size: 1.5em;
-    }
-    .standard {
-        font-size: 1.3em;
-    }
-    .columns {
-        -webkit-column-count: 2;
-        -moz-column-count: 2;
-        column-count: 2;
-    }
     .boxReview {
         line-height: 28px;
     }
     .sidePanelEle a {
         font-size: 2em;
+    }
+    .colElement-results {
+        width: 30vw;
+    }
+    .colElement-movieInfo {
+        width: 40vw;
     }
 }
 
@@ -669,26 +628,17 @@ div[class="filmResult"] {
     .traspBack {
         margin-top: 100px;
     }
-    .first {
-        font-size: 1.8em;
-    }
-    .second,
-    .third {
-        font-size: 1.6em;
-    }
-    .standard {
-        font-size: 1.4em;
-    }
-    .columns {
-        -webkit-column-count: 2;
-        -moz-column-count: 2;
-        column-count: 2;
-    }
     .boxReview {
         line-height: 30px;
     }
     .sidePanelEle a {
         font-size: 2em;
+    }
+    .colElement-results {
+        width: 20vw;
+    }
+    .colElement-movieInfo {
+        width: 30vw;
     }
 }
 

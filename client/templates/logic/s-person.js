@@ -44,18 +44,25 @@ function savePerson(data, typeSearch) {
         arr = ris.crew;
     var risLen = arr.length;
     Session.set('numberOfResults', risLen);
+    var d = new Date();
+    var date = d.getFullYear() + '' + ((d.getMonth() + '').length === 1 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)) + '' + ((d.getDate() + '').length === 1 ? '0' + d.getDate() : d.getDate());
+    var order;
+    var release_date;
     for (var i = 0; i < risLen; ++i) {
+        release_date = (arr[i].release_date !== null ? arr[i].release_date : '0');
+        release_date = parseInt(release_date.replace(/[-]/g, ''), 10);
+        if (parseInt(date, 10) < release_date)
+            continue;
         if (arr[i].job === "Director" || arr[i].character) {
-            image = (arr[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + arr[i].poster_path : 'http://rocketdock.com/images/screenshots/Blank.png');
+            image = (arr[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + arr[i].poster_path : '/blank.jpg');
             image = image.replace(/\s/g, '');
-            releaseDate = (arr[i].release_date !== null ? arr[i].release_date : '0');
+            order = (release_date % 2 === 0 ? 'big' : 'small');
             arrayResultFilm.push({
                 title: arr[i].title,
                 id: arr[i].id,
                 image_path: image,
-                release_date: releaseDate,
-                rdOrder: parseInt(releaseDate.replace(/[^0-9_]/g, ''), 10),
-                order: "col-xs-6 col-sm-4 col-md-4 standard"
+                rdOrder: release_date,
+                order: order
             });
         }
     }

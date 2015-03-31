@@ -5,11 +5,9 @@ var film;
 var search = "";
 var filmLen;
 var finishSearch;
-var keywordCount;
 var notfoundCount;
 var image;
 var releaseDate;
-var pageCount;
 
 var arrayResultFilm = [];
 var arrayResultKeyword = [];
@@ -27,9 +25,9 @@ startSearchMovie = function(searchKey) {
                 console.log(err);
         });
     }
-    Meteor.call('searchMovies', escape(searchKey), pageCount, function(err, result) {
+    Meteor.call('searchMovies', escape(searchKey), 1, function(err, result) {
         if (result)
-            saveMovies(result.content);
+            saveMovies(result.content, 2);
         if (err)
             console.log(err);
     });
@@ -57,37 +55,44 @@ function searchMoviesFromKeyword(data) {
 /**
  * Get the results of the search from moviesearch.
  */
-function saveMovies(data) {
-    pageCount++;
+function saveMovies(data, pageCount) {
     var ris = $.parseJSON(data);
     if (ris.total_results === 0) {
         allFinish(1, 1);
         return;
     }
+    var d = new Date();
+    var date = d.getFullYear() + '' + ((d.getMonth() + '').length === 1 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)) + '' + ((d.getDate() + '').length === 1 ? '0' + d.getDate() : d.getDate());
+    var order;
+    var release_date;
     Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
     for (var i = 0, risLen = ris.results.length; i < risLen; ++i) {
-        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'http://rocketdock.com/images/screenshots/Blank.png');
+        release_date = parseInt(ris.results[i].release_date.replace(/[-]/g, ''), 10);
+        if (parseInt(date, 10) < release_date)
+            continue;
+        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : '/blank.jpg');
         image = image.replace(/\s/g, '');
+        order = (release_date % 2 === 0 ? 'big' : 'small');
         arrayResultFilm.push({
             title: ris.results[i].title,
             id: ris.results[i].id,
-            popularity: ris.results[i].popularity,
+            vote: parseFloat(ris.results[i].vote_average) * parseInt(ris.results[i].vote_count, 10),
             image_path: image,
             release_date: ris.results[i].release_date,
-            order: "col-xs-6 col-sm-4 col-md-4 standard"
+            order: order
         });
     }
 
     if (ris.total_pages > pageCount && pageCount < 15) {
         Meteor.call('searchMovies', search, pageCount, function(err, result) {
             if (result)
-                saveMovies(result.content);
+                saveMovies(result.content, ++pageCount);
             if (err)
                 console.log(err);
         });
     } else {
         arrayResultFilm.sort(function(a, b) {
-            return b.popularity - a.popularity;
+            return b.vote - a.vote;
         });
         arrayResultFilm = arrayResultFilm.slice(0, 99);
         allFinish(1, 0);
@@ -100,24 +105,26 @@ function saveMovies(data) {
  */
 function saveKeywords(data) {
     var ris = $.parseJSON(data);
-    keywordCount++;
+    var d = new Date();
+    var date = d.getFullYear() + '' + d.getMonth() + 1 + '' + d.getDate();
+    var order;
+    var release_date;
     Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
     for (var i = 0, risLen = ris.results.length; i < risLen; ++i) {
-        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : 'http://rocketdock.com/images/screenshots/Blank.png');
+        release_date = parseInt(ris.results[i].release_date.replace(/[-]/g, ''), 10);
+        if (parseInt(date, 10) < release_date)
+            continue;
+        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : '/blank.jpg');
         image = image.replace(/\s/g, '');
+        order = (release_date % 2 === 0 ? 'big' : 'small');
         arrayResultKeyword.push({
             keyword: ris.id,
             title: ris.results[i].title,
             id: ris.results[i].id,
-            popularity: ris.results[i].popularity,
+            vote: parseFloat(ris.results[i].vote_average) * parseInt(ris.results[i].vote_count, 10),
             image_path: image,
             release_date: ris.results[i].release_date,
-            order: "col-xs-6 col-sm-4 col-md-4 standard"
-        });
-    }
-    if (keywordCount === filmLen) {
-        arrayResultKeyword.sort(function(a, b) {
-            return b.popularity - a.popularity;
+            order: order
         });
     }
     allFinish(1, 0);
@@ -138,28 +145,18 @@ function allFinish(finish, notfound) {
 
     if (finishSearch === filmLen + 1) {
         arrayResultFilm.push.apply(arrayResultFilm, arrayResultKeyword);
-
         arrayResultFilm.sort(function(a, b) {
-            return b.popularity - a.popularity;
+            return b.vote - a.vote;
         });
-
         for (var i = 0, arrLen = arrayResultFilm.length; i < arrLen - 1; ++i) {
-            if (arrayResultFilm[i].title === arrayResultFilm[i + 1].title && arrayResultFilm[i].release_date === arrayResultFilm[i + 1].release_date) {
-                arrayResultFilm[i + 1].popularity = arrayResultFilm[i + 1].popularity * 2;
+            if (arrayResultFilm[i].title === arrayResultFilm[i + 1].title && arrayResultFilm[i].release_date === arrayResultFilm[i + 1].release_date)
                 continue;
-            } else {
+            else
                 arrSwap.push(arrayResultFilm[i]);
-            }
         }
         arrSwap.push(arrayResultFilm[arrayResultFilm.length - 1]);
 
         arrayResultFilm = arrSwap;
-        if (arrayResultFilm[0])
-            arrayResultFilm[0].order = "col-xs-12 col-sm-12 col-md-12 first";
-        if (arrayResultFilm[1])
-            arrayResultFilm[1].order = "col-xs-12 col-sm-12 col-md-6 second";
-        if (arrayResultFilm[2])
-            arrayResultFilm[2].order = "col-xs-12 col-sm-12 col-md-6 third";
         arrayResultFilm = arrayResultFilm.slice(0, 199);
 
         dbResults.insert({
@@ -176,9 +173,7 @@ function allFinish(finish, notfound) {
  */
 function resetVariables() {
     finishSearch = 0;
-    keywordCount = 0;
     notfoundCount = 0;
-    pageCount = 1;
     arrayResultFilm = [];
     arrayResultGenre = [];
     arrayResultKeyword = [];
