@@ -29,7 +29,6 @@ Template.loadingRes.helpers({
 function setGrid() {
     var container = document.querySelector('.resultsGrid');
     var iso = new Isotope(container, {
-        // options...
         itemSelector: '.colElement-results',
         masonry: {
             isFitWidth: true

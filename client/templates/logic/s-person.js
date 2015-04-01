@@ -42,32 +42,26 @@ function savePerson(data, typeSearch) {
         arr = ris.cast;
     if (typeSearch === "d:")
         arr = ris.crew;
-    var risLen = arr.length;
-    Session.set('numberOfResults', risLen);
+    Session.set('numberOfResults', arr.length);
     var d = new Date();
-    var date = d.getFullYear() + '' + ((d.getMonth() + '').length === 1 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)) + '' + ((d.getDate() + '').length === 1 ? '0' + d.getDate() : d.getDate());
-    var order;
+    var date = parseInt(d.getFullYear() + '' + ((d.getMonth() + '').length === 1 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)) + '' + ((d.getDate() + '').length === 1 ? '0' + d.getDate() : d.getDate()), 10);
     var release_date;
-    for (var i = 0; i < risLen; ++i) {
-        release_date = (arr[i].release_date !== null ? arr[i].release_date : '0');
-        release_date = parseInt(release_date.replace(/[-]/g, ''), 10);
-        if (parseInt(date, 10) < release_date)
-            continue;
-        if (arr[i].job === "Director" || arr[i].character) {
-            image = (arr[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + arr[i].poster_path : '/blank.jpg');
-            image = image.replace(/\s/g, '');
-            order = (release_date % 2 === 0 ? 'big' : 'small');
+    _.each(arr, function(ele) {
+        release_date = parseInt((ele.release_date !== null ? ele.release_date : '0').replace(/[-]/g, ''), 10);
+        if (date < release_date)
+            return;
+        if (ele.job === "Director" || ele.character) {
             arrayResultFilm.push({
-                title: arr[i].title,
-                id: arr[i].id,
-                image_path: image,
+                title: ele.title,
+                id: ele.id,
+                image_path: (ele.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ele.poster_path : '/blank.jpg'),
                 rdOrder: release_date,
-                order: order
+                order: (release_date % 2 === 0 ? 'big' : 'small')
             });
         }
-    }
-    arrayResultFilm.sort(function(a, b) {
-        return b.rdOrder - a.rdOrder;
+    });
+    arrayResultFilm = _.sortBy(arrayResultFilm, function(ele) {
+        return -ele.rdOrder;
     });
     dbResults.insert({
         search: search,

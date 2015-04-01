@@ -6,12 +6,13 @@
                 <h3 class="filmInfoTagline">{{ movieInfo.tagline }}</h3>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
-                <p class="filmInfoGenres">Genres: {{ movieInfo.genres }}</p>
+                <p class="filmInfoGenres">Genres: {{ #each movieInfo.genres }}<a href="/search/g:{{link}}">{{name}}</a>{{/each}}</p>
                 <p class="filmInfoReleaseDate">Release date: {{ movieInfo.release_date }}</p>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12" style="height:auto;">
                 <div class="flex-video widescreen">
-                    <object data="{{ movieInfo.trailer }}"></object>
+                    <!--<object data="{{ movieInfo.trailer }}" allowfullscreen></object>-->
+                    <iframe src="{{ movieInfo.trailer }}" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 facebookShare" style="text-align: center; margin-bottom: 20px;">
@@ -37,8 +38,9 @@
         <div class="row gridInfo">
             <div class="colElement-movieInfo">
                 <div class="movieInfoBoxes" style="background-color: #FAFAFA;">
-                    <p class="aboutMovieText">Actors: {{ movieInfo.cast }}</p>
-                    <p class="aboutMovieText">Director: {{ movieInfo.director }}</p>
+                    <!--<p class="aboutMovieText">Actors: {{ movieInfo.cast }}</p>-->
+                    <p class="aboutMovieText">Actors: {{ #each movieInfo.cast }}<a href="/search/a:{{link}}">{{name}}</a>{{/each}}</p>
+                    <p class="aboutMovieText">Director: {{#with movieInfo.director}}<a href="/search/d:{{link}}">{{name}}</a>{{/with}}</p>
                     <p class="aboutMovieText">Plot: {{ movieInfo.plot }}</p>
                 </div>
             </div>

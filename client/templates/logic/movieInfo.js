@@ -14,9 +14,9 @@ var arrayMovieInfo = {
     tagline: "",
     release_date: "",
     plot: "",
-    genres: "",
-    caste: "",
-    director: "",
+    genres: [],
+    cast: [],
+    director: {},
     trailer: ""
 };
 var arrayResultSimilarFilm = [];
@@ -107,8 +107,6 @@ function getMovieById(id) {
         if (err)
             console.log(err);
     });
-    //allFinish(1, 0);
-
 }
 
 /**
@@ -183,13 +181,22 @@ function getMovieInfo(ris) {
     arrayMovieInfo.tagline = ris.tagline;
     arrayMovieInfo.release_date = ris.release_date;
     arrayMovieInfo.plot = ris.overview;
-    arrayMovieInfo.genres = "";
-    for (var i = 0, genresLen = ris.genres.length; i < genresLen; ++i) {
-        if (i === 0)
-            arrayMovieInfo.genres = arrayMovieInfo.genres + ris.genres[i].name;
-        else
-            arrayMovieInfo.genres = arrayMovieInfo.genres + ", " + ris.genres[i].name;
-    }
+    var i = 0;
+    var genresLen = ris.genres.length;
+    _.each(ris.genres, function(ele) {
+        i++;
+        if (i === genresLen) {
+            arrayMovieInfo.genres.push({
+                name: ele.name,
+                link: ele.name.replace(/[^a-zA-Z0-9_:]/g, '-')
+            });
+        } else {
+            arrayMovieInfo.genres.push({
+                name: ele.name + ' - ',
+                link: ele.name.replace(/[^a-zA-Z0-9_:]/g, '-')
+            });
+        }
+    });
     dbMovieInfo.update({
         idMovie: movie
     }, {
@@ -207,22 +214,32 @@ function getMovieInfo(ris) {
  */
 function getMovieInfoCredits(data) {
     var ris = $.parseJSON(data);
-    arrayMovieInfo.cast = "";
-    arrayMovieInfo.director = "";
-    for (var i = 0, castLen = ris.cast.length; i < castLen; ++i) {
+    var i = 0;
+    _.each(ris.cast, function(ele) {
         if (i > 4)
-            break;
-        if (!i)
-            arrayMovieInfo.cast = arrayMovieInfo.cast + ris.cast[i].name;
-        else
-            arrayMovieInfo.cast = arrayMovieInfo.cast + " - " + ris.cast[i].name;
-    }
-    for (var i = 0, crewLen = ris.crew.length; i < crewLen; ++i) {
-        if (ris.crew[i].job === "Director") {
-            arrayMovieInfo.director = ris.crew[i].name;
-            break;
+            return;
+        i++;
+        if (i === 5) {
+            arrayMovieInfo.cast.push({
+                name: ele.name,
+                link: ele.name.replace(/[^a-zA-Z0-9_:]/g, '-')
+            });
+        } else {
+            arrayMovieInfo.cast.push({
+                name: ele.name + ' - ',
+                link: ele.name.replace(/[^a-zA-Z0-9_:]/g, '-')
+            });
         }
-    }
+    });
+    _.each(ris.crew, function(ele) {
+        if (ele.job === "Director") {
+            arrayMovieInfo.director = {
+                name: ele.name,
+                link: ele.name.replace(/[^a-zA-Z0-9_:]/g, '-')
+            };
+            return;
+        }
+    });
 
     dbMovieInfo.update({
         idMovie: movie
@@ -242,14 +259,14 @@ function getMovieInfoCredits(data) {
 function getTrailer(data) {
     var ris = $.parseJSON(data);
     if (ris.results.length !== 0) {
-        for (var i = 0, trailerLen = ris.results.length; i < trailerLen; ++i) {
-            if (ris.results[i].type === "Trailer" && ris.results[i].site === "YouTube") {
-                arrayMovieInfo.trailer = (ris.results[i].key !== null ? "https://www.youtube.com/embed/" + ris.results[i].key + "?rel=0&amp;iv_load_policy=3&amp;theme=light" : "/blank.jpg");
-                break;
+        _.each(ris.results, function(ele) {
+            if (ele.type === "Trailer" && ele.site === "YouTube") {
+                arrayMovieInfo.trailer = (ele.key !== null ? "https://www.youtube.com/embed/" + ele.key + "?rel=0&amp;iv_load_policy=3&amp;theme=light" : "");
+                return;
             }
-        }
+        });
     } else {
-        arrayMovieInfo.trailer = "/blank.png";
+        arrayMovieInfo.trailer = "";
     }
     dbMovieInfo.update({
         idMovie: movie
@@ -268,89 +285,91 @@ function getTrailer(data) {
  */
 function setArrayMovieInfoBoxes(data, dataType) {
     if (dataType === 'tweet') {
-        var ris = data;
-        var statusesLen = ris.statuses.length;
-        if (statusesLen === 0) {
+        if (data.statuses.length === 0) {
             shuffle(arrayMovieInfoBoxes, 1);
             return;
         }
-        for (var i = 0; i < statusesLen; ++i) {
+        _.each(data.statuses, function(ele) {
             arrayMovieInfoBoxes.push({
                 boxType: 'boxTweet',
                 background: 'background-color: #FAFAFA',
                 isUser: true,
                 isTwitter: true,
-                user: ris.statuses[i].user.screen_name,
-                text: ris.statuses[i].text,
-                link: 'https://twitter.com/' + ris.statuses[i].user.screen_name
+                user: ele.user.screen_name,
+                text: ele.text,
+                link: 'https://twitter.com/' + ele.user.screen_name
             });
-        }
+
+        });
+
     }
 
     if (dataType === 'image') {
         var ris = $.parseJSON(data);
-        var backdropsLen = ris.backdrops.length;
-        if (backdropsLen === 0) {
+        var i = 0;
+        if (ris.backdrops.length === 0) {
             shuffle(arrayMovieInfoBoxes, 1);
             return;
         }
-        for (var i = 0; i < backdropsLen; ++i) {
-            if (i > 20)
-                break;
+        _.each(ris.backdrops, function(ele) {
+            if (i === 20)
+                return;
+            i++;
             arrayMovieInfoBoxes.push({
                 boxType: 'boxImage',
-                background: 'background-image: url("http://image.tmdb.org/t/p/w500' + ris.backdrops[i].file_path + '")',
-                isUser: false,
-                isTwitter: false,
-                user: '',
-                text: '',
-                link: ''
+                background: 'background-image: url("http://image.tmdb.org/t/p/w500' + ele.file_path + '")',
+                isUser: false
             });
-        }
+
+        });
     }
 
     if (dataType === 'reviewtmdb') {
         var ris = $.parseJSON(data);
-        var reviewsLen = ris.total_results;
-        if (reviewsLen === 0) {
+        var i = 0;
+        if (ris.total_results === 0) {
             shuffle(arrayMovieInfoBoxes, 1);
             return;
         }
-        for (var i = 0; i < reviewsLen; ++i) {
-            if (i === 3)
-                break;
+        _.each(ris.results, function(ele) {
+            if (i === 2)
+                return;
+            i++;
             arrayMovieInfoBoxes.push({
                 boxType: 'boxReview',
                 background: 'background-color: #FAFAFA',
                 isUser: true,
                 isTwitter: false,
-                user: ris.results[i].author + ' - TMDb',
-                text: ris.results[i].content,
-                link: ris.results[i].url
+                user: ele.author + ' - TMDb',
+                text: ele.content,
+                link: ele.url
             });
-        }
+
+        });
     }
 
     if (dataType === 'reviewmetacritic') {
         var ris = $.parseJSON(data);
-        var reviewsLen = ris.count;
-        if (reviewsLen === 0) {
+        var i = 0;
+        if (ris.count === 0) {
             shuffle(arrayMovieInfoBoxes, 1);
             return;
         }
-        for (var i = 0; i < reviewsLen; ++i) {
+        _.each(ris.result, function(ele) {
             if (i === 10)
-                break;
+                return;
+            i++;
             arrayMovieInfoBoxes.push({
                 boxType: 'boxReview',
                 background: 'background-color: #FAFAFA',
                 isUser: true,
                 isTwitter: false,
-                user: ris.result[i].critic,
-                text: ris.result[i].excerpt,
-                link: ris.result[i].link
+                user: ele.critic,
+                text: ele.excerpt,
+                link: ele.link
             });
-        }
+
+        });
 
     }
 
@@ -362,31 +381,24 @@ function setArrayMovieInfoBoxes(data, dataType) {
  */
 function searchSimilarFilm(data) {
     var ris = $.parseJSON(data);
-    var similarLen = ris.results.length;
     pagesSimilarFilm = ris.total_pages;
-    if (similarLen === 0) {
+    if (ris.results.length === 0) {
         return;
     }
     var d = new Date();
-    var date = d.getFullYear() + '' + d.getMonth() + 1 + '' + d.getDate();
+    var date = parseInt(d.getFullYear() + '' + ((d.getMonth() + '').length === 1 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)) + '' + ((d.getDate() + '').length === 1 ? '0' + d.getDate() : d.getDate()), 10);
     var release_date;
-    var order;
-    for (var i = 0; i < similarLen; ++i) {
-        image = (ris.results[i].poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.results[i].poster_path : '/blank.jpg');
-        image = image.replace(/\s/g, '');
-        release_date = parseInt(ris.results[i].release_date.replace(/[-]/g, ''), 10);
-        if (parseInt(date, 10) < release_date)
-            continue;
-        order = (i % 3 === 0 ? 'big' : 'small');
+    _.each(ris.results, function(ele) {
+        release_date = parseInt(ele.release_date.replace(/[-]/g, ''), 10);
+        if (date < release_date)
+            return;
         arrayResultSimilarFilm.push({
-            popularity: ris.results[i].popularity,
-            title: ris.results[i].title,
-            original_title: ris.results[i].original_title,
-            id: ris.results[i].id,
-            image_path: image,
-            order: order
+            title: ele.title,
+            id: ele.id,
+            image_path: (ele.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ele.poster_path : '/blank.jpg'),
+            order: (release_date % 2 === 0 ? 'big' : 'small')
         });
-    }
+    });
 
     dbMovieInfo.update({
         idMovie: movie
@@ -413,16 +425,7 @@ function allFinish(finish, cache) {
 function shuffle(array, count) {
     finCount += count;
     if (finCount >= 4) {
-        var currentIndex = array.length;
-        var temporaryValue;
-        var randomIndex;
-        while (0 !== currentIndex) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
+        arrayMovieInfoBoxes = _.shuffle(array);
         dbMovieInfo.update({
             idMovie: movie
         }, {
@@ -446,9 +449,9 @@ function resetVariables() {
         tagline: "",
         release_date: "",
         plot: "",
-        genres: "",
-        caste: "",
-        director: "",
+        genres: [],
+        cast: [],
+        director: {},
         trailer: ""
     };
     arrayResultSimilarFilm = [];
