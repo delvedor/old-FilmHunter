@@ -1,0 +1,37 @@
+<template name="favourites">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
+                <h1 class="infoTitle">Favourites</h1>
+            </div>
+        </div>
+    </div>
+    {{ #if currentUser }}
+    <div class="container-fluid">
+        <div class="row resultsGrid">
+            {{ #each favourites }}
+            <div id="{{ id }}" class="colElement-results filmResult-col {{ order }}">
+                <div class="poster-col" style="background-image:url('{{ image }}')"></div>
+                <div class="filmDescription-col">
+                    <p>
+                        {{ title }}
+                    </p>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    {{ else }}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                <p class="infoHome">If you want to save the movies you want to see, this is the place you were looking for.
+                    <br/>Just Login with your Google account and start to use this feature of Film Hunter.
+                    <br/>
+                    <br/>Don't worry, if in the future you need to delete your account you can do it without any problems.
+                </p>
+            </div>
+        </div>
+    </div>
+    {{ /if}}
+</template>

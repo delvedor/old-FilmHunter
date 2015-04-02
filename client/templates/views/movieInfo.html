@@ -1,6 +1,11 @@
 <template name="movieInfo">
     <div class="container">
         <div class="row filmInfo">
+            <div class="col-xs-12 col-sm-12 col-md-12 addFavourites">
+                {{ #if isFav }}
+                <i class="fa fa-heart fa-2x isFav"></i> {{ else }}
+                <i class="fa fa-heart fa-2x notFav"></i> {{ /if }}
+            </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <h2 class="filmInfoTitle">{{ movieInfo.title }}</h2>
                 <h3 class="filmInfoTagline">{{ movieInfo.tagline }}</h3>
@@ -42,6 +47,11 @@
                     <p class="aboutMovieText">Actors: {{ #each movieInfo.cast }}<a href="/search/a:{{link}}">{{name}}</a>{{/each}}</p>
                     <p class="aboutMovieText">Director: {{#with movieInfo.director}}<a href="/search/d:{{link}}">{{name}}</a>{{/with}}</p>
                     <p class="aboutMovieText">Plot: {{ movieInfo.plot }}</p>
+                </div>
+            </div>
+            <div class="colElement-movieInfo">
+                <div class="movieInfoBoxes" style="background-color: #FAFAFA;">
+                    {{ #each stars}} <i class="fa {{ star }} fa-2x"></i> {{ /each }}
                 </div>
             </div>
             {{ #each movieInfoBoxes }}

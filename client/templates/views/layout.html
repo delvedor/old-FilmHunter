@@ -1,10 +1,20 @@
 <template name="layout">
     <div class="container-fluid nav-fixed">
         <div class="nav-bar">
-            <div class="col-xs-6 col-sm-6 col-md-6 backButton">
+            <!--<div class="col-xs-6 col-sm-6 col-md-6 backButton">
                 <i id="backFaButton" class="fa fa-arrow-circle-left fa-2x"></i>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 sidePanel">
+                <button class="sidePanelButton" type="button"><i class="fa fa-bars fa-2x"></i>
+                </button>
+            </div>{{> loginButtons}}-->
+            <div class="col-xs-2 col-sm-2 col-md-2 backButton">
+                <i id="backFaButton" class="fa fa-arrow-circle-left fa-2x"></i>
+            </div>
+            <div class="col-xs-8 col-sm-8 col-md-9">
+                {{> loginButtons}}
+            </div>
+            <div class="col-xs-2 col-sm-2 col-md-1 sidePanel">
                 <button class="sidePanelButton" type="button"><i class="fa fa-bars fa-2x"></i>
                 </button>
             </div>
@@ -44,8 +54,12 @@
 </template>
 <template name="sidePanel">
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="/">Home</a></p>
+    <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'favourites'}}">Favourites</a></p>
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'help'}}">Help</a></p>
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'bugReport'}}">Bug Report</a></p>
+    {{ #if currentUser }}
+    <p class="sidePanelEle removeAccount"><a role="menuitem" tabindex="-1" href="{{pathFor 'removeAccount'}}">Remove Account</a></p>
+    {{ /if }}
 </template>
 <template name="dropdown">
     <p id="{{id}}" class="dropdownLabel">{{name}}</p>

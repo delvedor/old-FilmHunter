@@ -32,6 +32,25 @@
     </div>
     {{ > footer }}
 </template>
+<template name="removeAccount">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
+                <h1 class="infoTitle">Remove Account</h1>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                <div class="bugreportContainer upSpace">
+                    <img src="bugreport.jpg">
+                    <p class="howToUse">If you want to remove your account from FilmHunter press the button below.
+                        <br/>If you remove your account you will lose all your user data in FilmHunter.
+                    </p>
+                    <button id="removeAccount" type="button" class="removeAccountBtn">Remove Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ > footer }}
+</template>
 <template name="footer">
     <div class="container">
         <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
@@ -43,7 +62,7 @@
                     <br/>The project is OpenSource
                     <br/>and you can find the code on <a href="https://github.com/delvedor/FilmHunter" target="_blank">GitHub</a>.
                     <br/>
-                    <br/>FilmHunter v0.5.1
+                    <br/>FilmHunter v0.5.2
                 </p>
             </div>
         </div>

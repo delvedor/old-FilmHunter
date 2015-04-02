@@ -17,8 +17,11 @@ var arrayMovieInfo = {
     genres: [],
     cast: [],
     director: {},
-    trailer: ""
+    trailer: "",
+    image: "",
+    stars: 0
 };
+var arrayStars = [];
 var arrayResultSimilarFilm = [];
 var arrayMovieInfoBoxes = [];
 
@@ -169,6 +172,7 @@ function searchMovie(ris) {
         movieInfo: [],
         movieBoxes: [],
         similarFilm: [],
+        stars: [],
         ts: new Date()
     });
 }
@@ -181,6 +185,7 @@ function getMovieInfo(ris) {
     arrayMovieInfo.tagline = ris.tagline;
     arrayMovieInfo.release_date = ris.release_date;
     arrayMovieInfo.plot = ris.overview;
+    arrayMovieInfo.image = (ris.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ris.poster_path : '/blank.jpg');
     var i = 0;
     var genresLen = ris.genres.length;
     _.each(ris.genres, function(ele) {
@@ -359,6 +364,7 @@ function setArrayMovieInfoBoxes(data, dataType) {
             if (i === 10)
                 return;
             i++;
+            arrayMovieInfo.stars += parseInt(ele.score, 10);
             arrayMovieInfoBoxes.push({
                 boxType: 'boxReview',
                 background: 'background-color: #FAFAFA',
@@ -370,7 +376,7 @@ function setArrayMovieInfoBoxes(data, dataType) {
             });
 
         });
-
+        arrayMovieInfo.stars = ((arrayMovieInfo.stars / i) / 2) / 10;
     }
 
     shuffle(arrayMovieInfoBoxes, 1);
@@ -419,12 +425,170 @@ function allFinish(finish, cache) {
         Session.set("searching", false);
 }
 
+function checkStars() {
+    if (arrayMovieInfo.stars > 0 && arrayMovieInfo.stars < 1) {
+        arrayMovieInfo.stars = 0.5;
+        arrayStars = [{
+            star: 'fa-star-half-o'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }];
+    } else if (arrayMovieInfo.stars === 1) {
+        arrayMovieInfo.stars = 1;
+        arrayStars = [{
+            star: 'fa-star'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }];
+    } else if (arrayMovieInfo.stars > 1 && arrayMovieInfo.stars < 2) {
+        arrayMovieInfo.stars = 1.5;
+        arrayStars = [{
+            star: 'fa-star'
+        }, {
+            star: 'fa-star-half-o'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }];
+    } else if (arrayMovieInfo.stars === 2) {
+        arrayMovieInfo.stars = 2;
+        arrayStars = [{
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }];
+    } else if (arrayMovieInfo.stars > 2 && arrayMovieInfo.stars < 3) {
+        arrayMovieInfo.stars = 2.5;
+        arrayStars = [{
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star-half-o'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }];
+    } else if (arrayMovieInfo.stars === 3) {
+        arrayMovieInfo.stars = 3;
+        arrayStars = [{
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }];
+    } else if (arrayMovieInfo.stars > 3 && arrayMovieInfo.stars < 4) {
+        arrayMovieInfo.stars = 3.5;
+        arrayStars = [{
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star-half-o'
+        }, {
+            star: 'fa-star-o'
+        }];
+    } else if (arrayMovieInfo.stars === 4) {
+        arrayMovieInfo.stars = 4;
+        arrayStars = [{
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star-o'
+        }];
+    } else if (arrayMovieInfo.stars > 4 && arrayMovieInfo.stars < 5) {
+        arrayMovieInfo.stars = 4.5;
+        arrayStars = [{
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star-half-o'
+        }];
+    } else if (arrayMovieInfo.stars === 5) {
+        arrayMovieInfo.stars = 5;
+        arrayStars = [{
+            star: 'fa-star',
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }, {
+            star: 'fa-star'
+        }];
+    } else {
+        arrayMovieInfo.stars = 0;
+        arrayStars = [{
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }, {
+            star: 'fa-star-o'
+        }];
+    }
+    dbMovieInfo.update({
+        idMovie: movie
+    }, {
+        $unset: {
+            stars: arrayStars
+        },
+        $set: {
+            stars: arrayStars
+        }
+    });
+}
+
 /**
  * Randomize the content of an array.
  */
 function shuffle(array, count) {
     finCount += count;
     if (finCount >= 4) {
+        checkStars();
         arrayMovieInfoBoxes = _.shuffle(array);
         dbMovieInfo.update({
             idMovie: movie
@@ -452,8 +616,11 @@ function resetVariables() {
         genres: [],
         cast: [],
         director: {},
-        trailer: ""
+        trailer: "",
+        image: "",
+        stars: 0
     };
+    arrayStars = [];
     arrayResultSimilarFilm = [];
     arrayMovieInfoBoxes = [];
     finCount = 0;
@@ -482,6 +649,33 @@ Template.movieInfo.helpers({
                 ts: -1
             }
         }).movieBoxes;
+    },
+
+    stars: function() {
+        if (!dbMovieInfo.findOne())
+            return [];
+        return dbMovieInfo.findOne({}, {
+            sort: {
+                ts: -1
+            }
+        }).stars;
+    },
+
+    isFav: function() {
+        var movie = dbMovieInfo.findOne({}, {
+            sort: {
+                ts: -1
+            }
+        }).movieInfo;
+
+        var exist = favourites.find({
+            "fav.id": movie.id
+        }).fetch();
+
+        if (exist.length === 0)
+            return false;
+        else
+            return true;
     }
 });
 

@@ -19,3 +19,15 @@ function sendBugReport(br) {
         $('#textBugReport').val("");
     });
 }
+
+Template.removeAccount.events({
+    'click #removeAccount': function(e) {
+        e.preventDefault();
+        Meteor.call('removeAccount', Meteor.userId(), function(err, result) {
+            if (result)
+                alert("Done.");
+            if (err)
+                alert("Error.");
+        });
+    }
+});

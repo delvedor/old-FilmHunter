@@ -10,3 +10,4 @@ Session.setDefault('numberOfResults', 0);
 dbResults = new Meteor.Collection(null);
 dbMovieInfo = new Meteor.Collection(null);
 Meteor.subscribe('genres');
+Meteor.subscribe('favourites');

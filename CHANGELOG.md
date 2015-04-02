@@ -1,5 +1,10 @@
 # Film Hunter
 *Changelog*
+**[0.5.2]** *02/04/2015*
+- Implemented user account;
+- Implemented favourites related user account;
+- Added the stars in movie info;
+- Added accounts packages.
 
 **[0.5.1]** *01/04/2015*
 - Added search-links in movie info;

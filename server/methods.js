@@ -1,6 +1,14 @@
 Future = Npm.require('fibers/future');
 
 Meteor.methods({
+    removeAccount: function(userId) {
+        Meteor.users.remove(userId);
+        favourites.remove({
+            id: userId
+        });
+        return true;
+    },
+
     saveBugReport: function(br) {
         bugreport.insert({
             ip: this.connection.clientAddress,
@@ -8,6 +16,33 @@ Meteor.methods({
             bugReportText: br
         });
         return true;
+    },
+
+    createFavourites: function(userId) {
+        favourites.insert({
+            id: userId,
+            fav: []
+        });
+    },
+
+    addFavourites: function(userId, fav) {
+        favourites.update({
+            id: userId
+        }, {
+            $push: {
+                fav: fav
+            }
+        });
+    },
+
+    removeFavourites: function(userId, fav) {
+        favourites.update({
+            id: userId
+        }, {
+            $pull: {
+                fav: fav
+            }
+        });
     },
 
     searchPerson: function(name) {
