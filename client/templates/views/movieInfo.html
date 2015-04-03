@@ -50,14 +50,14 @@
                 </div>
             </div>
             <div class="colElement-movieInfo">
-                <div class="movieInfoBoxes" style="background-color: #FAFAFA;">
-                    {{ #each stars}} <i class="fa {{ star }} fa-2x"></i> {{ /each }}
+                <div class="movieInfoBoxes stars" style="background-color: #FAFAFA;">
+                    {{ #each stars}}<i class="fa {{ star }} fa-2x star" style="padding:0 5px;"></i>{{ /each }}
                 </div>
             </div>
             {{ #each movieInfoBoxes }}
             <div class="colElement-movieInfo">
                 <div class="movieInfoBoxes" style="{{ background }}">
-                    <p class="{{ boxType }}">{{ #if isUser }}{{ #if isTwitter }}<i class="fa fa-twitter fa-2x" style="color:#616161; margin-bottom:10px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;<a class="userBox" href="{{ link }}" target="_blank">@{{ user }}</a>{{else}}<i class="fa fa-star fa-2x" style="color:#616161; margin-bottom:10px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;<a class="userBox" href="{{ link }}" target="_blank">{{ user }}</a>{{/if}}
+                    <p class="{{ boxType }}">{{ #if isUser }}{{ #if isTwitter }}<i class="fa fa-twitter fa-2x" style="color:#616161; margin-bottom:10px; padding-right:20px;"></i><a class="userBox" href="{{ link }}" target="_blank">@{{ user }}</a>{{else}}<i class="fa fa-newspaper-o fa-2x" style="color:#616161; margin-bottom:10px; padding-right:20px;"></i><a class="userBox" href="{{ link }}" target="_blank">{{ user }}</a>{{/if}}
                         <br/>{{ /if }}<span class="textBox {{ boxType }}">{{ text }}</span></p>
                 </div>
             </div>

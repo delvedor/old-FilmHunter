@@ -1,16 +1,21 @@
 Future = Npm.require('fibers/future');
 
 Meteor.methods({
-    removeAccount: function(userId) {
-        Meteor.users.remove(userId);
-        favourites.remove({
-            id: userId
-        });
-        return true;
+    removeAccount: function(userId, userIdCheck) {
+        if (userId === userIdCheck) {
+            Meteor.users.remove(userId);
+            favourites.remove({
+                id: userId
+            });
+            return true;
+        }
+        return false;
+
     },
 
-    saveBugReport: function(br) {
+    saveBugReport: function(br, userId) {
         bugreport.insert({
+            user: userId,
             ip: this.connection.clientAddress,
             ts: new Date(),
             bugReportText: br

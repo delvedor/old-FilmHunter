@@ -54,7 +54,7 @@ a:hover {
 
 .searchBar {
     background-color: #FAFAFA;
-    border-radius: 20px;
+    border-radius: 50px;
     margin-top: 20px;
 }
 
@@ -134,7 +134,7 @@ a:hover {
 }
 
 .slide-panel .close-panel {
-    font-size: 5em;
+    font-size: 4em;
     color: #616161;
 }
 
@@ -150,7 +150,7 @@ a:hover {
     text-transform: uppercase;
 }
 
-.sidePanelEle.removeAccount a {
+.sidePanelEle.accountSidePanel a {
     font-size: 1.2em;
 }
 
@@ -162,7 +162,7 @@ a:hover {
 .sign-in-text-google {
     border: 1px #F9473E solid;
     border-radius: 2px;
-    padding: 6px;
+    padding: 5px;
     background-color: rgba(244, 67, 54, 0.6);
     color: #FAFAFA;
     cursor: pointer;
@@ -223,7 +223,8 @@ button:focus {
 
 .-autocomplete-container {
     margin-top: 20px;
-    margin-left: -20%;
+    margin-bottom: 20px;
+    margin-left: -30%;
 }
 
 .filmResult-col {
@@ -308,6 +309,7 @@ div[class="filmResult"] {
     text-transform: uppercase;
     font-weight: 300;
     text-shadow: 2px 2px 2px #BDBDBD;
+    font-size: 2.2em;
 }
 
 .filmInfoTagline {
@@ -350,6 +352,15 @@ div[class="filmResult"] {
     font-size: 1.1em;
     letter-spacing: 1px;
     font-weight: 300;
+}
+
+.stars {
+    height: 90px;
+    line-height: 70px;
+}
+
+.star {
+    color: #616161;
 }
 
 .textBox {
@@ -536,8 +547,8 @@ div[class="filmResult"] {
         margin-top: 35px;
     }
     #logo {
-        width: 150px;
-        height: 150px;
+        width: 140px;
+        height: 140px;
     }
     #login-buttons {
         margin-top: 2px;
@@ -642,8 +653,8 @@ div[class="filmResult"] {
         margin-top: 60px;
     }
     #logo {
-        width: 220px;
-        height: 220px;
+        width: 210px;
+        height: 210px;
     }
     #login-buttons {
         margin-top: 5px;
@@ -679,6 +690,7 @@ div[class="filmResult"] {
     }
     .filmInfoTitle {
         margin-top: -5px;
+        padding: 0 40px;
     }
 }
 

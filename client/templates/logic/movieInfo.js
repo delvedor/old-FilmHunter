@@ -7,6 +7,7 @@ var movie = "";
 var title = "";
 var metacriticTitle = "";
 var twitterTitle = "";
+var stars = 0;
 
 var arrayMovieInfo = {
     id: "",
@@ -18,8 +19,7 @@ var arrayMovieInfo = {
     cast: [],
     director: {},
     trailer: "",
-    image: "",
-    stars: 0
+    image: ""
 };
 var arrayStars = [];
 var arrayResultSimilarFilm = [];
@@ -172,7 +172,6 @@ function searchMovie(ris) {
         movieInfo: [],
         movieBoxes: [],
         similarFilm: [],
-        stars: [],
         ts: new Date()
     });
 }
@@ -364,7 +363,7 @@ function setArrayMovieInfoBoxes(data, dataType) {
             if (i === 10)
                 return;
             i++;
-            arrayMovieInfo.stars += parseInt(ele.score, 10);
+            stars += parseInt(ele.score, 10);
             arrayMovieInfoBoxes.push({
                 boxType: 'boxReview',
                 background: 'background-color: #FAFAFA',
@@ -376,7 +375,7 @@ function setArrayMovieInfoBoxes(data, dataType) {
             });
 
         });
-        arrayMovieInfo.stars = ((arrayMovieInfo.stars / i) / 2) / 10;
+        stars = ((stars / i) / 2) / 10;
     }
 
     shuffle(arrayMovieInfoBoxes, 1);
@@ -426,8 +425,8 @@ function allFinish(finish, cache) {
 }
 
 function checkStars() {
-    if (arrayMovieInfo.stars > 0 && arrayMovieInfo.stars < 1) {
-        arrayMovieInfo.stars = 0.5;
+    if (stars > 0 && stars < 1) {
+        stars = 0.5;
         arrayStars = [{
             star: 'fa-star-half-o'
         }, {
@@ -439,8 +438,8 @@ function checkStars() {
         }, {
             star: 'fa-star-o'
         }];
-    } else if (arrayMovieInfo.stars === 1) {
-        arrayMovieInfo.stars = 1;
+    } else if (stars === 1) {
+        stars = 1;
         arrayStars = [{
             star: 'fa-star'
         }, {
@@ -452,8 +451,8 @@ function checkStars() {
         }, {
             star: 'fa-star-o'
         }];
-    } else if (arrayMovieInfo.stars > 1 && arrayMovieInfo.stars < 2) {
-        arrayMovieInfo.stars = 1.5;
+    } else if (stars > 1 && stars < 2) {
+        stars = 1.5;
         arrayStars = [{
             star: 'fa-star'
         }, {
@@ -465,8 +464,8 @@ function checkStars() {
         }, {
             star: 'fa-star-o'
         }];
-    } else if (arrayMovieInfo.stars === 2) {
-        arrayMovieInfo.stars = 2;
+    } else if (stars === 2) {
+        stars = 2;
         arrayStars = [{
             star: 'fa-star'
         }, {
@@ -478,8 +477,8 @@ function checkStars() {
         }, {
             star: 'fa-star-o'
         }];
-    } else if (arrayMovieInfo.stars > 2 && arrayMovieInfo.stars < 3) {
-        arrayMovieInfo.stars = 2.5;
+    } else if (stars > 2 && stars < 3) {
+        stars = 2.5;
         arrayStars = [{
             star: 'fa-star'
         }, {
@@ -491,8 +490,8 @@ function checkStars() {
         }, {
             star: 'fa-star-o'
         }];
-    } else if (arrayMovieInfo.stars === 3) {
-        arrayMovieInfo.stars = 3;
+    } else if (stars === 3) {
+        stars = 3;
         arrayStars = [{
             star: 'fa-star'
         }, {
@@ -504,8 +503,8 @@ function checkStars() {
         }, {
             star: 'fa-star-o'
         }];
-    } else if (arrayMovieInfo.stars > 3 && arrayMovieInfo.stars < 4) {
-        arrayMovieInfo.stars = 3.5;
+    } else if (stars > 3 && stars < 4) {
+        stars = 3.5;
         arrayStars = [{
             star: 'fa-star'
         }, {
@@ -517,8 +516,8 @@ function checkStars() {
         }, {
             star: 'fa-star-o'
         }];
-    } else if (arrayMovieInfo.stars === 4) {
-        arrayMovieInfo.stars = 4;
+    } else if (stars === 4) {
+        stars = 4;
         arrayStars = [{
             star: 'fa-star'
         }, {
@@ -530,8 +529,8 @@ function checkStars() {
         }, {
             star: 'fa-star-o'
         }];
-    } else if (arrayMovieInfo.stars > 4 && arrayMovieInfo.stars < 5) {
-        arrayMovieInfo.stars = 4.5;
+    } else if (stars > 4 && stars < 5) {
+        stars = 4.5;
         arrayStars = [{
             star: 'fa-star'
         }, {
@@ -543,8 +542,8 @@ function checkStars() {
         }, {
             star: 'fa-star-half-o'
         }];
-    } else if (arrayMovieInfo.stars === 5) {
-        arrayMovieInfo.stars = 5;
+    } else if (stars === 5) {
+        stars = 5;
         arrayStars = [{
             star: 'fa-star',
         }, {
@@ -557,17 +556,17 @@ function checkStars() {
             star: 'fa-star'
         }];
     } else {
-        arrayMovieInfo.stars = 0;
+        stars = 0;
         arrayStars = [{
-            star: 'fa-star-o'
+            star: 'fa-minus'
         }, {
-            star: 'fa-star-o'
+            star: 'fa-minus'
         }, {
-            star: 'fa-star-o'
+            star: 'fa-minus'
         }, {
-            star: 'fa-star-o'
+            star: 'fa-minus'
         }, {
-            star: 'fa-star-o'
+            star: 'fa-minus'
         }];
     }
     dbMovieInfo.update({
@@ -617,9 +616,9 @@ function resetVariables() {
         cast: [],
         director: {},
         trailer: "",
-        image: "",
-        stars: 0
+        image: ""
     };
+    stars = 0;
     arrayStars = [];
     arrayResultSimilarFilm = [];
     arrayMovieInfoBoxes = [];

@@ -19,7 +19,7 @@
                         <br/>In addition, <strong>Film Hunter</strong> can search movies by <strong>Director</strong>, <strong>Actor</strong> or <strong>Genre</strong>, it's very easy:
                         <br/>- if you want to search movies by Director, type <em>"d:Name"</em>,
                         <br/>- if you want to search movies by Actor, type <em>"a:Name"</em>,
-                        <br/>- if you want to search movies by Genre, type <em>"g:Name"</em>.
+                        <br/>- if you want to search movies by Genre, type <em>"g:Genre"</em>.
                         <br/>
                         <br/>Do you want an example?
                         <br/>Try to type <em>"d:Stanley Kubrick"</em> or <em>"a:Brad Pitt"</em> or <em>"g:Action"</em> into the search bar.
@@ -32,19 +32,19 @@
     </div>
     {{ > footer }}
 </template>
-<template name="removeAccount">
+<template name="account">
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
-                <h1 class="infoTitle">Remove Account</h1>
+                <h1 class="infoTitle">Account</h1>
             </div>
             <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
                 <div class="bugreportContainer upSpace">
-                    <img src="bugreport.jpg">
-                    <p class="howToUse">If you want to remove your account from FilmHunter press the button below.
-                        <br/>If you remove your account you will lose all your user data in FilmHunter.
+                    <img src="deleteaccount.jpg">
+                    <p class="howToUse">If you want to delete your account from FilmHunter press the button below.
+                        <br/>When you delete your account you will lose <strong>all your user data</strong> stored in FilmHunter.
                     </p>
-                    <button id="removeAccount" type="button" class="removeAccountBtn">Remove Account</button>
+                    <button id="removeAccount" type="button" class="removeAccountBtn">Delete Account</button>
                 </div>
             </div>
         </div>
@@ -53,17 +53,19 @@
 </template>
 <template name="footer">
     <div class="container">
-        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
-            <div class="infoContainer bottomSpace">
-                <p class="infoFH">Film Hunter is still in beta and is improved weekly, all the movies data and images come from the
-                    <a href="https://www.themoviedb.org/" target="_blank">TMDb</a> database, the reviews come from <a href="http://www.metacritic.com/" target="_blank">Metacritic</a> and the tweets from <a href="https://twitter.com/" target="_blank">Twitter</a>.
-                    <br/>
-                    <br/>Made with &nbsp;<i class="fa fa-heart"></i>&nbsp; by <a href="https://twitter.com/delvedor" target="_blank">@delvedor</a>.
-                    <br/>The project is OpenSource
-                    <br/>and you can find the code on <a href="https://github.com/delvedor/FilmHunter" target="_blank">GitHub</a>.
-                    <br/>
-                    <br/>FilmHunter v0.5.2
-                </p>
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                <div class="infoContainer bottomSpace">
+                    <p class="infoFH">Film Hunter is still in beta and is improved weekly, all the movies data and images come from the
+                        <a href="https://www.themoviedb.org/" target="_blank">TMDb</a> database, the reviews come from <a href="http://www.metacritic.com/" target="_blank">Metacritic</a> and the tweets from <a href="https://twitter.com/" target="_blank">Twitter</a>.
+                        <br/>
+                        <br/>Made with &nbsp;<i class="fa fa-heart"></i>&nbsp; by <a href="https://twitter.com/delvedor" target="_blank">@delvedor</a>.
+                        <br/>The project is OpenSource
+                        <br/>and you can find the code on <a href="https://github.com/delvedor/FilmHunter" target="_blank">GitHub</a>.
+                        <br/>
+                        <br/>FilmHunter v0.5.2
+                    </p>
+                </div>
             </div>
         </div>
     </div>

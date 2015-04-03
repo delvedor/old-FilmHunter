@@ -11,7 +11,7 @@ Template.bugReport.events({
 });
 
 function sendBugReport(br) {
-    Meteor.call('saveBugReport', br, function(err, result) {
+    Meteor.call('saveBugReport', br, Meteor.userId(), function(err, result) {
         if (result)
             alert("Thank you for reporting bug.");
         if (err)
@@ -20,10 +20,10 @@ function sendBugReport(br) {
     });
 }
 
-Template.removeAccount.events({
+Template.account.events({
     'click #removeAccount': function(e) {
         e.preventDefault();
-        Meteor.call('removeAccount', Meteor.userId(), function(err, result) {
+        Meteor.call('removeAccount', Meteor.userId(), Meteor.userId(), function(err, result) {
             if (result)
                 alert("Done.");
             if (err)

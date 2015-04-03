@@ -18,12 +18,12 @@ Router.route('/help', function() {
     this.render('help');
 });
 
-Router.route('/removeAccount', function() {
+Router.route('/account', function() {
     if (Meteor.userId()) {
-        if (_.last(pageHistory) !== 'removeAccount')
-            pageHistory.push('removeAccount');
+        if (_.last(pageHistory) !== 'account')
+            pageHistory.push('account');
         this.layout('layout');
-        this.render('removeAccount');
+        this.render('account');
     } else {
         this.redirect('/');
     }
