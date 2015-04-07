@@ -36,6 +36,46 @@ Router.route('/favourites', function() {
     this.render('favourites');
 });
 
+Router.route('/search', {
+    path: '/search/:key',
+    layout: 'resultsFilm',
+    layoutTemplate: 'layout',
+    waitOn: function() {
+        return Meteor.subscribe('genres');
+    },
+    onBeforeAction: function() {
+        this.render('loadingRes');
+        checkHistorySearch((this.params.key).replace(/[^a-zA-Z0-9_:]/g, '-'));
+        if (!Session.get('searching'))
+            this.next();
+    },
+    action: function() {
+        if (pageHistory[pageHistory.length - 1] !== '/search/' + (this.params.key).replace(/[^a-zA-Z0-9_:]/g, '-'))
+            pageHistory.push('/search/' + (this.params.key).replace(/[^a-zA-Z0-9_:]/g, '-'));
+        this.render('resultsFilm');
+    }
+});
+
+Router.route('/movie', {
+    path: '/movie/:key',
+    layout: 'movieInfo',
+    layoutTemplate: 'layout',
+    waitOn: function() {
+        return Meteor.subscribe('genres');
+    },
+    onBeforeAction: function() {
+        this.render('loading');
+        checkHistoryMovie(escape(this.params.key));
+        if (!Session.get('searching'))
+            this.next();
+    },
+    action: function() {
+        if (pageHistory[pageHistory.length - 1] !== '/movie/' + escape(this.params.key))
+            pageHistory.push('/movie/' + escape(this.params.key));
+        this.render('movieInfo');
+    }
+});
+
 Router.route('/notfound', function() {
     if (_.last(pageHistory) !== 'notfound')
         pageHistory.push('notfound');

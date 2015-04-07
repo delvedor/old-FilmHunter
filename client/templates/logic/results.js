@@ -3,7 +3,7 @@
  */
 Template.resultsFilm.helpers({
     resultsPageFilm: function() {
-        Meteor.setTimeout(setGrid, 300);
+        Meteor.setTimeout(setGrid, 100);
         if (!dbResults.findOne())
             return [];
         return dbResults.findOne({}, {
@@ -11,6 +11,21 @@ Template.resultsFilm.helpers({
                 ts: -1
             }
         }).results;
+    },
+
+    moreResults: function() {
+        return Session.get("moreResults");
+    },
+
+    genrePage: function() {
+        return Session.get("genrePage");
+    }
+});
+
+Template.resultsFilm.events({
+    'click #loadMore': function(e) {
+        e.preventDefault();
+        startSearchGenre(_.last(searchHistory), true);
     }
 });
 

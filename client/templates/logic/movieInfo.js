@@ -25,23 +25,6 @@ var arrayStars = [];
 var arrayResultSimilarFilm = [];
 var arrayMovieInfoBoxes = [];
 
-Router.route('/movie', {
-    path: '/movie/:key',
-    layout: 'movieInfo',
-    layoutTemplate: 'layout',
-    onBeforeAction: function() {
-        this.render('loading');
-        checkHistory(escape(this.params.key));
-        if (!Session.get('searching'))
-            this.next();
-    },
-    action: function() {
-        if (pageHistory[pageHistory.length - 1] !== '/movie/' + escape(this.params.key))
-            pageHistory.push('/movie/' + escape(this.params.key));
-        this.render('movieInfo');
-    }
-});
-
 /**
  * Get the click event on a film result and redirect to the dynamic movieInfo page.
  */
@@ -66,7 +49,7 @@ Template.similarFilm.events({
 });
 
 
-function checkHistory(id) {
+checkHistoryMovie = function(id) {
     Session.set("searching", true);
     for (var i = 0, mHLen = movieHistory.length; i < mHLen; ++i) {
         if (id === movieHistory[i]) {
@@ -75,7 +58,7 @@ function checkHistory(id) {
         }
     }
     getMovieById(id);
-}
+};
 
 function loadHistory(id) {
     dbMovieInfo.update({
@@ -683,7 +666,7 @@ Template.movieInfo.helpers({
  */
 Template.similarFilm.helpers({
     similarFilmArr: function() {
-        Meteor.setTimeout(setGrid, 300);
+        Meteor.setTimeout(setGrid, 100);
         if (!dbMovieInfo.findOne())
             return [];
         return dbMovieInfo.findOne({}, {
@@ -713,7 +696,6 @@ function setGrid() {
         }
     });
 }
-
 
 Template.movieInfo.rendered = function() {
     $('body,html').scrollTop();

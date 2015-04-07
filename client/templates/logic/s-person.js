@@ -79,4 +79,5 @@ function resetVariables() {
     escapedSearch = "";
     arrayResultFilm = [];
     Session.set('numberOfResults', 0);
+    Session.set("moreResults", false);
 }

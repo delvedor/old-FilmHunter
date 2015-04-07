@@ -2,22 +2,35 @@
  * Variables Declaration
  */
 var search = "";
+var totalPages = 0;
 var arrayResultGenre = [];
 
 
-startSearchGenre = function(searchKey) {
+startSearchGenre = function(searchKey, loadMore) {
+    Session.set('genrePage', true);
     resetVariables();
+    var page;
     search = searchKey.replace(/[^a-zA-Z0-9_:]/g, '-');
     var id = genres.find({
-        check: searchKey.replace(/\s/g, '').toLowerCase().substring(2)
+        check: searchKey.replace(/[-]/g, '').replace(/\s/g, '').toLowerCase().substring(2)
     }).fetch();
     if (id.length === 0) {
+        console.log(id);
         Router.go('notfound');
         return;
     }
-    Meteor.call('searchGenreMovies', id[0].id, 1, function(err, result) {
+    if (loadMore) {
+        page = dbResults.findOne({}, {
+            sort: {
+                ts: -1
+            }
+        }).page;
+    } else {
+        page = 1;
+    }
+    Meteor.call('searchGenreMovies', id[0].id, page, function(err, result) {
         if (result)
-            saveGenre(result.content, 2);
+            saveGenre(result.content, ++page, 2);
         if (err)
             console.log(err);
     });
@@ -26,18 +39,49 @@ startSearchGenre = function(searchKey) {
 /**
  * Saves and finalizes the results of the genre search.
  */
-saveGenre = function(data, page) {
+function saveGenre(data, page, count) {
     var ris = $.parseJSON(data);
     if (page === 2) {
         resetVariables();
-        Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
+        totalPages = ris.total_pages;
+        Session.set('numberOfResults', ris.total_results);
     }
-    if (page > 6) {
-        dbResults.insert({
-            search: search,
-            results: arrayResultGenre,
-            ts: new Date()
+    if (count === 5) {
+        var results = dbResults.findOne({}, {
+            sort: {
+                ts: -1
+            }
         });
+        if (results === undefined || results.search !== search) {
+            dbResults.insert({
+                search: search,
+                results: arrayResultGenre,
+                ts: new Date(),
+                page: page,
+                totalPages: totalPages
+            });
+        } else {
+            dbResults.update({
+                search: search
+            }, {
+                $unset: {
+                    results: [],
+                    ts: '',
+                    page: ''
+                },
+                $set: {
+                    results: _.union(results.results, arrayResultGenre),
+                    ts: new Date(),
+                    page: page
+                }
+            });
+        }
+
+        if (page < totalPages)
+            Session.set("moreResults", true);
+        else
+            Session.set("moreResults", false);
+        Session.set('genrePage', false);
         Session.set("searching", false);
         return;
     }
@@ -57,12 +101,12 @@ saveGenre = function(data, page) {
     });
     Meteor.call('searchGenreMovies', ris.id, page, function(err, result) {
         if (result)
-            saveGenre(result.content, ++page);
+            saveGenre(result.content, ++page, ++count);
         if (err)
             console.log(err);
     });
 
-};
+}
 
 /**
  * Reset all the variables for a new search.
@@ -70,4 +114,5 @@ saveGenre = function(data, page) {
 function resetVariables() {
     arrayResultGenre = [];
     Session.set('numberOfResults', 0);
+    Session.set("moreResults", false);
 }

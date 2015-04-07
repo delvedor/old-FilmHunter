@@ -58,10 +58,14 @@ function addFavourites(userId) {
  */
 Template.favourites.helpers({
     favourites: function() {
-        Meteor.setTimeout(setGrid, 300);
+        Meteor.setTimeout(setGrid, 100);
         if (!favourites.findOne())
             return [];
-        return favourites.findOne().fav;
+        var fav = favourites.findOne().fav;
+        fav = _.sortBy(fav, function(ele) {
+            return ele.title;
+        });
+        return fav;
     }
 });
 

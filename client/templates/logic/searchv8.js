@@ -4,37 +4,20 @@
 var filmSearch = "";
 
 /**
- * Load the routegetting the parameters in the url.
- */
-Router.route('/search', {
-    path: '/search/:key',
-    layout: 'resultsFilm',
-    layoutTemplate: 'layout',
-    onBeforeAction: function() {
-        this.render('loadingRes');
-        checkHistory((this.params.key).replace(/[^a-zA-Z0-9_:]/g, '-'));
-        if (!Session.get('searching'))
-            this.next();
-    },
-    action: function() {
-        if (pageHistory[pageHistory.length - 1] !== '/search/' + (this.params.key).replace(/[^a-zA-Z0-9_:]/g, '-'))
-            pageHistory.push('/search/' + (this.params.key).replace(/[^a-zA-Z0-9_:]/g, '-'));
-        this.render('resultsFilm');
-    }
-});
-
-/**
  * Check if the current research has already been performed.
  */
-function checkHistory(params) {
-    for (var i = 0, sHlen = searchHistory.length; i < sHlen; ++i) {
-        if (params === searchHistory[i]) {
+checkHistorySearch = function(params) {
+    var bool = true;
+    _.each(searchHistory, function(ele) {
+        if (params === ele) {
+            bool = false;
             loadHistory(params);
             return;
         }
-    }
-    setSearch(params);
-}
+    });
+    if (bool)
+        setSearch(params);
+};
 
 /**
  * If the current research has already been performed, then it loads the data.
@@ -82,7 +65,7 @@ Template.layout.events({
  * Displays the list of movie genres if the user type g: in the search field.
  */
 Template.layout.helpers({
-    settings: function() {
+    settingsInputSearch: function() {
         return {
             position: "bottom",
             limit: 20,
@@ -112,7 +95,7 @@ function setSearch(query) {
         startSearchPerson(filmSearch);
 
     } else if (filmSearch.substring(0, 2) === "g:") {
-        startSearchGenre(filmSearch);
+        startSearchGenre(filmSearch, false);
 
     } else {
         startSearchMovie(filmSearch);

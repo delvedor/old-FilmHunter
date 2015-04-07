@@ -77,6 +77,10 @@ a:hover {
     border-style: none;
 }
 
+#goSearch:hover {
+    color: #616161;
+}
+
 .infoHome {
     padding: 50px 0;
     margin: 0 auto;
@@ -94,7 +98,7 @@ a:hover {
     height: 40px;
     z-index: 2000;
     background-color: #FAFAFA;
-    box-shadow: 0 4px 8px #9E9E9E;
+    box-shadow: 0 2px 3px #9E9E9E;
 }
 
 .backButton {
@@ -294,6 +298,25 @@ div[class="filmResult"] {
 
 .resultsGrid {
     padding: 40px 0;
+}
+
+#loadMore {
+    font-size: 1.4em;
+    text-transform: uppercase;
+    color: #616161;
+    padding: 20px;
+    border: none;
+    border-radius: 2px;
+    background-color: #FAFAFA;
+    box-shadow: 0 2px 4px #9E9E9E;
+    margin-bottom: 30px;
+    -webkit-transition: box-shadow 0.2s linear 0s;
+    -moz-transition: box-shadow 0.2s linear 0s;
+    transition: box-shadow 0.2s linear 0s;
+}
+
+#loadMore:hover {
+    box-shadow: 1px 4px 6px #9E9E9E;
 }
 /****** Movie info ******/
 
@@ -1204,6 +1227,7 @@ only screen and (max-width: 767px) {
 .loader {
     margin-top: 100px;
     margin-left: 48%;
+    margin-bottom: 30px;
 }
 
 .preloader {

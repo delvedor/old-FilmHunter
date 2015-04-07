@@ -1,6 +1,17 @@
 # Film Hunter
 *Changelog*
 
+**[0.5.3]** *07/04/2015*
+- Some changes in the UI;
+- Favourites ordered by name;
+- Added more results in the genres search;
+- Added double check in delete-account page;
+- Corrected social share links;
+- Rewrited part of the router system;
+- Few improvements;
+- Updated Meteor;
+- Various bugfix.
+
 **[0.5.2]** *03/04/2015*
 - Implemented user account;
 - Implemented favourites related user account;
