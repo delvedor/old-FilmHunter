@@ -23,7 +23,6 @@ function addFavourites(userId) {
     var favLen = favourites.find({
         id: userId
     }).fetch();
-
     if (favLen.length === 0) {
         Meteor.call('createFavourites', userId);
     }
@@ -32,11 +31,9 @@ function addFavourites(userId) {
             ts: -1
         }
     }).movieInfo;
-
     var exist = favourites.find({
         "fav.id": movie.id
     }).fetch();
-
     if (exist.length === 0) {
         Meteor.call('addFavourites', userId, {
             id: movie.id,
@@ -49,9 +46,7 @@ function addFavourites(userId) {
             id: movie.id
         });
     }
-
 }
-
 
 /**
  * Helper for rective data of the related movie.

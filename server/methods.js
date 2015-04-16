@@ -39,7 +39,7 @@ Meteor.methods({
 
     addFavourites: function(userId, fav) {
         if (!Match.test(userId, String) || !Match.test(fav, {
-                id: Match.Integer,
+                id: String,
                 title: String,
                 image: String,
                 order: String
@@ -57,10 +57,7 @@ Meteor.methods({
 
     removeFavourites: function(userId, fav) {
         if (!Match.test(userId, String) || !Match.test(fav, {
-                id: Match.Integer,
-                title: String,
-                image: String,
-                order: String
+                id: String
             })) {
             return false;
         }
