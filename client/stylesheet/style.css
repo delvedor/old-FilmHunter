@@ -111,17 +111,6 @@ a:hover {
     cursor: pointer;
 }
 
-#backFaButton:hover,
-.sidePanelButton:hover,
-.slide-panel .close-panel:hover {
-    color: #424242;
-}
-
-.sidePanel {
-    text-align: right;
-    display: inline-block;
-}
-
 .sidePanelButton {
     width: 30px !important;
     height: 30px !important;
@@ -129,6 +118,25 @@ a:hover {
     color: #616161;
     background-color: rgba(0, 0, 0, 0);
     border-style: none;
+}
+
+#backFaButton:hover,
+.sidePanelButton:hover,
+.slide-panel .close-panel:hover {
+    color: #424242;
+}
+
+.sidePanelButton .userLogged {
+    color: #D32F2F;
+}
+
+.sidePanel {
+    text-align: right;
+    display: inline-block;
+}
+
+.sidePanel button:nth-child(2) {
+    margin-left: 20px;
 }
 
 .slide-panel {
@@ -158,37 +166,12 @@ a:hover {
     font-size: 1.2em;
 }
 
-#login-buttons {
-    text-align: right;
-    font-size: 1.15em;
-}
-
-.sign-in-text-google {
-    border: 1px #F9473E solid;
-    border-radius: 2px;
-    padding: 5px;
-    background-color: rgba(244, 67, 54, 0.6);
-    color: #FAFAFA;
-    cursor: pointer;
-}
-
-.login-display-name {
-    display: inline;
-    cursor: default;
-}
-
-.login-display-name:after {
-    content: " - ";
-}
-
-#login-buttons-logout {
-    display: inline;
-    cursor: pointer;
-    color: #C62828;
-}
-
 .hide {
     display: none;
+}
+
+.userButton {
+    text-align: right;
 }
 
 #filmSearch,
@@ -538,7 +521,8 @@ div[class="filmResult"] {
 }
 
 .sendBugButton,
-.removeAccountBtn {
+.removeAccountBtn,
+.signoutBtn {
     width: 40%;
     margin-top: 15px;
     height: 50px;
@@ -556,8 +540,22 @@ div[class="filmResult"] {
     background-color: #E53935;
 }
 
-.sendBugButton {
+.sendBugButton,
+.signoutBtn {
     background-color: #42A5F5;
+}
+
+.lineSeparator {
+    width: 100%;
+    border: 1px #9E9E9E solid;
+    margin: 50px 0 20px 0;
+}
+
+.pDangerZone {
+    font-size: 1.2em;
+    color: #616161;
+    letter-spacing: 5px;
+    text-transform: uppercase;
 }
 /****** Media queries ******/
 

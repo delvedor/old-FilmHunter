@@ -4,11 +4,11 @@
             <div class="col-xs-2 col-sm-2 col-md-2 backButton">
                 <i id="backFaButton" class="fa fa-arrow-left fa-2x"></i>
             </div>
-            <div class="col-xs-8 col-sm-8 col-md-9">
-                {{> loginButtons}}
-            </div>
-            <div class="col-xs-2 col-sm-2 col-md-1 sidePanel">
-                <button class="sidePanelButton" type="button"><i class="fa fa-bars fa-2x"></i>
+            <div class="col-xs-4 col-sm-8 col-md-8"></div>
+            <div class="col-xs-6 col-sm-2 col-md-2 sidePanel">
+                <button id="userButton" class="sidePanelButton" type="button">{{ #if currentUser }} <i class="fa fa-user fa-2x userLogged"></i> {{ else }} <i class="fa fa-user fa-2x"></i> {{ /if }}
+                </button>
+                <button id="menuButton" class="sidePanelButton" type="button"><i class="fa fa-bars fa-2x"></i>
                 </button>
             </div>
         </div>
@@ -49,9 +49,6 @@
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'favourites'}}">Favourites</a></p>
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'help'}}">Help</a></p>
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'bugReport'}}">Bug Report</a></p>
-    {{ #if currentUser }}
-    <p class="sidePanelEle accountSidePanel"><a role="menuitem" tabindex="-1" href="{{pathFor 'account'}}">Account</a></p>
-    {{ /if }}
 </template>
 <template name="dropdown">
     <p id="{{id}}" class="dropdownLabel">{{name}}</p>

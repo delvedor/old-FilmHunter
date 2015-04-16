@@ -1,6 +1,13 @@
 # Film Hunter
 *Changelog*
 
+**[0.5.4]** *17/04/2015*
+- New account page;
+- Added login with Twitter and Facebook;
+- Updated Nav-Bar UI;
+- Implemented security type checks in all server methods;
+- Some changes in the code.
+
 **[0.5.3]** *07/04/2015*
 - Some changes in the UI;
 - Favourites ordered by name;

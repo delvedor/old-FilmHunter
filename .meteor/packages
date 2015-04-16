@@ -21,4 +21,7 @@ spiderable
 underscore
 accounts-google
 service-configuration
-accounts-ui-unstyled
+useraccounts:bootstrap
+accounts-twitter
+accounts-facebook
+accounts-ui

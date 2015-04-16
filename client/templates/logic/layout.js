@@ -9,16 +9,22 @@ Template.layout.events({
         }
 
     },
-    'click .sidePanelButton': function(e) {
+    'click #menuButton': function(e) {
         e.preventDefault();
         slidePanel.showPanel('sidePanel');
-        $('.sidePanelButton').addClass('hide');
+        $('#menuButton').addClass('hide');
+        $('#userButton').addClass('hide');
     },
     'click .close-panel': function() {
-        $('.sidePanelButton').removeClass('hide');
+        $('#menuButton').removeClass('hide');
+        $('#userButton').removeClass('hide');
     },
     'click .sidePanelEle': function() {
         slidePanel.closePanel();
-        $('.sidePanelButton').removeClass('hide');
+        $('#menuButton').removeClass('hide');
+        $('#userButton').removeClass('hide');
+    },
+    'click #userButton': function(e) {
+        Router.go('account');
     }
 });

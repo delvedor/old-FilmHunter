@@ -19,14 +19,10 @@ Router.route('/help', function() {
 });
 
 Router.route('/account', function() {
-    if (Meteor.userId()) {
-        if (_.last(pageHistory) !== 'account')
-            pageHistory.push('account');
-        this.layout('layout');
-        this.render('account');
-    } else {
-        this.redirect('/');
-    }
+    if (_.last(pageHistory) !== 'account')
+        pageHistory.push('account');
+    this.layout('layout');
+    this.render('account');
 });
 
 Router.route('/favourites', function() {

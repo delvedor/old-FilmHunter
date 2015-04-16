@@ -666,7 +666,6 @@ Template.movieInfo.helpers({
  */
 Template.similarFilm.helpers({
     similarFilmArr: function() {
-        Meteor.setTimeout(setGrid, 100);
         if (!dbMovieInfo.findOne())
             return [];
         return dbMovieInfo.findOne({}, {
@@ -699,4 +698,5 @@ function setGrid() {
 
 Template.movieInfo.rendered = function() {
     $('body,html').scrollTop();
+    setGrid();
 };
