@@ -53,6 +53,7 @@ function addFavourites(userId) {
  */
 Template.favourites.helpers({
     favourites: function() {
+        Meteor.setTimeout(setGrid, 100);
         if (!favourites.findOne())
             return [];
         var fav = favourites.findOne().fav;
@@ -75,7 +76,3 @@ function setGrid() {
         }
     });
 }
-
-Template.favourites.rendered = function() {
-    setGrid();
-};

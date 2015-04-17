@@ -16,7 +16,6 @@ Meteor.methods({
     },
 
     saveBugReport: function(br, userId) {
-        console.log(br, userId);
         if (!Match.test(br, String) && (!Match.test(userId, String) || !Match.test(userId, null)))
             return false;
         bugreport.insert({

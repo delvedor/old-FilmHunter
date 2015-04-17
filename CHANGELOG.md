@@ -6,6 +6,8 @@
 - Added login with Twitter and Facebook;
 - Updated Nav-Bar UI;
 - Implemented security type checks in all server methods;
+- Added SEO metatag;
+- Some changes in the UI;
 - Some changes in the code.
 
 **[0.5.3]** *07/04/2015*

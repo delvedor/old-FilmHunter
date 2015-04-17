@@ -218,7 +218,7 @@ button:focus {
     text-align: center;
     background-color: #FAFAFA;
     border-radius: 2px;
-    box-shadow: 0 4px 8px #9E9E9E;
+    box-shadow: 0 2px 5px #9E9E9E;
     -webkit-transition: box-shadow 0.2s linear 0s;
     -moz-transition: box-shadow 0.2s linear 0s;
     transition: box-shadow 0.2s linear 0s;
@@ -227,7 +227,7 @@ button:focus {
 .filmResult-col:hover {
     position: relative;
     z-index: 999;
-    box-shadow: 0px 10px 15px #616161;
+    box-shadow: 0 6px 10px #9E9E9E;
 }
 
 .poster-col {
@@ -287,11 +287,11 @@ div[class="filmResult"] {
     font-size: 1.4em;
     text-transform: uppercase;
     color: #616161;
-    padding: 20px;
+    padding: 15px 20px;
     border: none;
     border-radius: 2px;
     background-color: #FAFAFA;
-    box-shadow: 0 2px 4px #9E9E9E;
+    box-shadow: 0 2px 5px #9E9E9E;
     margin-bottom: 30px;
     -webkit-transition: box-shadow 0.2s linear 0s;
     -moz-transition: box-shadow 0.2s linear 0s;
@@ -299,7 +299,7 @@ div[class="filmResult"] {
 }
 
 #loadMore:hover {
-    box-shadow: 1px 4px 6px #9E9E9E;
+    box-shadow: 0 6px 10px #9E9E9E;
 }
 /****** Movie info ******/
 
@@ -307,7 +307,7 @@ div[class="filmResult"] {
     background-color: #FAFAFA;
     border-radius: 2px;
     margin: 40px 0;
-    box-shadow: 0px 4px 8px #9E9E9E;
+    box-shadow: 0 2px 5px #9E9E9E;
 }
 
 .filmInfoTitle {
@@ -337,7 +337,7 @@ div[class="filmResult"] {
     background-size: cover;
     border-radius: 2px;
     padding: 15px;
-    box-shadow: 0 4px 8px #9E9E9E;
+    box-shadow: 0 2px 5px #9E9E9E;
 }
 
 .boxTweet {
@@ -476,7 +476,7 @@ div[class="filmResult"] {
     border-radius: 2px;
     margin: 10px 0;
     padding: 20px;
-    box-shadow: 0 4px 8px #9E9E9E;
+    box-shadow: 0 2px 5px #9E9E9E;
 }
 
 .infoContainer.bottomSpace {

@@ -3,6 +3,7 @@
  */
 Template.resultsFilm.helpers({
     resultsPageFilm: function() {
+        Meteor.setTimeout(setGrid, 100);
         if (!dbResults.findOne())
             return [];
         return dbResults.findOne({}, {
@@ -50,7 +51,3 @@ function setGrid() {
     });
 
 }
-
-Template.resultsFilm.rendered = function() {
-    setGrid();
-};
