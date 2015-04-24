@@ -9,6 +9,8 @@ Session.setDefault('searching', false);
 Session.setDefault('numberOfResults', 0);
 Session.setDefault('moreResults', false);
 Session.setDefault('genrePage', false);
+Session.setDefault('showSettings', false);
+
 dbResults = new Meteor.Collection(null);
 dbMovieInfo = new Meteor.Collection(null);
 Meteor.subscribe('genres');

@@ -18,18 +18,59 @@ Router.route('/help', function() {
     this.render('help');
 });
 
-Router.route('/account', function() {
-    if (_.last(pageHistory) !== 'account')
-        pageHistory.push('account');
-    this.layout('layout');
-    this.render('account');
+AccountsTemplates.configureRoute('signIn', {
+    name: 'signin',
+    path: '/signin',
+    template: 'signin',
+    layoutTemplate: 'layout',
+    redirect: '/',
 });
 
-Router.route('/favourites', function() {
-    if (_.last(pageHistory) !== 'favourites')
-        pageHistory.push('favourites');
-    this.layout('layout');
-    this.render('favourites');
+Router.route('/logout', {
+    path: '/logout',
+    onBeforeAction: function() {
+        Meteor.logout();
+        this.next();
+    },
+    action: function() {
+        this.redirect('/');
+    }
+});
+
+Router.route('/account', {
+    path: '/account',
+    action: function() {
+        if (Meteor.user())
+            this.redirect('/user/' + Meteor.user().profile.url);
+        else
+            this.redirect('signin');
+    }
+});
+
+Router.route('/user', {
+    path: '/user/:key',
+    layout: 'account',
+    layoutTemplate: 'layout',
+    onBeforeAction: function() {
+        this.render('loading');
+        var t = this;
+        var next = t.next();
+        Meteor.call('getUserBasic', this.params.key, function(err, result) {
+            if (!result) {
+                t.redirect('notfound');
+            } else {
+                loadAccount(result.profile);
+                loadFavourites(result.fav);
+                next;
+            }
+        });
+    },
+    action: function() {
+        if (pageHistory[pageHistory.length - 1] !== '/user/' + (this.params.key))
+            pageHistory.push('/user/' + (this.params.key));
+        this.render('account');
+
+    }
 });
 
 Router.route('/search', {
@@ -78,6 +119,13 @@ Router.route('/notfound', function() {
     this.layout('layout');
     this.render('notfound');
 });
+
+/*Router.route('/404', function() {
+    if (_.last(pageHistory) !== '404')
+        pageHistory.push('404');
+    this.layout('layout');
+    this.render('404');
+});*/
 
 Router.route('/bugReport', function() {
     if (_.last(pageHistory) !== 'bugReport')

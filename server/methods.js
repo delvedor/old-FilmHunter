@@ -1,6 +1,9 @@
 Future = Npm.require('fibers/future');
 
 Meteor.methods({
+    /**
+     * Users methods.
+     */
     removeAccount: function(userId) {
         if (!Match.test(userId, String))
             return false;
@@ -45,13 +48,15 @@ Meteor.methods({
             })) {
             return false;
         }
+
         favourites.update({
             id: userId
         }, {
             $push: {
-                fav: fav
+                fav: fav,
             }
         });
+
     },
 
     removeFavourites: function(userId, fav) {
@@ -69,6 +74,83 @@ Meteor.methods({
         });
     },
 
+    toggleFav: function(userId) {
+        if (!Match.test(userId, String))
+            return;
+        if (userId === this.userId) {
+            var userDb = Meteor.users.find({
+                _id: userId
+            }).fetch();
+
+            Meteor.users.update({
+                _id: userId
+            }, {
+                $set: {
+                    "profile.publicFav": !userDb[0].profile.publicFav
+                }
+            });
+        }
+    },
+
+    setTagline: function(userId, tagline) {
+        if (!Match.test(userId, String) || !Match.test(tagline, String))
+            return;
+        if (userId === this.userId) {
+            var userDb = Meteor.users.find({
+                _id: userId
+            }).fetch();
+
+            Meteor.users.update({
+                _id: userId
+            }, {
+                $set: {
+                    "profile.tagline": tagline
+                }
+            });
+        }
+    },
+
+    getUserBasic: function(userUrl) {
+        if (!Match.test(userUrl, String))
+            return false;
+
+        var userDb = Meteor.users.find({
+            "profile.url": userUrl
+        }).fetch();
+
+        if (userDb.length === 0)
+            return false;
+
+        var favDb = favourites.find({
+            id: userDb[0]._id
+        }).fetch();
+
+        var user = {};
+        var fav = [];
+
+        if (userDb.length !== 0) {
+            user = userDb[0].profile;
+            if (userDb[0].services.facebook)
+                user.image = "http://graph.facebook.com/" + userDb[0].services.facebook.id + "/picture/?type=large";
+            if (userDb[0].services.google)
+                user.image = userDb[0].services.google.picture;
+            if (userDb[0].services.twitter)
+                user.image = userDb[0].services.twitter.profile_image_url.substring(0, userDb[0].services.twitter.profile_image_url.length - 7);
+        }
+
+        if (favDb.length !== 0 && userDb[0].profile.publicFav) {
+            fav = favDb[0].fav;
+        }
+
+        return {
+            "profile": user,
+            "fav": fav
+        };
+    },
+
+    /*
+     * Search engine methods. 
+     */
     searchPerson: function(name) {
         if (!Match.test(name, String))
             return false;

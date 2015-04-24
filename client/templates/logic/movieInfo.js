@@ -279,7 +279,7 @@ function setArrayMovieInfoBoxes(data, dataType) {
         _.each(data.statuses, function(ele) {
             arrayMovieInfoBoxes.push({
                 boxType: 'boxTweet',
-                background: 'background-color: #FAFAFA',
+                background: 'background-color: #FFFFFF', // #FAFAFA
                 isUser: true,
                 isTwitter: true,
                 user: ele.user.screen_name,
@@ -324,7 +324,7 @@ function setArrayMovieInfoBoxes(data, dataType) {
             i++;
             arrayMovieInfoBoxes.push({
                 boxType: 'boxReview',
-                background: 'background-color: #FAFAFA',
+                background: 'background-color: #FFFFFF', // #FAFAFA
                 isUser: true,
                 isTwitter: false,
                 user: ele.author + ' - TMDb',
@@ -349,11 +349,11 @@ function setArrayMovieInfoBoxes(data, dataType) {
             stars += parseInt(ele.score, 10);
             arrayMovieInfoBoxes.push({
                 boxType: 'boxReview',
-                background: 'background-color: #FAFAFA',
+                background: 'background-color: #FFFFFF', // #FAFAFA
                 isUser: true,
                 isTwitter: false,
                 user: ele.critic,
-                text: ele.excerpt,
+                text: '“' + ele.excerpt,
                 link: ele.link
             });
 

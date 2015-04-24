@@ -1,12 +1,9 @@
 Template.layout.events({
     'click #backFaButton': function(e) {
         e.preventDefault();
-        if (pageHistory.length === 1) {
-            Router.go(_.last(pageHistory));
-        } else {
+        if (pageHistory.length !== 1)
             pageHistory.pop();
-            Router.go(_.last(pageHistory));
-        }
+        Router.go(_.last(pageHistory));
 
     },
     'click #menuButton': function(e) {
@@ -25,6 +22,9 @@ Template.layout.events({
         $('#userButton').removeClass('hide');
     },
     'click #userButton': function(e) {
-        Router.go('account');
+        if (Meteor.user())
+            Router.go('/user/' + Meteor.user().profile.url);
+        else
+            Router.go('signin');
     }
 });

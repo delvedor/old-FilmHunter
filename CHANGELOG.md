@@ -1,6 +1,12 @@
 # Film Hunter
 *Changelog*
 
+**[0.5.5]** *24/04/2015*
+- Changed some elements of the UI;
+- Implemented public accounts;
+- SEO optimizations;
+- Various bugfix.
+
 **[0.5.4]** *17/04/2015*
 - New account page;
 - Added login with Twitter and Facebook;

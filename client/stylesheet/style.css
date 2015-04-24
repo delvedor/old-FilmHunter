@@ -18,6 +18,12 @@
     font-weight: 300;
 }
 
+@font-face {
+    font-family: 'EBGaramond';
+    src: url('EBGaramond-Regular.ttf');
+    font-weight: 400;
+}
+
 html,
 body {
     height: 100%;
@@ -98,7 +104,7 @@ a:hover {
     height: 40px;
     z-index: 2000;
     background-color: #FAFAFA;
-    box-shadow: 0 2px 3px #9E9E9E;
+    border-bottom: 1px #BDBDBD solid;
 }
 
 .backButton {
@@ -141,7 +147,6 @@ a:hover {
 
 .slide-panel {
     border-style: none;
-    box-shadow: -1px 0 20px #757575 solid;
     background-color: rgba(250, 250, 250, 0.95);
 }
 
@@ -216,18 +221,13 @@ button:focus {
 
 .filmResult-col {
     text-align: center;
-    background-color: #FAFAFA;
+    background-color: #FFFFFF;
     border-radius: 2px;
-    box-shadow: 0 2px 5px #9E9E9E;
-    -webkit-transition: box-shadow 0.2s linear 0s;
-    -moz-transition: box-shadow 0.2s linear 0s;
-    transition: box-shadow 0.2s linear 0s;
 }
 
 .filmResult-col:hover {
     position: relative;
     z-index: 999;
-    box-shadow: 0 6px 10px #9E9E9E;
 }
 
 .poster-col {
@@ -290,31 +290,22 @@ div[class="filmResult"] {
     padding: 15px 20px;
     border: none;
     border-radius: 2px;
-    background-color: #FAFAFA;
-    box-shadow: 0 2px 5px #9E9E9E;
+    background-color: #FFFFFF;
     margin-bottom: 30px;
-    -webkit-transition: box-shadow 0.2s linear 0s;
-    -moz-transition: box-shadow 0.2s linear 0s;
-    transition: box-shadow 0.2s linear 0s;
-}
-
-#loadMore:hover {
-    box-shadow: 0 6px 10px #9E9E9E;
+    border-bottom: 1px #BDBDBD solid;
 }
 /****** Movie info ******/
 
 .filmInfo {
-    background-color: #FAFAFA;
+    background-color: #FFFFFF;
     border-radius: 2px;
     margin: 40px 0;
-    box-shadow: 0 2px 5px #9E9E9E;
 }
 
 .filmInfoTitle {
     text-align: center;
     text-transform: uppercase;
     font-weight: 300;
-    text-shadow: 2px 2px 2px #BDBDBD;
     font-size: 2.2em;
 }
 
@@ -337,7 +328,6 @@ div[class="filmResult"] {
     background-size: cover;
     border-radius: 2px;
     padding: 15px;
-    box-shadow: 0 2px 5px #9E9E9E;
 }
 
 .boxTweet {
@@ -355,9 +345,10 @@ div[class="filmResult"] {
 .boxReview {
     height: auto;
     text-align: justify;
-    font-size: 1.1em;
+    font-size: 1.15em;
     letter-spacing: 1px;
     font-weight: 300;
+    font-family: EBGaramond, serif;
 }
 
 .stars {
@@ -472,11 +463,16 @@ div[class="filmResult"] {
 
 .infoContainer,
 .bugreportContainer {
-    background-color: #FAFAFA;
+    background-color: #FFFFFF;
     border-radius: 2px;
     margin: 10px 0;
     padding: 20px;
-    box-shadow: 0 2px 5px #9E9E9E;
+}
+
+.userContainer {
+    background-color: #FFFFFF;
+    border-radius: 2px;
+    padding: 20px;
 }
 
 .infoContainer.bottomSpace {
@@ -540,9 +536,36 @@ div[class="filmResult"] {
     background-color: #E53935;
 }
 
+#showSettings {
+    height: 40px;
+    font-weight: 300;
+    font-size: 0.9em;
+    padding: 3px 10px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    color: #42A5F5;
+    text-transform: uppercase;
+    background-color: #FFFFFF;
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
 .sendBugButton,
 .signoutBtn {
     background-color: #42A5F5;
+}
+
+.userName {
+    font-weight: 300;
+    font-size: 2.2em;
+}
+
+.userDescription {
+    margin-top: 30px;
+    font-weight: 400;
+    font-size: 1.3em;
 }
 
 .lineSeparator {
@@ -556,6 +579,11 @@ div[class="filmResult"] {
     color: #616161;
     letter-spacing: 5px;
     text-transform: uppercase;
+}
+/****** User Account ******/
+
+.userImage {
+    border-radius: 50%;
 }
 /****** Media queries ******/
 
@@ -602,6 +630,9 @@ div[class="filmResult"] {
     }
     .colElement-movieInfo {
         width: 90vw;
+    }
+    .userImage {
+        width: 120px;
     }
 }
 
@@ -713,6 +744,9 @@ div[class="filmResult"] {
         margin-top: -5px;
         padding: 0 40px;
     }
+    .userImage {
+        width: 230px;
+    }
 }
 
 @media only screen and (min-width: 992px) {
@@ -744,6 +778,9 @@ div[class="filmResult"] {
     }
     .colElement-movieInfo {
         width: 30vw;
+    }
+    .userImage {
+        width: 250px;
     }
 }
 

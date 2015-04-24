@@ -16,7 +16,6 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12" style="height:auto;">
                 <div class="flex-video widescreen">
-                    <!--<object data="{{ movieInfo.trailer }}" allowfullscreen></object>-->
                     <iframe src="{{ movieInfo.trailer }}" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
@@ -42,15 +41,14 @@
     <div class="container-fluid">
         <div class="row gridInfo">
             <div class="colElement-movieInfo">
-                <div class="movieInfoBoxes" style="background-color: #FAFAFA;">
-                    <!--<p class="aboutMovieText">Actors: {{ movieInfo.cast }}</p>-->
+                <div class="movieInfoBoxes" style="background-color: #FFFFFF;">
                     <p class="aboutMovieText">Actors: {{ #each movieInfo.cast }}<a href="/search/a:{{link}}">{{name}}</a>{{/each}}</p>
                     <p class="aboutMovieText">Director: {{#with movieInfo.director}}<a href="/search/d:{{link}}">{{name}}</a>{{/with}}</p>
                     <p class="aboutMovieText">Plot: {{ movieInfo.plot }}</p>
                 </div>
             </div>
             <div class="colElement-movieInfo">
-                <div class="movieInfoBoxes stars" style="background-color: #FAFAFA;">
+                <div class="movieInfoBoxes stars" style="background-color: #FFFFFF;">
                     {{ #each stars}}<i class="fa {{ star }} fa-2x star" style="padding:0 5px;"></i>{{ /each }}
                 </div>
             </div>
