@@ -11,14 +11,6 @@ Template.resultsFilm.helpers({
                 ts: -1
             }
         }).results;
-    },
-
-    moreResults: function() {
-        return Session.get("moreResults");
-    },
-
-    genrePage: function() {
-        return Session.get("genrePage");
     }
 });
 

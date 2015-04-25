@@ -5,6 +5,7 @@
 - Changed some elements of the UI;
 - Implemented public accounts;
 - SEO optimizations;
+- Improved code;
 - Various bugfix.
 
 **[0.5.4]** *17/04/2015*

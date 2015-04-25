@@ -450,6 +450,12 @@ div[class="filmResult"] {
 .notFav:hover {
     color: #424242;
 }
+
+.noPublicFavourites {
+    color: #616161;
+    font-size: 1.1em;
+    margin: 20px 0 50px 0;
+}
 /****** Info page ******/
 
 .infoTitle {
@@ -500,6 +506,10 @@ div[class="filmResult"] {
     line-height: 35px;
 }
 
+.howToUseDeleteUser {
+    font-size: 1.2em;
+}
+
 .sendBugReportList {
     text-align: left;
     font-weight: 300;
@@ -517,16 +527,17 @@ div[class="filmResult"] {
 }
 
 .sendBugButton,
-.removeAccountBtn,
-.signoutBtn {
-    width: 40%;
+.removeAccountBtn {
+    width: 30%;
     margin-top: 15px;
-    height: 50px;
+    margin-bottom: 20px;
+    height: 40px;
+    font-size: 1em;
+    padding: 5px 10px;
     font-weight: 300;
     font-size: 1.2em;
-    padding: 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: 3px;
     text-align: center;
     color: #FAFAFA;
     text-transform: uppercase;
@@ -552,8 +563,7 @@ div[class="filmResult"] {
     margin-top: 10px;
 }
 
-.sendBugButton,
-.signoutBtn {
+.sendBugButton {
     background-color: #42A5F5;
 }
 
@@ -566,6 +576,24 @@ div[class="filmResult"] {
     margin-top: 30px;
     font-weight: 400;
     font-size: 1.3em;
+}
+
+.taglineCount {
+    text-align: right;
+    color: #616161;
+    font-weight: 300;
+}
+
+#toggleFavLabel {
+    font-weight: 300;
+    font-size: 1.2em;
+    padding-right: 15px;
+}
+
+#setTagline,
+#textBugReport {
+    font-size: 1.2em;
+    border-radius: 2px;
 }
 
 .lineSeparator {

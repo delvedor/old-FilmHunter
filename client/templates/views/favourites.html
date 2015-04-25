@@ -6,7 +6,6 @@
             </div>
         </div>
     </div>
-    <!--{{ #if currentUser }}-->
     <div class="container-fluid">
         <div class="row resultsGrid">
             {{ #each favourites }}
@@ -21,17 +20,16 @@
             {{/each}}
         </div>
     </div>
-    <!--{{ > footer }} {{ else }}
+</template>
+<template name="noPublicFavourites">
     <div class="container">
         <div class="row">
-            <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-                <p class="infoHome" style="margin-top:-40px">If you want to save the movies you were looking for, this is your place.
-                    <br/>Just <a href="{{pathFor 'account'}}">Login</a> with your Google, Twitter or Facebook account and start to use this feature of Film Hunter.
-                    <br/>
-                    <br/>Don't worry, if in the future you need to delete your account you can do it without any problems.
-                </p>
+            <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
+                <h1 class="infoTitle">Favourites</h1>
             </div>
         </div>
+        <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
+            <p class="noPublicFavourites">This user has decided to not make public his favorites.</p>
+        </div>
     </div>
-    {{ /if}}-->
 </template>

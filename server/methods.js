@@ -21,6 +21,8 @@ Meteor.methods({
     saveBugReport: function(br, userId) {
         if (!Match.test(br, String) && (!Match.test(userId, String) || !Match.test(userId, null)))
             return false;
+        if (br.length > 500)
+            br = br.substring(0, 500);
         bugreport.insert({
             user: userId,
             ip: this.connection.clientAddress,
@@ -95,6 +97,8 @@ Meteor.methods({
     setTagline: function(userId, tagline) {
         if (!Match.test(userId, String) || !Match.test(tagline, String))
             return;
+        if (tagline.length > 500)
+            tagline = tagline.substring(0, 500);
         if (userId === this.userId) {
             var userDb = Meteor.users.find({
                 _id: userId

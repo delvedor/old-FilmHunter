@@ -1,3 +1,5 @@
+var bugReportCount = new Blaze.ReactiveVar(0);
+
 Template.bugReport.events({
     'click #sendBugReport': function(e) {
         e.preventDefault();
@@ -9,6 +11,20 @@ Template.bugReport.events({
         if (br.length > 500)
             br = br.substring(0, 500);
         sendBugReport(br);
+    },
+    'keyup #textBugReport': function(e) {
+        if (e.type === "keyup") {
+            e.preventDefault();
+            bugReportCount.set($('#textBugReport').val().length);
+            if (bugReportCount.get() > 499)
+                $('#textBugReport').val($('#textBugReport').val().substring(0, 500));
+        }
+    }
+});
+
+Template.bugReport.helpers({
+    bugReportCount: function() {
+        return bugReportCount.get();
     }
 });
 

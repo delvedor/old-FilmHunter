@@ -1,4 +1,6 @@
 var userInfo = new Blaze.ReactiveVar({});
+var taglineCount = new Blaze.ReactiveVar();
+var showSettings = new Blaze.ReactiveVar(false);
 
 Template.account.events({
     'click #removeAccount': function(e) {
@@ -18,16 +20,33 @@ Template.account.events({
         }
     },
     'click #showSettings': function(e) {
-        Session.set('showSettings', !Session.get('showSettings'));
-        if (Session.get('showSettings')) {
-            $('#showSettings').text('Close Settings');
-        } else {
-            Meteor.call('setTagline', Meteor.userId(), $('#setTagline').val());
-            $('#showSettings').text('Show Settings');
+        showSettings.set(!showSettings.get());
+        taglineCount.set(userInfo.get().tagline.length);
+        if (!showSettings.get()) {
+            var tagline = $('#setTagline').val();
+            if (tagline.length > 500)
+                tagline = tagline.substring(0, 500);
+            userInfo.set({
+                image: userInfo.get().image,
+                name: userInfo.get().name,
+                publicFav: userInfo.get().publicFav,
+                tagline: tagline
+            });
+            Meteor.call('setTagline', Meteor.userId(), tagline);
         }
+
     },
+
     'click #toggleFav': function(e) {
         Meteor.call('toggleFav', Meteor.userId());
+    },
+    'keyup #setTagline': function(e) {
+        if (e.type === "keyup") {
+            e.preventDefault();
+            taglineCount.set($('#setTagline').val().length);
+            if (taglineCount.get() > 499)
+                $('#setTagline').val($('#setTagline').val().substring(0, 500));
+        }
     }
 });
 
@@ -37,19 +56,22 @@ Template.account.helpers({
     },
     showSettings: function() {
         if (Meteor.user())
-            return Session.get('showSettings') && Router.current().location.get().path === '/user/' + Meteor.user().profile.url;
+            return showSettings.get() && Router.current().location.get().path === '/user/' + Meteor.user().profile.url;
     },
     showSettingsButton: function() {
         if (Meteor.user())
             return Router.current().location.get().path === '/user/' + Meteor.user().profile.url;
     },
     checked: function() {
-        if (Meteor.user().profile.publicFav) {
-            return {
-                checked: "checked"
-            };
-        }
+        if (Meteor.user().profile.publicFav)
+            return "checked";
         return '';
+    },
+    taglineCount: function() {
+        return taglineCount.get();
+    },
+    publicFav: function() {
+        return userInfo.get().publicFav || Router.current().location.get().path === '/user/' + Meteor.user().profile.url;
     }
 });
 

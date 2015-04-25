@@ -6,30 +6,30 @@
             </div>
             <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 userContainer">
                 <div class="col-xs-12 col-sm-5 col-md-4">
-                    <img class="userImage" src="{{ user.image }}"> {{ #if showSettingsButton }}
-                    <button id="showSettings" type="button">Show Settings</button>
-                    {{ /if }}
+                    <img class="userImage" src="{{ user.image }}" alt="{{ user.name }}"> {{ #if showSettingsButton }} {{ #if showSettings }}
+                    <button id="showSettings" type="button">Close Settings</button>
+                    {{ else }}
+                    <button id="showSettings" type="button">Show Settings</button> {{ /if }} {{ /if }}
                 </div>
                 <div class="col-xs-12 col-sm-7 col-md-8">
                     <h3 class="userName">{{ user.name }}</h3> {{ #if showSettings }}
-                    <textarea id="setTagline" class="form-control" rows="3">{{ user.tagline }}</textarea>
-                    <label for="toggleFav">Public favourites?</label>
+                    <textarea id="setTagline" class="form-control" rows="5">{{ user.tagline }}</textarea>
+                    <p class="taglineCount">{{ taglineCount }}/500</p>
+                    <label id="toggleFavLabel" for="toggleFav">Public favourites:</label>
                     <input type="checkbox" id="toggleFav" {{ checked }}>
                     <div class="lineSeparator"></div>
                     {{ > removeAccount }} {{ else }}
-                    <p class="userDescription">{{ user.tagline }}
-                        <!--I'm a Student and Developer based in Italy, my main focus is on Javascript and Node.js technologies. I'm passionate about Technology, Design and Cinema.-->
-                    </p>
+                    <p class="userDescription">{{ user.tagline }}</p>
                     {{ /if }}
                 </div>
             </div>
         </div>
     </div>
-    {{ > favourites }} {{ > footer }}
+    {{ #if publicFav }} {{ > favourites }} {{ else }} {{ > noPublicFavourites }} {{ /if }} {{ > footer }}
 </template>
 <template name="removeAccount">
     <p class="pDangerZone">Danger Zone</p>
-    <p class="howToUse">If you want to delete your account from FilmHunter press the button below.
+    <p class="howToUse howToUseDeleteUser">If you want to delete your account from FilmHunter press the button below.
         <br/>When you delete your account you will lose <strong>all your user data</strong> stored in FilmHunter.
     </p>
     <button id="removeAccount" type="button" class="removeAccountBtn">Delete Account</button>
