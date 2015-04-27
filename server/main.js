@@ -74,7 +74,12 @@ Accounts.onCreateUser(function(options, user) {
         if (others !== 0)
             user.profile.url = user.profile.name.replace(/\s/g, '').toLowerCase() + '.' + (count++);
     } while (others !== 0);
-    user.profile.image = "";
+    if (user.services.facebook)
+        user.profile.image = "http://graph.facebook.com/" + user.services.facebook.id + "/picture/?type=large";
+    if (user.services.google)
+        user.profile.image = user.services.google.picture;
+    if (user.services.twitter)
+        user.profile.image = user.services.twitter.profile_image_url.substring(0, user.services.twitter.profile_image_url.length - 7);
     user.profile.tagline = "";
     user.profile.publicFav = true;
 

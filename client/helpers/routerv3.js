@@ -55,15 +55,21 @@ Router.route('/user', {
         this.render('loading');
         var t = this;
         var next = t.next();
-        Meteor.call('getUserBasic', this.params.key, function(err, result) {
-            if (!result) {
-                t.redirect('notfound');
-            } else {
-                loadAccount(result.profile);
-                loadFavourites(result.fav);
-                next;
-            }
-        });
+        if (!Meteor.user() || '/user/' + this.params.key !== '/user/' + Meteor.user().profile.url) {
+            Meteor.call('getUserBasic', this.params.key, function(err, result) {
+                if (!result) {
+                    t.redirect('usernotfound');
+                } else {
+                    loadAccount(result.profile);
+                    loadFavourites(result.fav);
+                    next;
+                }
+            });
+        } else {
+            loadMyAccount();
+            loadMyFavourites();
+            next;
+        }
     },
     action: function() {
         if (pageHistory[pageHistory.length - 1] !== '/user/' + (this.params.key))
@@ -120,12 +126,12 @@ Router.route('/notfound', function() {
     this.render('notfound');
 });
 
-/*Router.route('/404', function() {
-    if (_.last(pageHistory) !== '404')
-        pageHistory.push('404');
+Router.route('/usernotfound', function() {
+    if (_.last(pageHistory) !== 'usernotfound')
+        pageHistory.push('usernotfound');
     this.layout('layout');
-    this.render('404');
-});*/
+    this.render('usernotfound');
+});
 
 Router.route('/bugReport', function() {
     if (_.last(pageHistory) !== 'bugReport')

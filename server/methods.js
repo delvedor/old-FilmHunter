@@ -95,10 +95,8 @@ Meteor.methods({
     },
 
     setTagline: function(userId, tagline) {
-        if (!Match.test(userId, String) || !Match.test(tagline, String))
+        if (!Match.test(userId, String) || !Match.test(tagline, String) || tagline.length > 500)
             return;
-        if (tagline.length > 500)
-            tagline = tagline.substring(0, 500);
         if (userId === this.userId) {
             var userDb = Meteor.users.find({
                 _id: userId
@@ -112,6 +110,38 @@ Meteor.methods({
                 }
             });
         }
+    },
+
+    setUrl: function(userId, url) {
+        if (!Match.test(userId, String) || !Match.test(url, String) || url.length > 50)
+            return;
+        if (userId === this.userId) {
+            var userDb = Meteor.users.find({
+                _id: userId
+            }).fetch();
+
+            Meteor.users.update({
+                _id: userId
+            }, {
+                $set: {
+                    "profile.url": url
+                }
+            });
+        }
+    },
+
+    checkUrl: function(userId, url) {
+        if (!Match.test(userId, String) || !Match.test(url, String) || url.length > 50)
+            return;
+        if (userId === this.userId) {
+            var userDb = Meteor.users.find({
+                "profile.url": url
+            }).count();
+            if (userDb === 1)
+                return false;
+            return true;
+        }
+        return;
     },
 
     getUserBasic: function(userUrl) {
@@ -132,15 +162,8 @@ Meteor.methods({
         var user = {};
         var fav = [];
 
-        if (userDb.length !== 0) {
+        if (userDb.length !== 0)
             user = userDb[0].profile;
-            if (userDb[0].services.facebook)
-                user.image = "http://graph.facebook.com/" + userDb[0].services.facebook.id + "/picture/?type=large";
-            if (userDb[0].services.google)
-                user.image = userDb[0].services.google.picture;
-            if (userDb[0].services.twitter)
-                user.image = userDb[0].services.twitter.profile_image_url.substring(0, userDb[0].services.twitter.profile_image_url.length - 7);
-        }
 
         if (favDb.length !== 0 && userDb[0].profile.publicFav) {
             fav = favDb[0].fav;

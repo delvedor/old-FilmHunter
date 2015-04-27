@@ -61,16 +61,18 @@ Template.favourites.helpers({
 });
 
 loadFavourites = function(result) {
-    if (Meteor.user() && Router.current().location.get().path === '/user/' + Meteor.user().profile.url) {
-        if (!favourites.findOne())
-            result = [];
-        else
-            result = favourites.findOne().fav;
-    }
-
     result = _.sortBy(result, function(ele) {
         return ele.title;
     });
+
+    userFav.set(result);
+};
+
+loadMyFavourites = function() {
+    if (!favourites.findOne())
+        result = [];
+    else
+        result = favourites.findOne().fav;
 
     userFav.set(result);
 };

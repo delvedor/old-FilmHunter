@@ -13,9 +13,15 @@
                 </div>
                 <div class="col-xs-12 col-sm-7 col-md-8">
                     <h3 class="userName">{{ user.name }}</h3> {{ #if showSettings }}
-                    <textarea id="setTagline" class="form-control" rows="5">{{ user.tagline }}</textarea>
+                    <h4 class="settingsTitle">Settings</h4>
+                    <p class="settingsInfo">Tagline:</p>
+                    <textarea id="setTagline" class="form-control" rows="5" placeholder="Describe yourself here...">{{ user.tagline }}</textarea>
                     <p class="taglineCount">{{ taglineCount }}/500</p>
-                    <label id="toggleFavLabel" for="toggleFav">Public favourites:</label>
+                    <p class="settingsInfo">Url:</p>
+                    <input type="text" id="setUrl" class="form-control" value="{{ user.url }}">
+                    <p class="taglineCount">{{ #if canUserUrl}}<i class="fa fa-check" style="color:#8BC34A;"></i> {{ else }}<i class="fa fa-times" style="color:#F44336"></i>{{ /if }} {{ urlCount }}/50</p>
+                    <p class="settingsInfo">Public favourites:</p>
+                    <label id="toggleFavLabel" for="toggleFav">Do you want to make public your favourites?</label>
                     <input type="checkbox" id="toggleFav" {{ checked }}>
                     <div class="lineSeparator"></div>
                     {{ > removeAccount }} {{ else }}

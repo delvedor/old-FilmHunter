@@ -531,9 +531,9 @@ div[class="filmResult"] {
     width: 30%;
     margin-top: 15px;
     margin-bottom: 20px;
-    height: 40px;
+    height: auto;
     font-size: 1em;
-    padding: 5px 10px;
+    padding: 8px 10px;
     font-weight: 300;
     font-size: 1.2em;
     border: none;
@@ -563,6 +563,12 @@ div[class="filmResult"] {
     margin-top: 10px;
 }
 
+.settingsInfo {
+    text-align: left;
+    font-size: 1.1em;
+    margin: 20px 0 5px 0;
+}
+
 .sendBugButton {
     background-color: #42A5F5;
 }
@@ -570,6 +576,7 @@ div[class="filmResult"] {
 .userName {
     font-weight: 300;
     font-size: 2.2em;
+    margin-bottom: 30px;
 }
 
 .userDescription {
@@ -591,6 +598,7 @@ div[class="filmResult"] {
 }
 
 #setTagline,
+#setUrl,
 #textBugReport {
     font-size: 1.2em;
     border-radius: 2px;
@@ -602,7 +610,8 @@ div[class="filmResult"] {
     margin: 50px 0 20px 0;
 }
 
-.pDangerZone {
+.pDangerZone,
+.settingsTitle {
     font-size: 1.2em;
     color: #616161;
     letter-spacing: 5px;
