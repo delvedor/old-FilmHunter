@@ -6,6 +6,8 @@
 - Implemented public accounts;
 - Implemented custom account url;
 - SEO optimizations;
+- Updated Mashape API;
+- Implemented code against XSS;
 - Improved code;
 - Various bugfix.
 

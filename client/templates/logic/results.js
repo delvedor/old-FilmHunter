@@ -22,15 +22,6 @@ Template.resultsFilm.events({
 });
 
 /**
- * Return the number of he analized results.
- */
-Template.loadingRes.helpers({
-    totalResults: function() {
-        return Session.get('numberOfResults');
-    }
-});
-
-/**
  * Corrects the height of the div standard
  */
 function setGrid() {

@@ -55,7 +55,12 @@ Template.account.events({
     'keyup #setTagline': function(e) {
         if (e.type === "keyup") {
             e.preventDefault();
-            taglineCount.set($('#setTagline').val().length);
+
+            var newTagline = $('#setTagline').val();
+            newTagline = newTagline.replace(/[^a-zA-Z0-9_:\s-.,;:\/!?]/g, ''); // Avoid XSS
+            $('#setTagline').val(newTagline);
+
+            taglineCount.set(newTagline.length);
             if (taglineCount.get() > 499)
                 $('#setTagline').val($('#setTagline').val().substring(0, 500));
         }
@@ -64,7 +69,11 @@ Template.account.events({
         if (e.type === "keyup") {
             Meteor.clearTimeout(timeoutCheckUrl);
             e.preventDefault();
+
             var newUrl = $('#setUrl').val();
+            newUrl = newUrl.replace(/[^a-zA-Z0-9_:]/g, ''); // Avoid XSS
+            $('#setUrl').val(newUrl);
+
             urlCount.set(newUrl.length);
             if (urlCount.get() > 50)
                 $('#setUrl').val(newUrl.substring(0, 50));

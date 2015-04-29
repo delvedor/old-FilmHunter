@@ -3,7 +3,8 @@
  */
 
 Router.configure({
-    notFoundTemplate: "404"
+    notFoundTemplate: "404",
+    loadingTemplate: 'loading'
 });
 
 Router.route('/', function() {
@@ -87,7 +88,7 @@ Router.route('/search', {
         return Meteor.subscribe('genres');
     },
     onBeforeAction: function() {
-        this.render('loadingRes');
+        this.render('loading');
         checkHistorySearch((this.params.key).replace(/[^a-zA-Z0-9_:]/g, '-'));
         if (!Session.get('searching'))
             this.next();

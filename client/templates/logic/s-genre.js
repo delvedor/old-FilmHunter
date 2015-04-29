@@ -45,7 +45,6 @@ function saveGenre(data, page, count) {
     if (page === 2) {
         resetVariables();
         totalPages = ris.total_pages;
-        Session.set('numberOfResults', ris.total_results);
     }
     if (count === 5) {
         var results = dbResults.findOne({}, {
@@ -114,7 +113,6 @@ function saveGenre(data, page, count) {
  */
 function resetVariables() {
     arrayResultGenre = [];
-    Session.set('numberOfResults', 0);
     moreResults.set(false);
 }
 

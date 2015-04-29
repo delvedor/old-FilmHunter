@@ -101,7 +101,7 @@ Meteor.methods({
             var userDb = Meteor.users.find({
                 _id: userId
             }).fetch();
-
+            tagline = tagline.replace(/[^a-zA-Z0-9_:\s-.,;:\/!?]/g, ''); // Avoid XSS
             Meteor.users.update({
                 _id: userId
             }, {
@@ -119,7 +119,7 @@ Meteor.methods({
             var userDb = Meteor.users.find({
                 _id: userId
             }).fetch();
-
+            url = url.replace(/[^a-zA-Z0-9_:]/g, ''); // Avoid XSS
             Meteor.users.update({
                 _id: userId
             }, {
@@ -134,6 +134,7 @@ Meteor.methods({
         if (!Match.test(userId, String) || !Match.test(url, String) || url.length > 50)
             return;
         if (userId === this.userId) {
+            url = url.replace(/[^a-zA-Z0-9_:]/g, ''); // Avoid XSS
             var userDb = Meteor.users.find({
                 "profile.url": url
             }).count();
@@ -376,7 +377,7 @@ Meteor.methods({
         if (!Match.test(title, String))
             return false;
         try {
-            return Meteor.http.call("GET", "https://byroredux-metacritic.p.mashape.com/reviews?url=http%3A%2F%2Fwww.metacritic.com%2Fmovie%2F" + title + "", {
+            return Meteor.http.call("GET", "https://metacritic-2.p.mashape.com/reviews?url=http%3A%2F%2Fwww.metacritic.com%2Fmovie%2F" + title + "", {
                 headers: {
                     "X-Mashape-Key": mashape_api_key,
                     "Accept": "application/json"

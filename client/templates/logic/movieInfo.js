@@ -342,7 +342,7 @@ function setArrayMovieInfoBoxes(data, dataType) {
             shuffle(arrayMovieInfoBoxes, 1);
             return;
         }
-        _.each(ris.result, function(ele) {
+        _.each(ris.results, function(ele) {
             if (i === 10)
                 return;
             i++;

@@ -6,7 +6,6 @@ searchHistory = [];
 pageHistory = ['/'];
 
 Session.setDefault('searching', false);
-Session.setDefault('numberOfResults', 0);
 Session.setDefault('genrePage', false);
 
 dbResults = new Meteor.Collection(null);
