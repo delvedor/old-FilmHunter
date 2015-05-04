@@ -1,20 +1,3 @@
-/*Meteor.startup(function() {
-    favourites.find().forEach(function(doc) {
-        favourites.update({
-            "_id": doc._id
-        }, {
-            "$set": {
-                "publicFav": true
-            }
-        });
-    });
-});*/
-
-/*Meteor.publish("userData", function () {
-    return Meteor.users.find({_id: this.userId},
-        {fields: {'other': 1, 'things': 1}});
-});*/
-
 Meteor.publish('genres', function() {
     return genres.find();
 });
@@ -66,6 +49,9 @@ Accounts.onCreateUser(function(options, user) {
     var count = 1;
     user.profile = {};
     user.profile = options.profile;
+    if (user.profile.name.length === 0) {
+        user.profile.name = "user";
+    }
     user.profile.url = user.profile.name.replace(/\s/g, '').toLowerCase();
     do {
         others = Meteor.users.find({

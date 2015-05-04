@@ -101,7 +101,7 @@ Meteor.methods({
             var userDb = Meteor.users.find({
                 _id: userId
             }).fetch();
-            tagline = tagline.replace(/[^a-zA-Z0-9_:\s-.,;:\/!?]/g, ''); // Avoid XSS
+            tagline = tagline.replace(/[^a-zA-Z0-9_:\s-.',;:\/!?]/g, ''); // Avoid XSS
             Meteor.users.update({
                 _id: userId
             }, {

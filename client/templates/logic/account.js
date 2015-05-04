@@ -57,7 +57,7 @@ Template.account.events({
             e.preventDefault();
 
             var newTagline = $('#setTagline').val();
-            newTagline = newTagline.replace(/[^a-zA-Z0-9_:\s-.,;:\/!?]/g, ''); // Avoid XSS
+            newTagline = newTagline.replace(/[^a-zA-Z0-9_:\s-.',;:\/!?]/g, ''); // Avoid XSS
             $('#setTagline').val(newTagline);
 
             taglineCount.set(newTagline.length);
