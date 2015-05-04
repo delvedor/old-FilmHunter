@@ -4,6 +4,7 @@
 var search = "";
 var totalPages = 0;
 var arrayResultGenre = [];
+var moreResults = new Blaze.ReactiveVar(false);
 
 
 startSearchGenre = function(searchKey, loadMore) {
@@ -44,7 +45,6 @@ function saveGenre(data, page, count) {
     if (page === 2) {
         resetVariables();
         totalPages = ris.total_pages;
-        Session.set('numberOfResults', ris.total_results);
     }
     if (count === 5) {
         var results = dbResults.findOne({}, {
@@ -78,9 +78,9 @@ function saveGenre(data, page, count) {
         }
 
         if (page < totalPages)
-            Session.set("moreResults", true);
+            moreResults.set(true);
         else
-            Session.set("moreResults", false);
+            moreResults.set(false);
         Session.set('genrePage', false);
         Session.set("searching", false);
         return;
@@ -113,6 +113,14 @@ function saveGenre(data, page, count) {
  */
 function resetVariables() {
     arrayResultGenre = [];
-    Session.set('numberOfResults', 0);
-    Session.set("moreResults", false);
+    moreResults.set(false);
 }
+
+Template.resultsFilm.helpers({
+    moreResults: function() {
+        return moreResults.get();
+    },
+    genrePage: function() {
+        return Session.get("genrePage");
+    }
+});

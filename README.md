@@ -10,7 +10,7 @@ Moreover, it will give you a list of related movies.
 The only language supported at the moment is English.
 
 It's based on [Meteor](https://www.meteor.com/) and use [The Movie Database](https://www.themoviedb.org/) as Movie Database.  
-You can find the stable version of the project on [filmhunter.delved.org](http://filmhunter.delved.org/).
+You can find the stable version of the project on [filmhunter.org](http://filmhunter.org/).
 
 Suggestions and improvements are well accepted!
 

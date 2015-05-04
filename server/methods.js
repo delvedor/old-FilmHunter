@@ -1,6 +1,9 @@
 Future = Npm.require('fibers/future');
 
 Meteor.methods({
+    /**
+     * Users methods.
+     */
     removeAccount: function(userId) {
         if (!Match.test(userId, String))
             return false;
@@ -18,6 +21,8 @@ Meteor.methods({
     saveBugReport: function(br, userId) {
         if (!Match.test(br, String) && (!Match.test(userId, String) || !Match.test(userId, null)))
             return false;
+        if (br.length > 500)
+            br = br.substring(0, 500);
         bugreport.insert({
             user: userId,
             ip: this.connection.clientAddress,
@@ -45,13 +50,15 @@ Meteor.methods({
             })) {
             return false;
         }
+
         favourites.update({
             id: userId
         }, {
             $push: {
-                fav: fav
+                fav: fav,
             }
         });
+
     },
 
     removeFavourites: function(userId, fav) {
@@ -69,6 +76,109 @@ Meteor.methods({
         });
     },
 
+    toggleFav: function(userId) {
+        if (!Match.test(userId, String))
+            return;
+        if (userId === this.userId) {
+            var userDb = Meteor.users.find({
+                _id: userId
+            }).fetch();
+
+            Meteor.users.update({
+                _id: userId
+            }, {
+                $set: {
+                    "profile.publicFav": !userDb[0].profile.publicFav
+                }
+            });
+        }
+    },
+
+    setTagline: function(userId, tagline) {
+        if (!Match.test(userId, String) || !Match.test(tagline, String) || tagline.length > 500)
+            return;
+        if (userId === this.userId) {
+            var userDb = Meteor.users.find({
+                _id: userId
+            }).fetch();
+            tagline = tagline.replace(/[^a-zA-Z0-9_:\s-.',;:\/!?]/g, ''); // Avoid XSS
+            Meteor.users.update({
+                _id: userId
+            }, {
+                $set: {
+                    "profile.tagline": tagline
+                }
+            });
+        }
+    },
+
+    setUrl: function(userId, url) {
+        if (!Match.test(userId, String) || !Match.test(url, String) || url.length > 50)
+            return;
+        if (userId === this.userId) {
+            var userDb = Meteor.users.find({
+                _id: userId
+            }).fetch();
+            url = url.replace(/[^a-zA-Z0-9_:]/g, ''); // Avoid XSS
+            Meteor.users.update({
+                _id: userId
+            }, {
+                $set: {
+                    "profile.url": url
+                }
+            });
+        }
+    },
+
+    checkUrl: function(userId, url) {
+        if (!Match.test(userId, String) || !Match.test(url, String) || url.length > 50)
+            return;
+        if (userId === this.userId) {
+            url = url.replace(/[^a-zA-Z0-9_:]/g, ''); // Avoid XSS
+            var userDb = Meteor.users.find({
+                "profile.url": url
+            }).count();
+            if (userDb === 1)
+                return false;
+            return true;
+        }
+        return;
+    },
+
+    getUserBasic: function(userUrl) {
+        if (!Match.test(userUrl, String))
+            return false;
+
+        var userDb = Meteor.users.find({
+            "profile.url": userUrl
+        }).fetch();
+
+        if (userDb.length === 0)
+            return false;
+
+        var favDb = favourites.find({
+            id: userDb[0]._id
+        }).fetch();
+
+        var user = {};
+        var fav = [];
+
+        if (userDb.length !== 0)
+            user = userDb[0].profile;
+
+        if (favDb.length !== 0 && userDb[0].profile.publicFav) {
+            fav = favDb[0].fav;
+        }
+
+        return {
+            "profile": user,
+            "fav": fav
+        };
+    },
+
+    /*
+     * Search engine methods. 
+     */
     searchPerson: function(name) {
         if (!Match.test(name, String))
             return false;
@@ -267,7 +377,7 @@ Meteor.methods({
         if (!Match.test(title, String))
             return false;
         try {
-            return Meteor.http.call("GET", "https://byroredux-metacritic.p.mashape.com/reviews?url=http%3A%2F%2Fwww.metacritic.com%2Fmovie%2F" + title + "", {
+            return Meteor.http.call("GET", "https://metacritic-2.p.mashape.com/reviews?url=http%3A%2F%2Fwww.metacritic.com%2Fmovie%2F" + title + "", {
                 headers: {
                     "X-Mashape-Key": mashape_api_key,
                     "Accept": "application/json"

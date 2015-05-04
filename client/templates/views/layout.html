@@ -46,10 +46,16 @@
 </template>
 <template name="sidePanel">
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="/">Home</a></p>
+    {{ #if currentUser}}
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'account'}}">Account</a></p>
-    <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'favourites'}}">Favourites</a></p>
+    {{ else}}
+    <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'signin'}}">Sign In</a></p>
+    {{ /if }}
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'bugReport'}}">Bug Report</a></p>
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'help'}}">Help</a></p>
+    {{ #if currentUser}}
+    <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'logout'}}">Logout</a></p>
+    {{ /if }}
 </template>
 <template name="dropdown">
     <p id="{{id}}" class="dropdownLabel">{{name}}</p>

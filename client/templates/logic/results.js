@@ -11,14 +11,6 @@ Template.resultsFilm.helpers({
                 ts: -1
             }
         }).results;
-    },
-
-    moreResults: function() {
-        return Session.get("moreResults");
-    },
-
-    genrePage: function() {
-        return Session.get("genrePage");
     }
 });
 
@@ -26,15 +18,6 @@ Template.resultsFilm.events({
     'click #loadMore': function(e) {
         e.preventDefault();
         startSearchGenre(_.last(searchHistory), true);
-    }
-});
-
-/**
- * Return the number of he analized results.
- */
-Template.loadingRes.helpers({
-    totalResults: function() {
-        return Session.get('numberOfResults');
     }
 });
 

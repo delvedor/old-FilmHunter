@@ -1,3 +1,5 @@
+var userFav = new Blaze.ReactiveVar([{}]);
+
 Template.movieInfo.events({
     'click .fa-heart': function(e) {
         e.preventDefault();
@@ -5,7 +7,7 @@ Template.movieInfo.events({
         if (userId)
             addFavourites(userId);
         else
-            Router.go('favourites');
+            Router.go('signin');
     }
 });
 
@@ -54,15 +56,26 @@ function addFavourites(userId) {
 Template.favourites.helpers({
     favourites: function() {
         Meteor.setTimeout(setGrid, 100);
-        if (!favourites.findOne())
-            return [];
-        var fav = favourites.findOne().fav;
-        fav = _.sortBy(fav, function(ele) {
-            return ele.title;
-        });
-        return fav;
+        return userFav.get();
     }
 });
+
+loadFavourites = function(result) {
+    result = _.sortBy(result, function(ele) {
+        return ele.title;
+    });
+
+    userFav.set(result);
+};
+
+loadMyFavourites = function() {
+    if (!favourites.findOne())
+        result = [];
+    else
+        result = favourites.findOne().fav;
+
+    userFav.set(result);
+};
 
 /**
  * Corrects the height of the div standard

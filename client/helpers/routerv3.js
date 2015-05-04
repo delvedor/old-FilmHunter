@@ -3,7 +3,8 @@
  */
 
 Router.configure({
-    notFoundTemplate: "404"
+    notFoundTemplate: "404",
+    loadingTemplate: 'loading'
 });
 
 Router.route('/', function() {
@@ -18,18 +19,65 @@ Router.route('/help', function() {
     this.render('help');
 });
 
-Router.route('/account', function() {
-    if (_.last(pageHistory) !== 'account')
-        pageHistory.push('account');
-    this.layout('layout');
-    this.render('account');
+AccountsTemplates.configureRoute('signIn', {
+    name: 'signin',
+    path: '/signin',
+    template: 'signin',
+    layoutTemplate: 'layout',
+    redirect: '/',
 });
 
-Router.route('/favourites', function() {
-    if (_.last(pageHistory) !== 'favourites')
-        pageHistory.push('favourites');
-    this.layout('layout');
-    this.render('favourites');
+Router.route('/logout', {
+    path: '/logout',
+    onBeforeAction: function() {
+        Meteor.logout();
+        this.next();
+    },
+    action: function() {
+        this.redirect('/');
+    }
+});
+
+Router.route('/account', {
+    path: '/account',
+    action: function() {
+        if (Meteor.user())
+            this.redirect('/user/' + Meteor.user().profile.url);
+        else
+            this.redirect('signin');
+    }
+});
+
+Router.route('/user', {
+    path: '/user/:key',
+    layout: 'account',
+    layoutTemplate: 'layout',
+    onBeforeAction: function() {
+        this.render('loading');
+        var t = this;
+        var next = t.next();
+        if (!Meteor.user() || '/user/' + this.params.key !== '/user/' + Meteor.user().profile.url) {
+            Meteor.call('getUserBasic', this.params.key, function(err, result) {
+                if (!result) {
+                    t.redirect('usernotfound');
+                } else {
+                    loadAccount(result.profile);
+                    loadFavourites(result.fav);
+                    next;
+                }
+            });
+        } else {
+            loadMyAccount();
+            loadMyFavourites();
+            next;
+        }
+    },
+    action: function() {
+        if (pageHistory[pageHistory.length - 1] !== '/user/' + (this.params.key))
+            pageHistory.push('/user/' + (this.params.key));
+        this.render('account');
+
+    }
 });
 
 Router.route('/search', {
@@ -40,7 +88,7 @@ Router.route('/search', {
         return Meteor.subscribe('genres');
     },
     onBeforeAction: function() {
-        this.render('loadingRes');
+        this.render('loading');
         checkHistorySearch((this.params.key).replace(/[^a-zA-Z0-9_:]/g, '-'));
         if (!Session.get('searching'))
             this.next();
@@ -77,6 +125,13 @@ Router.route('/notfound', function() {
         pageHistory.push('notfound');
     this.layout('layout');
     this.render('notfound');
+});
+
+Router.route('/usernotfound', function() {
+    if (_.last(pageHistory) !== 'usernotfound')
+        pageHistory.push('usernotfound');
+    this.layout('layout');
+    this.render('usernotfound');
 });
 
 Router.route('/bugReport', function() {

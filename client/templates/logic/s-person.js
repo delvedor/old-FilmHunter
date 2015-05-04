@@ -42,7 +42,6 @@ function savePerson(data, typeSearch) {
         arr = ris.cast;
     if (typeSearch === "d:")
         arr = ris.crew;
-    Session.set('numberOfResults', arr.length);
     var d = new Date();
     var date = parseInt(d.getFullYear() + '' + ((d.getMonth() + '').length === 1 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)) + '' + ((d.getDate() + '').length === 1 ? '0' + d.getDate() : d.getDate()), 10);
     var release_date;
@@ -78,6 +77,5 @@ function resetVariables() {
     search = "";
     escapedSearch = "";
     arrayResultFilm = [];
-    Session.set('numberOfResults', 0);
     Session.set("moreResults", false);
 }

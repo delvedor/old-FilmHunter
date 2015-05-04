@@ -21,23 +21,16 @@
         Load More
     </button>
 </template>
-<template name="loadingRes">
-    <div class="col-xs-12 col-sm-12 col-md-12 loaderTotalResults">I'm analyzing {{totalResults}} films..</div>
-    {{ > loading }}
-</template>
 <template name="loading">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 loader">
-                <div class="preloader loading">
-                    <span class="slice"></span>
-                    <span class="slice"></span>
-                    <span class="slice"></span>
-                    <span class="slice"></span>
-                    <span class="slice"></span>
-                    <span class="slice"></span>
-                </div>
-            </div>
-        </div>
+    <div class="sk-spinner sk-spinner-cube-grid">
+        <div class="sk-cube"></div>
+        <div class="sk-cube"></div>
+        <div class="sk-cube"></div>
+        <div class="sk-cube"></div>
+        <div class="sk-cube"></div>
+        <div class="sk-cube"></div>
+        <div class="sk-cube"></div>
+        <div class="sk-cube"></div>
+        <div class="sk-cube"></div>
     </div>
 </template>

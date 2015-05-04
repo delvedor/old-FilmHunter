@@ -39,7 +39,6 @@ startSearchMovie = function(searchKey) {
  */
 function searchMoviesFromKeyword(data) {
     var ris = $.parseJSON(data);
-    Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
     if (ris.total_results === 0) {
         allFinish(1, 1);
         return;
@@ -64,7 +63,6 @@ function saveMovies(data, pageCount) {
     var d = new Date();
     var date = parseInt(d.getFullYear() + '' + ((d.getMonth() + '').length === 1 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)) + '' + ((d.getDate() + '').length === 1 ? '0' + d.getDate() : d.getDate()), 10);
     var release_date;
-    Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
     _.each(ris.results, function(ele) {
         release_date = parseInt(ele.release_date.replace(/[-]/g, ''), 10);
         if (date < release_date)
@@ -104,7 +102,6 @@ function saveKeywords(data) {
     var d = new Date();
     var date = parseInt(d.getFullYear() + '' + ((d.getMonth() + '').length === 1 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)) + '' + ((d.getDate() + '').length === 1 ? '0' + d.getDate() : d.getDate()), 10);
     var release_date;
-    Session.set('numberOfResults', (Session.get('numberOfResults') + ris.total_results));
     _.each(ris.results, function(ele) {
         release_date = parseInt(ele.release_date.replace(/[-]/g, ''), 10);
         if (date < release_date)
@@ -163,6 +160,5 @@ function resetVariables() {
     arrayResultFilm = [];
     arrayResultGenre = [];
     arrayResultKeyword = [];
-    Session.set('numberOfResults', 0);
     Session.set("moreResults", false);
 }
