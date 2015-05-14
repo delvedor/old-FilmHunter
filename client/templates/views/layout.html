@@ -1,11 +1,11 @@
-<template name="layout">
+<!-- 
+    Homepage layout
+-->
+<template name="layoutHome">
+    <div class="pepperLine"></div>
     <div class="container-fluid nav-fixed">
-        <div class="nav-bar">
-            <div class="col-xs-2 col-sm-2 col-md-2 backButton">
-                <i id="backFaButton" class="fa fa-arrow-left fa-2x"></i>
-            </div>
-            <div class="col-xs-4 col-sm-8 col-md-8"></div>
-            <div class="col-xs-6 col-sm-2 col-md-2 sidePanel">
+        <div class="row">
+            <div class="col-xs-6 col-xs-offset-6 col-sm-2 col-sm-offset-10 col-md-2 col-md-offset-10 sidePanel">
                 <button id="userButton" class="sidePanelButton" type="button">{{ #if currentUser }} <i class="fa fa-user fa-2x userLogged"></i> {{ else }} <i class="fa fa-user fa-2x"></i> {{ /if }}
                 </button>
                 <button id="menuButton" class="sidePanelButton" type="button"><i class="fa fa-bars fa-2x"></i>
@@ -32,6 +32,32 @@
     </div>
     {{> slidePanel}}
 </template>
+<!-- 
+    Standard layout
+-->
+<template name="layout">
+    <div class="pepperLine"></div>
+    <div class="container-fluid searchbar-fix">
+        <div class="row">
+            <div class="col-xs-2 col-sm-1 col-md-1">
+                <a href="/"><img id="logoSmall" src="/logoSmall.png"></a>
+            </div>
+            <div class="col-xs-6 col-sm-9 col-md-9">
+                {{> inputAutocomplete settings=settingsInputSearch id="filmSearch" style="text-align: left;" placeholder="Search here!" value= currentSearch}}
+            </div>
+            <div class="col-xs-4 col-sm-2 col-md-2 sidePanel">
+                <button id="userButton" class="sidePanelButton" type="button">{{ #if currentUser }}<i class="fa fa-user fa-2x userLogged"></i>{{ else }} <i class="fa fa-user fa-2x"></i> {{ /if }}
+                </button>
+                <button id="menuButton" class="sidePanelButton" type="button"><i class="fa fa-bars fa-2x"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    {{> yield}} {{> slidePanel}}
+</template>
+<!-- 
+    Homepage text
+-->
 <template name="home">
     <div class="row">
         <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
@@ -44,6 +70,10 @@
         </div>
     </div>
 </template>
+<!-- 
+    Sidepanel menu
+    Contains the link to all the other functions of FimHunter
+-->
 <template name="sidePanel">
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="/">Home</a></p>
     {{ #if currentUser}}
@@ -56,6 +86,13 @@
     {{ #if currentUser}}
     <p class="sidePanelEle"><a role="menuitem" tabindex="-1" href="{{pathFor 'logout'}}">Logout</a></p>
     {{ /if }}
+</template>
+<!-- 
+    Dropdown template
+    Contains all the genres, activates when the user type g:
+-->
+<template name="dropdownHome">
+    <p id="{{id}}" class="dropdownLabelHome">{{name}}</p>
 </template>
 <template name="dropdown">
     <p id="{{id}}" class="dropdownLabel">{{name}}</p>

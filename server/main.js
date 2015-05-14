@@ -47,10 +47,21 @@ genres.deny({
 
 Accounts.onCreateUser(function(options, user) {
     var count = 1;
+    var nameParts = "";
     user.profile = {};
     user.profile = options.profile;
     if (user.profile.name.length === 0) {
-        user.profile.name = "user";
+        if (user.services.facebook) {
+            nameParts = user.services.facebook.email.split("@");
+            user.profile.name = nameParts.length == 2 ? nameParts[0] : null;
+        }
+        if (user.services.google) {
+            nameParts = user.services.google.email.split("@");
+            user.profile.name = nameParts.length == 2 ? nameParts[0] : null;
+        }
+        if (user.services.twitter) {
+            user.profile.name = user.services.google.screenName;
+        }
     }
     user.profile.url = user.profile.name.replace(/\s/g, '').toLowerCase();
     do {

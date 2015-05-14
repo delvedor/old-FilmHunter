@@ -1,3 +1,6 @@
+<!-- 
+    Favourites if publicFav is true
+-->
 <template name="favourites">
     <div class="container">
         <div class="row">
@@ -9,18 +12,23 @@
     <div class="container-fluid">
         <div class="row resultsGrid">
             {{ #each favourites }}
-            <div id="{{ id }}" class="colElement-results filmResult-col {{ order }}">
-                <div class="poster-col" style="background-image:url('{{ image }}')"></div>
-                <div class="filmDescription-col">
-                    <p>
-                        {{ title }}
-                    </p>
+            <a href="/m={{ id }}" class="linkFilmResult">
+                <div id="{{ id }}" class="colElement-results filmResult-col {{ order }}">
+                    <div class="poster-col" style="background-image:url('{{image}}')"></div>
+                    <div class="filmDescription-col">
+                        <p>
+                            {{ title }}
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </a>
             {{/each}}
         </div>
     </div>
 </template>
+<!-- 
+    Favourites if publicFav is false
+-->
 <template name="noPublicFavourites">
     <div class="container">
         <div class="row">

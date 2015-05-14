@@ -96,7 +96,7 @@ function saveGenre(data, page, count) {
             title: ele.title,
             id: ele.id,
             image_path: (ele.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ele.poster_path : '/blank.jpg'),
-            order: (release_date % 2 === 0 ? 'big' : 'small')
+            order: (release_date % 2 === 0 ? 'bigBox' : 'smallBox')
         });
     });
     Meteor.call('searchGenreMovies', ris.id, page, function(err, result) {

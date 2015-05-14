@@ -119,7 +119,16 @@ Meteor.methods({
             var userDb = Meteor.users.find({
                 _id: userId
             }).fetch();
-            url = url.replace(/[^a-zA-Z0-9_:]/g, ''); // Avoid XSS
+            url = url.replace(/[^a-zA-Z0-9_\-.]/g, ''); // Avoid XSS
+            url = url.replace(/\.\.+/g, '.'); // takes all the multiple '.' and replaces them with one single '.'
+            var bool = true;
+            do { // remove the last character if is a '.', '-' or a '_'.
+                var lastChar = url.slice(-1);
+                if (lastChar !== '.' && lastChar !== '-' && lastChar !== '_')
+                    bool = false;
+                else
+                    url = url.slice(0, -1);
+            } while (bool);
             Meteor.users.update({
                 _id: userId
             }, {
@@ -134,7 +143,7 @@ Meteor.methods({
         if (!Match.test(userId, String) || !Match.test(url, String) || url.length > 50)
             return;
         if (userId === this.userId) {
-            url = url.replace(/[^a-zA-Z0-9_:]/g, ''); // Avoid XSS
+            url = url.replace(/[^a-zA-Z0-9_\-.]/g, ''); // Avoid XSS
             var userDb = Meteor.users.find({
                 "profile.url": url
             }).count();
@@ -356,24 +365,7 @@ Meteor.methods({
         }
     },
 
-    getMovieReviewsFromTmdb: function(id) {
-        if (!Match.test(id, String))
-            return false;
-        try {
-            return Meteor.http.call("GET", "http://api.themoviedb.org/3/movie/" + id + "/reviews?api_key=" + tmdb_api_key + "", {
-                headers: {
-                    "Accept": "application/json"
-                }
-
-            });
-        } catch (err) {
-            return {
-                "content": '{"results": [],"total_results": 0}'
-            };
-        }
-    },
-
-    getMovieReviewsFromMetacritic: function(title) {
+    getMovieReviews: function(title) {
         if (!Match.test(title, String))
             return false;
         try {

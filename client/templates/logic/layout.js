@@ -1,11 +1,4 @@
-Template.layout.events({
-    'click #backFaButton': function(e) {
-        e.preventDefault();
-        if (pageHistory.length !== 1)
-            pageHistory.pop();
-        Router.go(_.last(pageHistory));
-
-    },
+var layoutEvents = {
     'click #menuButton': function(e) {
         e.preventDefault();
         slidePanel.showPanel('sidePanel');
@@ -23,8 +16,16 @@ Template.layout.events({
     },
     'click #userButton': function(e) {
         if (Meteor.user())
-            Router.go('/user/' + Meteor.user().profile.url);
+            Router.go('/' + Meteor.user().profile.url);
         else
             Router.go('signin');
+    }
+};
+
+Template.layout.events(layoutEvents);
+Template.layoutHome.events(layoutEvents);
+Template.layout.helpers({
+    'currentSearch': function() {
+        return Session.get('currentSearch');
     }
 });
