@@ -1,0 +1,283 @@
+/****** Account ******/
+
+.accountTitle {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 300;
+    color: #9E9E9E;
+    padding: 5px;
+    font-size: 2em;
+}
+
+.userContainer {
+    background-color: #FFFFFF;
+    border-radius: 2px;
+    padding: 20px;
+    text-align: center;
+}
+
+.howToUse {
+    text-align: left;
+    font-weight: 300;
+    font-size: 1.4em;
+    color: #424242;
+    padding: 5px;
+    line-height: 35px;
+}
+
+.howToUseDeleteUser {
+    font-size: 1.2em;
+}
+
+.removeAccountBtn {
+    width: 30%;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    height: auto;
+    font-size: 1em;
+    padding: 8px 10px;
+    font-weight: 300;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 3px;
+    text-align: center;
+    color: #FAFAFA;
+    text-transform: uppercase;
+}
+
+.removeAccountBtn {
+    background-color: #E53935;
+}
+
+.showSettings {
+    height: 40px;
+    font-weight: 300;
+    padding: 3px 10px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-transform: uppercase;
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.showSettings.closeSet {
+    border: none;
+    text-align: center;
+    color: #42A5F5;
+    background-color: #FFFFFF;
+}
+
+.showSettings.openSet {
+    border-radius: 5px;
+    text-align: center;
+    color: #F7F7F7;
+    background-color: #42A5F5;
+}
+
+.settingsSeparator {
+    height: 2px;
+    width: 100%;
+    background-color: #F7F7F7;
+    margin: 10px 0;
+}
+
+.settingsInfo {
+    text-align: left;
+    font-size: 1.3em;
+    margin: 20px 0 5px 0;
+    color: #616161;
+}
+
+.userName {
+    font-weight: 300;
+    font-size: 2.2em;
+    margin-bottom: 30px;
+}
+
+.userDescription {
+    margin-top: 30px;
+    font-weight: 400;
+    font-size: 1.3em;
+}
+
+.taglineCount {
+    text-align: right;
+    color: #616161;
+    font-weight: 300;
+}
+
+.inputLabel {
+    font-weight: 300;
+    padding-right: 15px;
+}
+
+.inputLabel.url {
+    padding-right: 3px;
+}
+
+#setTagline,
+#setUrl {
+    border-radius: 2px;
+}
+
+#setUrl {
+    border: 1px #CCCCCC solid;
+    width: 60%;
+    color: #555555;
+}
+
+.pDangerZone {
+    margin-top: 15px;
+}
+
+.pDangerZone,
+.settingsTitle {
+    color: #616161;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
+
+.userImage {
+    border-radius: 50%;
+}
+
+.onoffswitch {
+    margin: 0 auto;
+    position: relative;
+    width: 88px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.onoffswitch-checkbox {
+    display: none;
+}
+
+.onoffswitch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #FFFFFF;
+    border-radius: 22px;
+}
+
+.onoffswitch-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    -moz-transition: margin 0.3s ease-in 0s;
+    -webkit-transition: margin 0.3s ease-in 0s;
+    -o-transition: margin 0.3s ease-in 0s;
+    transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch-inner:before,
+.onoffswitch-inner:after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 30px;
+    padding: 0;
+    line-height: 30px;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.onoffswitch-inner:before {
+    content: "ON";
+    padding-left: 15px;
+    background-color: #42A5F5;
+    color: #FAFAFA;
+    text-align: left;
+}
+
+.onoffswitch-inner:after {
+    content: "OFF";
+    padding-right: 15px;
+    background-color: #EEEEEE;
+    color: #999999;
+    text-align: right;
+}
+
+.onoffswitch-switch {
+    display: block;
+    width: 20px;
+    margin: 5px;
+    background: #FFFFFF;
+    border: 2px solid #FFFFFF;
+    border-radius: 22px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 54px;
+    -moz-transition: all 0.3s ease-in 0s;
+    -webkit-transition: all 0.3s ease-in 0s;
+    -o-transition: all 0.3s ease-in 0s;
+    transition: all 0.3s ease-in 0s;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px;
+}
+/****** Media queries ******/
+
+@media only screen and (min-width: 240px) {
+    .userImage {
+        width: 120px;
+    }
+    .inputLabel {
+        font-size: 1.4em;
+    }
+    #setTagline,
+    #setUrl {
+        font-size: 1.4em;
+    }
+    .pDangerZone,
+    .settingsTitle {
+        font-size: 1.3em;
+    }
+    .showSettings {
+        font-size: 1em;
+    }
+}
+
+@media only screen and (min-width: 320px) {}
+
+@media only screen and (min-width: 480px) {}
+
+@media only screen and (min-width: 768px) {
+    .userImage {
+        width: 230px;
+    }
+    .inputLabel {
+        font-size: 1.3em;
+    }
+    #setTagline,
+    #setUrl {
+        font-size: 1.3em;
+    }
+    .pDangerZone,
+    .settingsTitle {
+        font-size: 1.2em;
+    }
+    .showSettings {
+        font-size: 0.9em;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .userImage {
+        width: 250px;
+    }
+}

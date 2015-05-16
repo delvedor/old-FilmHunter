@@ -1,0 +1,205 @@
+/****** MovieInfo ******/
+
+.gridInfo {
+    margin: 0 auto;
+}
+
+.filmInfo {
+    background-color: #FFFFFF;
+    border-radius: 2px;
+    margin: 40px 0;
+}
+
+.filmInfoTitle {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 2.2em;
+}
+
+.filmInfoTagline {
+    text-align: center;
+}
+
+.filmInfoGenres {
+    text-align: center;
+    font-size: 1.3em;
+}
+
+.filmInfoReleaseDate {
+    text-align: center;
+    font-size: 1.3em;
+}
+
+.movieInfoBoxes {
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 2px;
+    padding: 15px;
+}
+
+.boxTweet {
+    height: auto;
+    font-size: 1.15em;
+    font-weight: 300;
+    text-align: justify;
+    /*word-break: break-all;*/
+}
+
+.boxImage {
+    height: 300px;
+}
+
+.boxReview {
+    height: auto;
+    text-align: justify;
+    font-size: 1.15em;
+    letter-spacing: 1px;
+    font-weight: 300;
+    font-family: 'EBGaramond', serif;
+}
+
+.stars {
+    height: 90px;
+    line-height: 70px;
+    text-align: center;
+}
+
+.star {
+    color: #616161;
+}
+
+.textBox {
+    display: block;
+}
+
+.textBox.boxReview::first-letter {
+    font-size: 1.8em;
+}
+
+.userBox {
+    font-size: 1.2em;
+}
+
+.aboutMovieText {
+    font-size: 1.3em;
+    text-align: justify;
+}
+
+.similarFilm {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 1.8em;
+    color: #9E9E9E;
+    padding: 5px;
+}
+
+.flex-video {
+    position: relative;
+    padding-top: 25px;
+    padding-bottom: 67.5%;
+    height: 0;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.flex-video.widescreen {
+    margin-top: 20px;
+    padding-bottom: 57.25%;
+}
+
+.flex-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.facebookShare,
+.twitterShare,
+.googleplusShare,
+.mailShare {
+    cursor: pointer;
+    color: #616161;
+}
+
+.mailShareLink:link,
+.mailShareLink:visited,
+.mailShareLink:active {
+    color: #616161;
+}
+
+.facebookShare:hover,
+.twitterShare:hover,
+.googleplusShare:hover,
+.mailShare:hover {
+    color: #424242;
+}
+
+.addFavourites {
+    text-align: right;
+    padding-top: 10px;
+    cursor: pointer;
+}
+
+.isFav {
+    color: #E53935;
+}
+
+.isFav:hover {
+    color: #F44336;
+}
+
+.notFav {
+    color: #616161;
+}
+
+.notFav:hover {
+    color: #424242;
+}
+/****** Media queries ******/
+
+@media only screen and (min-width: 240px) {
+    .colElement-movieInfo {
+        margin: 0 5px 10px 5px;
+    }
+    .colElement-movieInfo {
+        width: 90vw;
+    }
+}
+
+@media only screen and (min-width: 320px) {
+    .boxReview {
+        line-height: 25px;
+    }
+}
+
+@media only screen and (min-width: 480px) {
+    .colElement-movieInfo {
+        width: 40vw;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .colElement-movieInfo {
+        margin: 0 10px 20px 10px;
+    }
+    .boxReview {
+        line-height: 28px;
+    }
+    .filmInfoTitle {
+        margin-top: -5px;
+        padding: 0 40px;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .boxReview {
+        line-height: 30px;
+    }
+    .colElement-movieInfo {
+        width: 30vw;
+    }
+}

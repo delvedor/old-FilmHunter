@@ -1,0 +1,28 @@
+/****** NotFound ******/
+
+.notfound {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 1.5em;
+    line-height: 100px;
+    color: #9E9E9E;
+    padding: 5px;
+    background-color: #FFFFFF;
+    border-radius: 2px;
+    padding: 0;
+    margin-top: 40px;
+}
+
+.notfound p {
+    height: 50px;
+    line-height: 50px;
+    margin: 0;
+    padding: 0;
+}
+
+.notfoundImage {
+    width: 100%;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}

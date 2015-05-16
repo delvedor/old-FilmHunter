@@ -1,0 +1,97 @@
+/****** Results ******/
+
+.linkFilmResult {
+    color: #424242;
+}
+
+.filmResult-col {
+    text-align: center;
+    background-color: #FFFFFF;
+    border-radius: 2px;
+}
+
+.poster-col {
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+.filmResult-col.smallBox .poster-col {
+    height: 28vh;
+}
+
+.filmResult-col.bigBox .poster-col {
+    height: 42vh;
+}
+
+.filmDescription-col {
+    padding: 10px;
+    font-size: 1.3em
+}
+
+.filmDescription {
+    padding: 10px;
+}
+
+.filmDescription-col {
+    padding: 10px;
+}
+
+.resultsGrid {
+    margin: 0 auto;
+}
+
+.resultsGrid {
+    padding: 40px 0;
+}
+
+#loadMore {
+    text-align: center;
+    font-size: 1.3em;
+    text-transform: uppercase;
+    color: #616161;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 2px;
+    background-color: #FFFFFF;
+    margin-bottom: 30px;
+    border-bottom: 1px #BDBDBD solid;
+}
+/****** Media queries ******/
+
+@media only screen and (min-width: 240px) {
+    .colElement-results {
+        margin: 0 5px 10px 5px;
+    }
+    .colElement-results {
+        width: 38vw;
+    }
+}
+
+@media only screen and (min-width: 320px) {
+    .colElement-results {
+        width: 42vw;
+    }
+}
+
+@media only screen and (min-width: 480px) {
+    .colElement-results {
+        width: 45vw;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .colElement-results {
+        margin: 0 10px 20px 10px;
+    }
+    .colElement-results {
+        width: 30vw;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .colElement-results {
+        width: 20vw;
+    }
+}

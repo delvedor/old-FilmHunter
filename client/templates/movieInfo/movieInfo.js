@@ -48,9 +48,12 @@ Template.similarFilm.events({
     }
 });
 
-
+/**
+ * Check if the ID data has already been searched.
+ * If so, it loads the search from the client-cache.
+ * If not, it starts a new search.
+ */
 checkHistoryMovie = function(id) {
-    Session.set('searching', true);
     for (var i = 0, mHLen = movieHistory.length; i < mHLen; ++i) {
         if (id === movieHistory[i]) {
             loadHistory(id);
@@ -60,6 +63,9 @@ checkHistoryMovie = function(id) {
     getMovieById(id);
 };
 
+/**
+ * Load the given id from the client-cache.
+ */
 function loadHistory(id) {
     dbMovieInfo.update({
         idMovie: id
@@ -83,6 +89,10 @@ function getMovieById(id) {
     Meteor.call('getMovie', id, function(err, result) {
         if (result) {
             var ris = $.parseJSON(result.content);
+            if (ris.total_results === 0) {
+                Router.go('notfound');
+                return;
+            }
             arrayMovieInfo.id = id;
             movie = id;
             title = ris.title.replace(/\s+/g, '');
@@ -369,151 +379,34 @@ function searchSimilarFilm(data) {
     });
 }
 
+/**
+ * Generates the stars graphic.
+ */
 function checkStars() {
-    if (stars > 0 && stars < 1) {
-        stars = 0.5;
-        arrayStars = [{
-            star: 'fa-star-half-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars === 1) {
-        stars = 1;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars > 1 && stars < 2) {
-        stars = 1.5;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-half-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars === 2) {
-        stars = 2;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars > 2 && stars < 3) {
-        stars = 2.5;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-half-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars === 3) {
-        stars = 3;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars > 3 && stars < 4) {
-        stars = 3.5;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-half-o'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars === 4) {
-        stars = 4;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars > 4 && stars < 5) {
-        stars = 4.5;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-half-o'
-        }];
-    } else if (stars === 5) {
-        stars = 5;
-        arrayStars = [{
-            star: 'fa-star',
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }];
-    } else {
-        stars = 0;
-        arrayStars = [{
-            star: 'fa-minus'
-        }, {
-            star: 'fa-minus'
-        }, {
-            star: 'fa-minus'
-        }, {
-            star: 'fa-minus'
-        }, {
-            star: 'fa-minus'
-        }];
-    }
+    var arrayStars = [{
+        star: 'fa-star-o'
+    }, {
+        star: 'fa-star-o'
+    }, {
+        star: 'fa-star-o'
+    }, {
+        star: 'fa-star-o'
+    }, {
+        star: 'fa-star-o'
+    }];
+    var i = 0;
+    var empty = false;
+    _.each(arrayStars, function(star) {
+        if (stars - i > 0.0 && stars - i < 1.0) {
+            star.star = 'fa-star-half-o';
+            empty = true;
+            i++;
+            return;
+        }
+        if (!empty)
+            star.star = 'fa-star';
+        i++;
+    });
     dbMovieInfo.update({
         idMovie: movie
     }, {

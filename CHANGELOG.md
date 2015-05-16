@@ -8,6 +8,7 @@
 - Few changes in the UI;
 - Removed pageHistory;
 - Updated Favourites DB;
+- Updated client architecture;
 - Code cleaning;
 - Various Bugfix.
 

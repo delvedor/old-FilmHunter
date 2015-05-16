@@ -1,0 +1,82 @@
+/****** BugReport ******/
+
+.bugTitle {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 300;
+    color: #9E9E9E;
+    padding: 5px;
+    font-size: 2em;
+}
+
+.bugreportContainer {
+    background-color: #FFFFFF;
+    border-radius: 2px;
+    margin: 10px 0;
+    padding: 20px;
+}
+
+.bugreportContainer img {
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.sendBugReport {
+    text-align: left;
+    font-weight: 300;
+    font-size: 1.4em;
+    color: #424242;
+    padding: 5px;
+    line-height: 35px;
+}
+
+.sendBugReportList {
+    text-align: left;
+    font-weight: 300;
+    font-size: 1.3em;
+    color: #424242;
+}
+
+.sendBugButton {
+    width: 30%;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    height: auto;
+    font-size: 1em;
+    padding: 8px 10px;
+    font-weight: 300;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 3px;
+    text-align: center;
+    color: #FAFAFA;
+    text-transform: uppercase;
+}
+
+.sendBugButton {
+    background-color: #42A5F5;
+}
+
+#textBugReport {
+    border-radius: 2px;
+}
+/****** Media queries ******/
+
+@media only screen and (min-width: 240px) {
+    #textBugReport {
+        font-size: 1.4em;
+    }
+}
+
+@media only screen and (min-width: 320px) {}
+
+@media only screen and (min-width: 480px) {}
+
+@media only screen and (min-width: 768px) {
+    #textBugReport {
+        font-size: 1.3em;
+    }
+}
+
+@media only screen and (min-width: 992px) {}

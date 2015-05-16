@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
-                <h1 class="infoTitle">Bug Report</h1>
+                <h1 class="bugTitle">Bug Report</h1>
             </div>
             <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
                 <div class="bugreportContainer upSpace">
@@ -22,7 +22,9 @@
                     </p>
                     <textarea id="textBugReport" class="form-control" rows="5" placeholder="Bug Report"></textarea>
                     <p class="taglineCount">{{ bugReportCount }}/500</p>
-                    <button id="sendBugReport" type="button" class="sendBugButton">Send</button>
+                    <div style="text-align: center;">
+                        <button id="sendBugReport" type="button" class="sendBugButton">Send</button>
+                    </div>
                 </div>
             </div>
         </div>

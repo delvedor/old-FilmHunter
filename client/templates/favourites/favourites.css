@@ -1,0 +1,16 @@
+/****** Favourites ******/
+
+.favTitle {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 300;
+    color: #9E9E9E;
+    padding: 5px;
+    font-size: 2em;
+}
+
+.noPublicFavourites {
+    color: #616161;
+    font-size: 1.1em;
+    margin: 20px 0 50px 0;
+}

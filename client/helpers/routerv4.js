@@ -60,7 +60,12 @@ Router.route('/m=', {
     layoutTemplate: 'layout',
     onBeforeAction: function() {
         this.render('loading');
-        checkHistoryMovie(escape(this.params.key));
+        Session.set('searching', true);
+        var id = parseInt(this.params.key, 10);
+        if (id >= 0)
+            checkHistoryMovie(escape(this.params.key));
+        else
+            this.redirect('/');
         this.next();
     },
     action: function() {
