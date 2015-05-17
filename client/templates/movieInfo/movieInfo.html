@@ -1,3 +1,10 @@
+<!-- 
+    Movieinfo template
+    Divided in :
+    - Title, date, trailer, social, favButton
+    - Data, reviews, images
+    - Related movies
+-->
 <template name="movieInfo">
     <div class="container">
         <div class="row filmInfo">
@@ -64,6 +71,9 @@
     </div>
     {{ > similarFilm }} {{ > footer }}
 </template>
+<!-- 
+    Related movies template
+-->
 <template name="similarFilm">
     <div class="container">
         <div class="col-xs-12 col-sm-12 col-md-12" style="height:auto;">
@@ -73,14 +83,16 @@
     <div class="container-fluid">
         <div class="row resultsGrid">
             {{ #each similarFilmArr }}
-            <div id="{{ id }}" class="colElement-results filmResult-col {{ order }}">
-                <div class="poster-col" style="background-image:url('{{image_path}}')"></div>
-                <div class="filmDescription-col">
-                    <p>
-                        {{ title }}
-                    </p>
+            <a href="/m={{ id }}" class="linkFilmResult">
+                <div id="{{ id }}" class="colElement-results filmResult-col {{ order }}">
+                    <div class="poster-col" style="background-image:url('{{image_path}}')"></div>
+                    <div class="filmDescription-col">
+                        <p>
+                            {{ title }}
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </a>
             {{/each}}
         </div>
     </div>

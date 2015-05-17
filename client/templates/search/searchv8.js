@@ -38,53 +38,78 @@ function loadHistory(params) {
 /**
  * Home Template Events
  */
-Template.layout.events({
+Template.layoutHome.events({
     'keyup #filmSearch': function(e) {
-        if (e.type === "keyup" && e.which === 13) {
-            e.preventDefault();
-            query = $('#filmSearch').val().trim();
-            if (query.replace(/\s/g, '') === "") {
-                $('#filmSearch').val("");
-                return;
-            }
-            Router.go('/search/' + query.replace(/[^a-zA-Z0-9_:]/g, '-'));
-        }
+        keyupFilmSearch(e);
     },
     'click #goSearch': function(e) {
+        clickFilmSearch(e);
+    }
+});
+
+Template.layout.events({
+    'keyup #filmSearch': function(e) {
+        keyupFilmSearch(e);
+    }
+});
+
+function keyupFilmSearch(e) {
+    if (e.type === "keyup" && e.which === 13) {
         e.preventDefault();
         query = $('#filmSearch').val().trim();
         if (query.replace(/\s/g, '') === "") {
             $('#filmSearch').val("");
             return;
         }
-        Router.go('/search/' + query.replace(/[^a-zA-Z0-9_:]/g, '-'));
+        Router.go('/s=' + query.replace(/[^a-zA-Z0-9_:]/g, '-'));
     }
-});
+}
+
+function clickFilmSearch(e) {
+    e.preventDefault();
+    query = $('#filmSearch').val().trim();
+    if (query.replace(/\s/g, '') === "") {
+        $('#filmSearch').val("");
+        return;
+    }
+    Router.go('/s=' + query.replace(/[^a-zA-Z0-9_:]/g, '-'));
+}
 
 /**
  * Displays the list of movie genres if the user type g: in the search field.
  */
 Template.layout.helpers({
-    settingsInputSearch: function() {
-        return {
-            position: "bottom",
-            limit: 20,
-            rules: [{
-                token: 'g:',
-                collection: genres,
-                field: "name",
-                matchAll: true,
-                template: Template.dropdown
-            }, {
-                token: 'g: ',
-                collection: genres,
-                field: "name",
-                matchAll: true,
-                template: Template.dropdown
-            }]
-        };
-    }
+    settingsInputSearch: autoCompleteConf('layout')
 });
+Template.layoutHome.helpers({
+    settingsInputSearch: autoCompleteConf('layoutHome')
+});
+
+function autoCompleteConf(page) {
+    var template;
+    if (page === 'layoutHome')
+        template = Template.dropdownHome;
+    if (page === 'layout')
+        template = Template.dropdown;
+
+    return {
+        position: "bottom",
+        limit: 20,
+        rules: [{
+            token: 'g:',
+            collection: genres,
+            field: "name",
+            matchAll: true,
+            template: template
+        }, {
+            token: 'g: ',
+            collection: genres,
+            field: "name",
+            matchAll: true,
+            template: template
+        }]
+    };
+}
 
 function setSearch(query) {
     searchHistory.push(query);

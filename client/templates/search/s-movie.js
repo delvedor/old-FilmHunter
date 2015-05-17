@@ -73,7 +73,7 @@ function saveMovies(data, pageCount) {
             release_date: ele.release_date,
             vote: parseFloat(ele.vote_average) * parseInt(ele.vote_count, 10),
             image_path: (ele.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ele.poster_path : '/blank.jpg'),
-            order: (release_date % 2 === 0 ? 'big' : 'small')
+            order: (release_date % 2 === 0 ? 'bigBox' : 'smallBox')
         });
     });
 
@@ -112,7 +112,7 @@ function saveKeywords(data) {
             release_date: ele.release_date,
             vote: parseFloat(ele.vote_average) * parseInt(ele.vote_count, 10),
             image_path: (ele.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ele.poster_path : '/blank.jpg'),
-            order: (release_date % 2 === 0 ? 'big' : 'small')
+            order: (release_date % 2 === 0 ? 'bigBox' : 'smallBox')
         });
     });
     allFinish(1, 0);

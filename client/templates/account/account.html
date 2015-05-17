@@ -1,15 +1,19 @@
+<!-- 
+    Account layout
+    Divided in User logged (with settings toggle) and user not logged.
+-->
 <template name="account">
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
-                <h1 class="infoTitle">User</h1>
+                <h1 class="accountTitle">Hunter</h1>
             </div>
             <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 userContainer">
                 <div class="col-xs-12 col-sm-5 col-md-4">
                     <img class="userImage" src="{{ user.image }}" alt="{{ user.name }}"> {{ #if showSettingsButton }} {{ #if showSettings }}
-                    <button id="showSettings" type="button">Save and Close Settings</button>
+                    <button class="showSettings openSet" type="button">Save and Close Settings</button>
                     {{ else }}
-                    <button id="showSettings" type="button">Show Settings</button> {{ /if }} {{ /if }}
+                    <button class="showSettings closeSet" type="button">Show Settings</button> {{ /if }} {{ /if }}
                 </div>
                 <div class="col-xs-12 col-sm-7 col-md-8">
                     <h3 class="userName">{{ user.name }}</h3> {{ #if showSettings }}
@@ -17,14 +21,24 @@
                     <p class="settingsInfo">Tagline:</p>
                     <textarea id="setTagline" class="form-control" rows="5" placeholder="Describe yourself here...">{{ user.tagline }}</textarea>
                     <p class="taglineCount">{{ taglineCount }}/500</p>
+                    <div class="settingsSeparator"></div>
                     <p class="settingsInfo">Url:</p>
-                    <input type="text" id="setUrl" class="form-control" value="{{ user.url }}">
-                    <p class="taglineCount">{{ #if canUserUrl}}<i class="fa fa-check" style="color:#8BC34A;"></i> {{ else }}<i class="fa fa-times" style="color:#F44336"></i>{{ /if }} {{ urlCount }}/50</p>
+                    <label class="inputLabel url" for="setUrl">filmhunter.org/</label>
+                    <input type="text" id="setUrl" value="{{ user.url }}">
+                    <p class="taglineCount">{{ canUserUrlMsg }}&nbsp;&nbsp;&nbsp;{{ #if canUserUrl 'loading'}}<i class="fa fa-spinner fa-pulse"></i>{{ /if }}{{ #if canUserUrl 'check'}}<i class="fa fa-check" style="color:#8BC34A;"></i>{{ /if }}{{ #if canUserUrl 'not'}}<i class="fa fa-times" style="color:#F44336"></i>{{ /if }} {{ urlCount }}/50</p>
+                    <div class="settingsSeparator"></div>
                     <p class="settingsInfo">Public favourites:</p>
-                    <label id="toggleFavLabel" for="toggleFav">Do you want to make public your favourites?</label>
-                    <input type="checkbox" id="toggleFav" {{ checked }}>
-                    <div class="lineSeparator"></div>
-                    {{ > removeAccount }} {{ else }}
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="toggleFav" {{ checked }}>
+                        <label class="onoffswitch-label" for="toggleFav">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                    <div class="settingsSeparator"></div>
+                    <p class="settingsInfo">Danger Zone:</p>
+                    <label class="inputLabel" for="toggleFav">Show danger zone:</label>
+                    <input type="checkbox" id="toggleDanger"> {{ #if dangerZone }} {{ > removeAccount }} {{ /if }}{{ else }}
                     <p class="userDescription">{{ user.tagline }}</p>
                     {{ /if }}
                 </div>
@@ -33,6 +47,9 @@
     </div>
     {{ #if publicFav }} {{ > favourites }} {{ else }} {{ > noPublicFavourites }} {{ /if }} {{ > footer }}
 </template>
+<!-- 
+    Remove account template
+-->
 <template name="removeAccount">
     <p class="pDangerZone">Danger Zone</p>
     <p class="howToUse howToUseDeleteUser">If you want to delete your account from FilmHunter press the button below.
@@ -40,11 +57,14 @@
     </p>
     <button id="removeAccount" type="button" class="removeAccountBtn">Delete Account</button>
 </template>
+<!-- 
+    Signin template
+-->
 <template name="signin">
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
-                <h1 class="infoTitle">Sign In</h1>
+                <h1 class="accountTitle">Sign In</h1>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">

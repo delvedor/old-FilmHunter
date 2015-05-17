@@ -17,7 +17,7 @@ Template.movieInfo.events({
 Template.favourites.events({
     'click .filmResult-col': function(e) {
         e.preventDefault();
-        Router.go('/movie/' + e.currentTarget.id);
+        Router.go('/m=' + e.currentTarget.id);
     }
 });
 
@@ -41,7 +41,7 @@ function addFavourites(userId) {
             id: movie.id,
             title: movie.title,
             image: movie.image,
-            order: (parseInt(movie.release_date.replace(/[-]/g, ''), 10) % 2 === 0 ? 'big' : 'small')
+            order: (parseInt(movie.release_date.replace(/[-]/g, ''), 10) % 2 === 0 ? 'bigBox' : 'smallBox')
         });
     } else {
         Meteor.call('removeFavourites', userId, {

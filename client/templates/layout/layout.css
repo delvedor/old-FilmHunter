@@ -1,0 +1,237 @@
+/****** Layout ******/
+
+.pepperLine {
+    margin: 0;
+    padding: 0;
+    border: none;
+    height: 3px;
+    background-color: #E53935;
+}
+
+.titleBackground {
+    text-align: center;
+}
+
+.title {
+    font-family: 'Oswald', sans-serif;
+    text-align: center;
+    font-weight: 300;
+    text-transform: uppercase;
+    color: #616161;
+    margin-top: 50px;
+}
+
+.searchBar {
+    background-color: #FFFFFF;
+    border-radius: 50px;
+    margin-top: 20px;
+    border: 1px #9E9E9E solid;
+}
+
+#filmSearch {
+    width: 100%;
+    height: 50px;
+    font-size: 1.4em;
+    font-weight: 300;
+    color: #616161;
+    background-color: #FFFFFF;
+    text-align: center;
+    border: none;
+}
+
+#goSearch {
+    color: #9E9E9E;
+    background-color: rgba(255, 255, 255, 0);
+    height: 50px;
+    line-height: 50px;
+    border-style: none;
+}
+
+#goSearch:hover {
+    color: #616161;
+}
+
+.infoHome {
+    width: 100%;
+    padding: 50px 0;
+    margin: 0 auto;
+    font-weight: 300;
+    color: #616161;
+    text-align: justify;
+}
+
+.nav-fixed {
+    height: 60px;
+    line-height: 60px;
+}
+
+.searchbar-fix {
+    background-color: #FFFFFF;
+    border-bottom: 1px #BDBDBD solid;
+    height: 60px;
+    line-height: 60px;
+}
+
+#logoSmall {
+    height: 50px;
+    width: 50px;
+}
+
+.backButton {
+    text-align: left;
+    color: #616161;
+    display: inline-block;
+}
+
+.sidePanelButton {
+    width: 30px !important;
+    height: 30px !important;
+    color: #616161;
+    background-color: rgba(0, 0, 0, 0);
+    border-style: none;
+}
+
+.sidePanelButton:hover,
+.slide-panel .close-panel:hover {
+    color: #424242;
+}
+
+.sidePanelButton .userLogged {
+    color: #D32F2F;
+}
+
+.sidePanel {
+    text-align: right;
+    display: inline-block;
+}
+
+.sidePanel button:nth-child(2) {
+    margin-left: 5px;
+}
+
+.slide-panel {
+    border-style: none;
+    background-color: rgba(250, 250, 250, 0.95);
+}
+
+.slide-panel .close-panel {
+    font-size: 4em;
+    color: #616161;
+}
+
+.sidePanelEle {
+    text-align: center;
+    margin: 50px 0;
+}
+
+.sidePanelEle a {
+    margin: 0 15px;
+    font-weight: 300;
+    color: #616161;
+    text-transform: uppercase;
+}
+
+.sidePanelEle.accountSidePanel a {
+    font-size: 1.2em;
+}
+
+.hide {
+    display: none;
+}
+
+.userButton {
+    text-align: right;
+}
+
+#filmSearch,
+button:focus {
+    outline: none;
+}
+
+.dropdownLabel,
+.dropdownLabelHome {
+    font-weight: 300;
+    font-size: 1.2em;
+    padding: 5px;
+    margin: 0;
+    width: 200px;
+    text-align: center;
+}
+
+.dropdownLabelHome.-autocomplete-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: -30%;
+}
+
+.dropdownLabel.-autocomplete-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+/****** Media queries ******/
+
+@media only screen and (min-width: 240px) {
+    #logo {
+        width: 120px;
+        height: 120px;
+        margin-top: -10px;
+    }
+    #login-buttons {
+        margin-top: 2px;
+    }
+    .title {
+        font-size: 1.8em;
+        letter-spacing: 10px;
+        padding-left: 15px;
+        margin-top: 30px;
+    }
+    .sidePanelEle a {
+        font-size: 2.5em;
+    }
+    .infoHome {
+        font-size: 1.2em;
+    }
+}
+
+@media only screen and (min-width: 320px) {
+    .title {
+        font-size: 2em;
+        letter-spacing: 15px;
+    }
+    .infoHome {
+        font-size: 1.3em;
+    }
+}
+
+@media only screen and (min-width: 480px) {
+    .title {
+        letter-spacing: 22px;
+        padding-left: 25px;
+        margin-top: 50px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    #logo {
+        width: 200px;
+        height: 200px;
+        margin-top: 40px;
+    }
+    #login-buttons {
+        margin-top: 5px;
+    }
+    .title {
+        margin-top: 50px;
+    }
+    .sidePanelEle a {
+        font-size: 2em;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .title {
+        font-size: 2.9em;
+        letter-spacing: 50px;
+        padding-left: 50px;
+    }
+}

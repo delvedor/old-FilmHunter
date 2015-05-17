@@ -31,7 +31,7 @@ var arrayMovieInfoBoxes = [];
 Template.resultsFilm.events({
     'click .filmResult-col': function(e) {
         e.preventDefault();
-        Router.go('/movie/' + e.currentTarget.id);
+        Router.go('/m=' + e.currentTarget.id);
     }
 });
 
@@ -41,16 +41,19 @@ Template.resultsFilm.events({
 Template.similarFilm.events({
     'click .filmResult-col': function(e) {
         e.preventDefault();
-        Router.go('/movie/' + e.currentTarget.id);
+        Router.go('/m=' + e.currentTarget.id);
         $('body,html').animate({
             scrollTop: 0
         }, '800', 'swing');
     }
 });
 
-
+/**
+ * Check if the ID data has already been searched.
+ * If so, it loads the search from the client-cache.
+ * If not, it starts a new search.
+ */
 checkHistoryMovie = function(id) {
-    Session.set("searching", true);
     for (var i = 0, mHLen = movieHistory.length; i < mHLen; ++i) {
         if (id === movieHistory[i]) {
             loadHistory(id);
@@ -60,6 +63,9 @@ checkHistoryMovie = function(id) {
     getMovieById(id);
 };
 
+/**
+ * Load the given id from the client-cache.
+ */
 function loadHistory(id) {
     dbMovieInfo.update({
         idMovie: id
@@ -71,7 +77,7 @@ function loadHistory(id) {
             ts: new Date()
         }
     });
-    allFinish(0, 1);
+    Session.set('searching', false);
 }
 
 /**
@@ -83,6 +89,10 @@ function getMovieById(id) {
     Meteor.call('getMovie', id, function(err, result) {
         if (result) {
             var ris = $.parseJSON(result.content);
+            if (ris.total_results === 0) {
+                Router.go('notfound');
+                return;
+            }
             arrayMovieInfo.id = id;
             movie = id;
             title = ris.title.replace(/\s+/g, '');
@@ -135,14 +145,7 @@ function searchMovie(ris) {
             shuffle(arrayMovieInfoBoxes, 1);
     });
 
-    Meteor.call('getMovieReviewsFromTmdb', movie, function(err, result) {
-        if (result)
-            setArrayMovieInfoBoxes(result.content, 'reviewtmdb');
-        if (err)
-            shuffle(arrayMovieInfoBoxes, 1);
-    });
-
-    Meteor.call('getMovieReviewsFromMetacritic', metacriticTitle, function(err, result) {
+    Meteor.call('getMovieReviews', metacriticTitle, function(err, result) {
         if (result)
             setArrayMovieInfoBoxes(result.content, 'reviewmetacritic');
         if (err)
@@ -279,7 +282,7 @@ function setArrayMovieInfoBoxes(data, dataType) {
         _.each(data.statuses, function(ele) {
             arrayMovieInfoBoxes.push({
                 boxType: 'boxTweet',
-                background: 'background-color: #FFFFFF', // #FAFAFA
+                background: 'background-color: #FFFFFF',
                 isUser: true,
                 isTwitter: true,
                 user: ele.user.screen_name,
@@ -311,30 +314,6 @@ function setArrayMovieInfoBoxes(data, dataType) {
         });
     }
 
-    if (dataType === 'reviewtmdb') {
-        var ris = $.parseJSON(data);
-        var i = 0;
-        if (ris.total_results === 0) {
-            shuffle(arrayMovieInfoBoxes, 1);
-            return;
-        }
-        _.each(ris.results, function(ele) {
-            if (i === 2)
-                return;
-            i++;
-            arrayMovieInfoBoxes.push({
-                boxType: 'boxReview',
-                background: 'background-color: #FFFFFF', // #FAFAFA
-                isUser: true,
-                isTwitter: false,
-                user: ele.author + ' - TMDb',
-                text: ele.content,
-                link: ele.url
-            });
-
-        });
-    }
-
     if (dataType === 'reviewmetacritic') {
         var ris = $.parseJSON(data);
         var i = 0;
@@ -349,7 +328,7 @@ function setArrayMovieInfoBoxes(data, dataType) {
             stars += parseInt(ele.score, 10);
             arrayMovieInfoBoxes.push({
                 boxType: 'boxReview',
-                background: 'background-color: #FFFFFF', // #FAFAFA
+                background: 'background-color: #FFFFFF',
                 isUser: true,
                 isTwitter: false,
                 user: ele.critic,
@@ -384,7 +363,7 @@ function searchSimilarFilm(data) {
             title: ele.title,
             id: ele.id,
             image_path: (ele.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + ele.poster_path : '/blank.jpg'),
-            order: (release_date % 2 === 0 ? 'big' : 'small')
+            order: (release_date % 2 === 0 ? 'bigBox' : 'smallBox')
         });
     });
 
@@ -400,158 +379,34 @@ function searchSimilarFilm(data) {
     });
 }
 
-function allFinish(finish, cache) {
-    if (cache === 1)
-        Session.set("searching", false);
-    if (finish === 1)
-        Session.set("searching", false);
-}
-
+/**
+ * Generates the stars graphic.
+ */
 function checkStars() {
-    if (stars > 0 && stars < 1) {
-        stars = 0.5;
-        arrayStars = [{
-            star: 'fa-star-half-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars === 1) {
-        stars = 1;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars > 1 && stars < 2) {
-        stars = 1.5;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-half-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars === 2) {
-        stars = 2;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars > 2 && stars < 3) {
-        stars = 2.5;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-half-o'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars === 3) {
-        stars = 3;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-o'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars > 3 && stars < 4) {
-        stars = 3.5;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-half-o'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars === 4) {
-        stars = 4;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-o'
-        }];
-    } else if (stars > 4 && stars < 5) {
-        stars = 4.5;
-        arrayStars = [{
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star-half-o'
-        }];
-    } else if (stars === 5) {
-        stars = 5;
-        arrayStars = [{
-            star: 'fa-star',
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }, {
-            star: 'fa-star'
-        }];
-    } else {
-        stars = 0;
-        arrayStars = [{
-            star: 'fa-minus'
-        }, {
-            star: 'fa-minus'
-        }, {
-            star: 'fa-minus'
-        }, {
-            star: 'fa-minus'
-        }, {
-            star: 'fa-minus'
-        }];
-    }
+    var arrayStars = [{
+        star: 'fa-star-o'
+    }, {
+        star: 'fa-star-o'
+    }, {
+        star: 'fa-star-o'
+    }, {
+        star: 'fa-star-o'
+    }, {
+        star: 'fa-star-o'
+    }];
+    var i = 0;
+    var empty = false;
+    _.each(arrayStars, function(star) {
+        if (stars - i > 0.0 && stars - i < 1.0) {
+            star.star = 'fa-star-half-o';
+            empty = true;
+            i++;
+            return;
+        }
+        if (!empty)
+            star.star = 'fa-star';
+        i++;
+    });
     dbMovieInfo.update({
         idMovie: movie
     }, {
@@ -569,7 +424,7 @@ function checkStars() {
  */
 function shuffle(array, count) {
     finCount += count;
-    if (finCount >= 4) {
+    if (finCount >= 3) {
         checkStars();
         arrayMovieInfoBoxes = _.shuffle(array);
         dbMovieInfo.update({
@@ -582,7 +437,8 @@ function shuffle(array, count) {
                 movieBoxes: arrayMovieInfoBoxes
             }
         });
-        allFinish(1, 0);
+        Session.set('searching', false);
+
     }
 }
 

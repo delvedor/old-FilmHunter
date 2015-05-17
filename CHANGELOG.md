@@ -1,6 +1,17 @@
 # Film Hunter
 *Changelog*
 
+**[0.5.6]** *14/05/2015*
+- New url system;
+- Updated router system;
+- Updated UI to multiple layout;
+- Few changes in the UI;
+- Removed pageHistory;
+- Updated Favourites DB;
+- Updated client architecture;
+- Code cleaning;
+- Various Bugfix.
+
 **[0.5.5]** *24/04/2015*
 - Changed some elements of the UI;
 - Implemented public accounts;
